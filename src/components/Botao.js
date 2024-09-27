@@ -1,17 +1,14 @@
-import { useState } from 'react';
 
 import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
 
 
-export default function Botao({ numeros, numero, salvaNumero, corJogo }) {
+export default function Botao({  numero, salvaNumero, corJogo }) {
 
 
     return (
         <TouchableOpacity
 
             onPress={salvaNumero}
-          
-
             style={[styles.botao, { backgroundColor: corJogo }]}>
             <Text style={styles.textBotao}>{numero}</Text>
         </TouchableOpacity>

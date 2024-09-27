@@ -1,0 +1,1 @@
+const LOTOFACIL = "Lotofácil"

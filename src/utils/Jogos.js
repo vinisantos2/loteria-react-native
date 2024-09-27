@@ -11,17 +11,14 @@ async function axiosBusca(url) {
 
     return array
 
-
 }
 
 function converterString(n) {
 
     if(n + 1 < 10 ){
-
         return '0' + (n + 1)
     } else if((n + 1) >= 10 && (n + 1) < 100){
         return (n + 1).toString()
-
     } else if ((n + 1)   > 99){
         return '00'
     }
@@ -29,8 +26,6 @@ function converterString(n) {
 }
 
 export default class Jogos {
-
-
 
 
     preencher(array, dezenas, qtdDezenas) {
@@ -52,8 +47,6 @@ export default class Jogos {
 
         const arrayTemp = array
 
-
-
         console.log("valor de n: " + numero)
         // verifica se usuario ja escolheu a dezena
         if (arrayTemp.includes(numero)) {
@@ -61,11 +54,8 @@ export default class Jogos {
             if (index > -1) {
                 array.splice(index, 1);
                 array.sort()
-
                 return arrayTemp
             }
-
-
         }
 
         if (array.length == limite) {
@@ -90,6 +80,5 @@ export default class Jogos {
     converterString(n) {
        return converterString(n)
     }
-
 
 }
