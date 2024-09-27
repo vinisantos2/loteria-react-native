@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import Jogos from '../utils/Jogos';
 import Layout from '../components/Layout';
@@ -10,6 +10,8 @@ import { COMPARAR, LIMPAR, PRENCHER, URL_BASE } from '../constants/Constants';
 import ViewSelecionados from '../components/ViewSelecionados';
 import ViewCarregando from '../components/ViewCarregando';
 import { COR_LOTOMAIA } from '../constants/Cores';
+import LayoutResposta from '../components/Resposta';
+import ViewText from '../components/ViewText';
 
 
 let jogos = []
@@ -138,17 +140,17 @@ export default function Lotomania({ navigation }) {
                 <ViewBotao value={LIMPAR} onPress={() => limpar()} />
             </View>
 
-            <View style={{ alignItems: 'center' }}>
 
-                <Text>Jogos com 20 pontos: {pontos20} </Text>
-                <Text>Jogos com 19 pontos: {pontos19} </Text>
-                <Text>Jogos com 18 pontos: {pontos18} </Text>
-                <Text>Jogos com 17 pontos: {pontos17} </Text>
-                <Text>Jogos com 16 pontos: {pontos16} </Text>
-                <Text>Jogos com 15 pontos: {pontos15} </Text>
-                <Text>Jogos com 00 pontos: {pontos00} </Text>
-            </View>
+            <LayoutResposta>
+                <ViewText value={"Jogos com 20 pontos: " + pontos20} />
+                <ViewText value={"Jogos com 19 pontos: " + pontos19} />
+                <ViewText value={"Jogos com 18 pontos: " + pontos18} />
+                <ViewText value={"Jogos com 17 pontos: " + pontos17} />
+                <ViewText value={"Jogos com 16 pontos: " + pontos16} />
+                <ViewText value={"Jogos com 15 pontos: " + pontos15} />
+                <ViewText value={"Jogos com 00 pontos: " + pontos00} />
 
+            </LayoutResposta>
         </Layout>
 
 

@@ -1,5 +1,6 @@
 
 import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
+import ViewText from './ViewText';
 
 
 export default function Botao({  numero, salvaNumero, corJogo }) {
@@ -10,7 +11,7 @@ export default function Botao({  numero, salvaNumero, corJogo }) {
 
             onPress={salvaNumero}
             style={[styles.botao, { backgroundColor: corJogo }]}>
-            <Text style={styles.textBotao}>{numero}</Text>
+            <ViewText value={numero} />
         </TouchableOpacity>
     )
 

@@ -5,17 +5,18 @@ import Lotomania from "../telas/Lotomania";
 import MegaSena from "../telas/MegaSena";
 import Quina from "../telas/Quina";
 import HomeScreen from "../telas/Home";
+import { HOME, LOTOFACIL, LOTOMANIA, MEGA, QUINA } from "./Rotas";
 
 const Drawer = createDrawerNavigator();
 
 export default function DrawerNav() {
     return (
-        <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen name="Home" component={HomeScreen} />
-            <Drawer.Screen name="Lotofacil" component={Lotofacil} />
-            <Drawer.Screen name="Lotomania" component={Lotomania} />
-            <Drawer.Screen name="Mega Sena" component={MegaSena} />
-            <Drawer.Screen name="Quina" component={Quina} />
+        <Drawer.Navigator initialRouteName={HOME}>
+            <Drawer.Screen name={HOME} component={HomeScreen} />
+            <Drawer.Screen name={LOTOFACIL} component={Lotofacil} />
+            <Drawer.Screen name={LOTOMANIA} component={Lotomania} />
+            <Drawer.Screen name={MEGA} component={MegaSena} />
+            <Drawer.Screen name={QUINA} component={Quina} />
         </Drawer.Navigator>
 
     );

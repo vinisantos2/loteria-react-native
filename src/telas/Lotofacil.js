@@ -2,26 +2,23 @@ import { useState } from 'react';
 
 import {
     StyleSheet,
-    Text,
+ 
     View,
 
 } from 'react-native';
-import Botao from '../components/Botao';
 import Jogos from '../utils/Jogos';
 import Layout from '../components/Layout';
-import { COR_FUNDO_CARTELA, COR_LOTOFACIL } from '../constants/Cores';
+import {  COR_LOTOFACIL } from '../constants/Cores';
 import Cartela from '../components/Cartela';
 import ViewBotao from '../components/ViewBotao';
 import { COMPARAR, LIMPAR, PRENCHER, URL_BASE } from '../constants/Constants';
 import ViewSelecionados from '../components/ViewSelecionados';
 import ViewCarregando from '../components/ViewCarregando';
-
-
+import LayoutResposta from '../components/Resposta';
+import ViewText from '../components/ViewText';
 
 
 export default function Lotofacil({ navigation }) {
-
-    const [arrayResposta] = useState([])
     const [pontos15, setPontos15] = useState(0)
     const [pontos14, setPontos14] = useState(0)
     const [pontos13, setPontos13] = useState(0)
@@ -144,13 +141,15 @@ export default function Lotofacil({ navigation }) {
                 <ViewBotao value={LIMPAR} onPress={() => limpar()} />
             </View>
 
-            <View style={{ alignItems: 'center' }}>
-                <Text>Jogos com 15 pontos: {pontos15} </Text>
-                <Text>Jogos com 14 pontos: {pontos14} </Text>
-                <Text>Jogos com 13 pontos: {pontos13} </Text>
-                <Text>Jogos com 12 pontos: {pontos12} </Text>
-                <Text>Jogos com 11 pontos: {pontos11} </Text>
-            </View>
+            <LayoutResposta>
+                <ViewText value={"Jogos com 15 pontos: " + pontos15} />
+                <ViewText value={"Jogos com 14 pontos: " + pontos14} />
+                <ViewText value={"Jogos com 13 pontos: " + pontos13} />
+                <ViewText value={"Jogos com 12 pontos: " + pontos12} />
+                <ViewText value={"Jogos com 11 pontos: " + pontos11} />
+            </LayoutResposta>
+
+
         </Layout>
 
     );
@@ -158,7 +157,10 @@ export default function Lotofacil({ navigation }) {
 
 const styles = StyleSheet.create({
     botoes: {
-        alignItems: 'center'
+        alignItems: 'center',
+        width: "90%",
+        alignSelf: 'center',
+
     }
 
 

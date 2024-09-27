@@ -1,1 +1,5 @@
-const LOTOFACIL = "Lotofácil"
+export const  LOTOFACIL = "Lotofácil"
+export const  MEGA = "Mega sena"
+export const  QUINA = "Quina"
+export const  LOTOMANIA = "Lotomania"
+export const  HOME = "Home"

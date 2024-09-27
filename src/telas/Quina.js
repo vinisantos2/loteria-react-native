@@ -1,19 +1,18 @@
 import { useState } from 'react';
 
 import {
-    StyleSheet, Text, View, TouchableOpacity
-    , ActivityIndicator, SafeAreaView, ScrollView
+    StyleSheet, View
 } from 'react-native';
 import Jogos from '../utils/Jogos';
-import Botao from '../components/Botao';
 import Cartela from '../components/Cartela';
 import ViewBotao from '../components/ViewBotao';
 import { COR_QUINA } from '../constants/Cores';
 import Layout from '../components/Layout';
 import ViewSelecionados from '../components/ViewSelecionados';
 import { COMPARAR, LIMPAR, PRENCHER, QTD_DEZENAS_QUINA, URL_BASE } from '../constants/Constants';
-import Resposta from '../components/Resposta';
 import ViewCarregando from '../components/ViewCarregando';
+import LayoutResposta from '../components/Resposta';
+import ViewText from '../components/ViewText';
 
 let jogos = []
 
@@ -140,14 +139,14 @@ export default function Quina({ navigation }) {
 
 
 
-            <View style={{ alignItems: 'center' }}>
+            <LayoutResposta>
+                <ViewText value={"Jogos com 5 pontos: " + pontos5} />
+                <ViewText value={"Jogos com 4 pontos: " + pontos4} />
+                <ViewText value={"Jogos com 3 pontos: " + pontos3} />
+                <ViewText value={"Jogos com 2 pontos: " + pontos2} />
 
-                <Text>Jogos com 5 pontos: {pontos5} </Text>
-                <Text>Jogos com 4 pontos: {pontos4} </Text>
-                <Text>Jogos com 3 pontos: {pontos3} </Text>
-                <Text>Jogos com 2 pontos: {pontos2} </Text>
 
-            </View>
+            </LayoutResposta>
 
         </Layout>
 

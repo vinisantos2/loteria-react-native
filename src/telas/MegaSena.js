@@ -1,18 +1,11 @@
 import { useState } from 'react';
 import {
     StyleSheet,
-    Text,
     View,
-    TouchableOpacity,
-    ScrollView,
-    SafeAreaView,
-    Alert,
-    ActivityIndicator,
-
 } from 'react-native';
-import Botao from '../components/Botao';
+
 import Jogos from '../utils/Jogos';
-import style from '../assets/style';
+
 import Layout from '../components/Layout';
 import ViewBotao from '../components/ViewBotao';
 import Cartela from '../components/Cartela';
@@ -20,6 +13,8 @@ import { COMPARAR, LIMPAR, PRENCHER, URL_BASE } from '../constants/Constants';
 import ViewSelecionados from '../components/ViewSelecionados';
 import { COR_MEGA } from '../constants/Cores';
 import ViewCarregando from '../components/ViewCarregando';
+import LayoutResposta from '../components/Resposta';
+import ViewText from '../components/ViewText';
 
 
 let jogos = []
@@ -32,11 +27,10 @@ export default function MegaSena({ navigation }) {
     const [qtdNum, setQtdNum] = useState(0)
     const [numerosSelecionados, setArray] = useState([])
 
- 
+
     const jogo = new Jogos()
 
     const qtdDezenasMega = 60
-    const qtdDezenas = 6
     const url = "megasena"
     const cor = COR_MEGA
     const limite = 12
@@ -127,7 +121,7 @@ export default function MegaSena({ navigation }) {
 
     return (
         <Layout >
-             <ViewCarregando carregando={carregando}/>
+            <ViewCarregando carregando={carregando} />
 
 
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_MEGA} qtdNum={qtdNum} />
@@ -139,17 +133,17 @@ export default function MegaSena({ navigation }) {
                 cor={cor} />
 
             <View style={styles.botoes}>
-                <ViewCarregando carregando={carregando}/>
+                <ViewCarregando carregando={carregando} />
                 <ViewBotao value={COMPARAR} onPress={() => compararJogo()} />
                 <ViewBotao value={PRENCHER} onPress={() => preencher()} />
                 <ViewBotao value={LIMPAR} onPress={() => limpar()} />
             </View>
 
-            <View style={{ alignItems: 'center' }}>
-                <Text>Jogos com 6 pontos: {pontos6} </Text>
-                <Text>Jogos com 5 pontos: {pontos5} </Text>
-                <Text>Jogos com 4 pontos: {pontos4} </Text>
-            </View>
+            <LayoutResposta>
+                <ViewText value={"Jogos com 6 pontos: " + pontos6} />
+                <ViewText value={"Jogos com 5 pontos: " + pontos5} />
+                <ViewText value={"Jogos com 4 pontos: " + pontos4} />
+            </LayoutResposta>
 
         </Layout>
 

@@ -1,9 +1,7 @@
-import { useState } from 'react';
 
 import { StyleSheet, View } from 'react-native';
 import { COR_FUNDO_CARTELA } from '../constants/Cores';
 import Botao from './Botao';
-
 
 export default function Cartela({ dezenas, jogo, numerosSelecionados, salvarNumeroNaLista, cor}) {
 
