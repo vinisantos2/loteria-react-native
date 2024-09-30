@@ -7,7 +7,7 @@ import { COR_DE_FUNDO } from './src/constants/Cores';
 
 export default function App() {
   return (
-    <NavigationContainer theme={{colors:{ card: COR_DE_FUNDO, border: COR_DE_FUNDO, text: "#FFF"}}}>
+    <NavigationContainer theme={{ colors: { card: COR_DE_FUNDO, border: COR_DE_FUNDO, text: "#FFF" } }}>
       <DrawerNav />
     </NavigationContainer>
   );

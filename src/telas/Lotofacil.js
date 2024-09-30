@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import {
     StyleSheet,
- 
+
     View,
 
 } from 'react-native';
-import Jogos from '../utils/Jogos';
+import { axiosBusca, preencher, salvarNumeroNaLista } from '../utils/ultil';
 import Layout from '../components/Layout';
-import {  COR_LOTOFACIL } from '../constants/Cores';
+import { COR_LOTOFACIL } from '../constants/Cores';
 import Cartela from '../components/Cartela';
 import ViewBotao from '../components/ViewBotao';
 import { COMPARAR, LIMPAR, PRENCHER, URL_BASE } from '../constants/Constants';
@@ -16,6 +16,7 @@ import ViewSelecionados from '../components/ViewSelecionados';
 import ViewCarregando from '../components/ViewCarregando';
 import LayoutResposta from '../components/Resposta';
 import ViewText from '../components/ViewText';
+import { useIsFocused } from '@react-navigation/native';
 
 
 export default function Lotofacil({ navigation }) {
@@ -24,26 +25,26 @@ export default function Lotofacil({ navigation }) {
     const [pontos13, setPontos13] = useState(0)
     const [pontos12, setPontos12] = useState(0)
     const [pontos11, setPontos11] = useState(0)
-    const [jogos, setJogos] = useState(0)
+    const [jogos, setJogos] = useState([])
     const [carregando, setCarregando] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
     const url = "lotofacil"
     const cor = "#A8358E"
     const [numerosSelecionados, setArray] = useState([])
+    const focused = useIsFocused();
+    const [corStatus, setCorStatus] = useState("#FFF")
 
-
-    const jogo = new Jogos()
+    React.useEffect(() => {
+        setCorStatus(COR_LOTOFACIL)
+    }, [focused])
 
     const qtdDezenasLotofacil = 25
-
-
     const limite = 18
     const dezenas = 15
 
-    function salvarNumeroNaLista(numero) {
-        setArray(jogo.salvarNumeroNaLista(numero, numerosSelecionados, limite))
+    function salvarNumero(numero) {
+        setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
         setQtdNum(numerosSelecionados.length)
-
     }
 
     function limpar() {
@@ -52,17 +53,15 @@ export default function Lotofacil({ navigation }) {
     }
 
 
-    function preencher() {
-        setArray(jogo.preencher(numerosSelecionados, dezenas, qtdDezenasLotofacil))
+    function preencherJogo() {
+        setArray(preencher(numerosSelecionados, dezenas, qtdDezenasLotofacil,))
         setQtdNum(numerosSelecionados.length)
     }
-
-
+    
     async function compararJogo() {
         setCarregando(true)
         if (jogos.length < 1) {
-            console.log("Aqui")
-            const jogos = await jogo.buscarDados(URL_BASE + url);
+            const jogos = await axiosBusca(URL_BASE + url);
             setJogos(jogos)
         }
 
@@ -100,8 +99,6 @@ export default function Lotofacil({ navigation }) {
 
             }
             contador = 0
-
-
         }
 
         setPontos15(pontos15)
@@ -120,24 +117,20 @@ export default function Lotofacil({ navigation }) {
         setQtdNum(0)
     }
 
-    function preencher() {
-        setArray(jogo.preencher(numerosSelecionados, dezenas, qtdDezenasLotofacil))
-        setQtdNum(numerosSelecionados.length)
-    }
-
     return (
         <Layout>
+            {/* <StatusBar backgroundColor={corStatus} /> */}
             <ViewCarregando carregando={carregando} />
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_LOTOFACIL} qtdNum={qtdNum} />
-            <Cartela dezenas={qtdDezenasLotofacil}
-                jogo={jogo}
+            <Cartela
+                dezenas={qtdDezenasLotofacil}
                 numerosSelecionados={numerosSelecionados}
-                salvarNumeroNaLista={salvarNumeroNaLista}
+                salvarNumeroNaLista={salvarNumero}
                 cor={cor} />
             <View style={styles.botoes}>
                 <ViewCarregando carregando={carregando} />
                 <ViewBotao value={COMPARAR} onPress={() => compararJogo()} />
-                <ViewBotao value={PRENCHER} onPress={() => preencher()} />
+                <ViewBotao value={PRENCHER} onPress={() => preencherJogo()} />
                 <ViewBotao value={LIMPAR} onPress={() => limpar()} />
             </View>
 
@@ -148,7 +141,6 @@ export default function Lotofacil({ navigation }) {
                 <ViewText value={"Jogos com 12 pontos: " + pontos12} />
                 <ViewText value={"Jogos com 11 pontos: " + pontos11} />
             </LayoutResposta>
-
 
         </Layout>
 

@@ -8,5 +8,4 @@ export const DEZENAS_LOTOMNIA = 10
 export const DEZENAS_LOTOFACIL = 10
 
 export const QTD_DEZENAS_QUINA = 80
-
-export const URL_BASE = "https://loteriascaixa-api.herokuapp.com/api/"
+export const URL_BASE = "http://192.168.0.12:3001/"

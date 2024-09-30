@@ -2,19 +2,20 @@
 import { StyleSheet, View } from 'react-native';
 import { COR_FUNDO_CARTELA } from '../constants/Cores';
 import Botao from './Botao';
+import { converterString } from '../utils/ultil';
 
-export default function Cartela({ dezenas, jogo, numerosSelecionados, salvarNumeroNaLista, cor}) {
+export default function Cartela({ dezenas, numerosSelecionados, salvarNumeroNaLista, cor}) {
 
     return (
         <View style={styles.cartela}>
 
             {Array.from({ length: dezenas }).map((_, index) => (
                 <Botao
-                    corJogo={numerosSelecionados.includes(jogo.converterString(index)) ? cor : "#fff"}
+                    corJogo={numerosSelecionados.includes(converterString(index)) ? cor : "#fff"}
                     numeros={numerosSelecionados}
-                    salvaNumero={() => salvarNumeroNaLista(jogo.converterString(index))}
+                    salvaNumero={() => salvarNumeroNaLista(converterString(index))}
                     key={index}
-                    numero={jogo.converterString(index)} />
+                    numero={converterString(index)} />
             ))}
 
         </View>

@@ -1,8 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import Jogos from '../utils/Jogos';
 import Layout from '../components/Layout';
 import Cartela from '../components/Cartela';
 import ViewBotao from '../components/ViewBotao';
@@ -12,12 +11,11 @@ import ViewCarregando from '../components/ViewCarregando';
 import { COR_LOTOMAIA } from '../constants/Cores';
 import LayoutResposta from '../components/Resposta';
 import ViewText from '../components/ViewText';
+import { useIsFocused } from '@react-navigation/native';
+import { axiosBusca, preencher, salvarNumeroNaLista } from '../utils/ultil';
 
-
-let jogos = []
 
 export default function Lotomania({ navigation }) {
-    console.log(jogos)
     const [pontos00, setPontos00] = useState(0)
     const [pontos15, setPontos15] = useState(0)
     const [pontos16, setPontos16] = useState(0)
@@ -29,19 +27,24 @@ export default function Lotomania({ navigation }) {
     const [qtdNum, setQtdNum] = useState(0)
 
     const [numerosSelecionados, setArray] = useState([])
+    const [jogos, setJogos] = useState([])
     const cor = COR_LOTOMAIA
 
-    const jogo = new Jogos()
     const url = "lotomania"
     const limite = 60
     const qtdDezenasLotomania = 100
-
     const dezenas = 50
+    // const focused = useIsFocused();
+    // const [corStatus, setCorStatus] = useState("#FFF")
 
-    function salvarNumeroNaLista(numero) {
+    // React.useEffect(() => {
+    //    setCorStatus(COR_LOTOMAIA)
+    // }, [focused])
 
-        setArray(jogo.salvarNumeroNaLista(numero, numerosSelecionados, limite))
 
+    function salvarNNaLista(numero) {
+
+        setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
         setQtdNum(numerosSelecionados.length)
 
     }
@@ -52,19 +55,17 @@ export default function Lotomania({ navigation }) {
     }
 
 
-    function preencher() {
-        setArray(jogo.preencher(numerosSelecionados, dezenas, qtdDezenasLotomania))
+    function preencherJogo() {
+        setArray(preencher(numerosSelecionados, dezenas, qtdDezenasLotomania))
         setQtdNum(numerosSelecionados.length)
     }
 
-
-
     async function compararJogo() {
         setCarregando(true)
-
         if (jogos.length < 1) {
             console.log("Aqui")
-            jogos = await jogo.buscarDados(URL_BASE + url);
+            const array = await axiosBusca(URL_BASE + url);
+            setJogos(array)
         }
 
         let contador = 0
@@ -75,7 +76,6 @@ export default function Lotomania({ navigation }) {
         let pontos16 = 0
         let pontos15 = 0
         let pontos00 = 0
-
 
         // primeiro for para ver os jogos que ja foram sorteados 
         for (let i = 0; i < jogos.length; i++) {
@@ -124,19 +124,20 @@ export default function Lotomania({ navigation }) {
 
     return (
         <Layout>
+            {/* <StatusBar backgroundColor={corStatus} /> */}
             <ViewCarregando carregando={carregando} />
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_LOTOMAIA} qtdNum={qtdNum} />
 
             <Cartela dezenas={qtdDezenasLotomania}
-                jogo={jogo}
+
                 numerosSelecionados={numerosSelecionados}
-                salvarNumeroNaLista={salvarNumeroNaLista}
+                salvarNumeroNaLista={salvarNNaLista}
                 cor={cor} />
 
             <View style={styles.botoes}>
                 <ViewCarregando carregando={carregando} />
                 <ViewBotao value={COMPARAR} onPress={() => compararJogo()} />
-                <ViewBotao value={PRENCHER} onPress={() => preencher()} />
+                <ViewBotao value={PRENCHER} onPress={() => preencherJogo()} />
                 <ViewBotao value={LIMPAR} onPress={() => limpar()} />
             </View>
 

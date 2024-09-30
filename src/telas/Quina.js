@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import {
     StyleSheet, View
 } from 'react-native';
-import Jogos from '../utils/Jogos';
 import Cartela from '../components/Cartela';
 import ViewBotao from '../components/ViewBotao';
 import { COR_QUINA } from '../constants/Cores';
@@ -13,39 +12,35 @@ import { COMPARAR, LIMPAR, PRENCHER, QTD_DEZENAS_QUINA, URL_BASE } from '../cons
 import ViewCarregando from '../components/ViewCarregando';
 import LayoutResposta from '../components/Resposta';
 import ViewText from '../components/ViewText';
+import { useIsFocused } from '@react-navigation/native';
+import { axiosBusca, preencher, salvarNumeroNaLista } from '../utils/ultil';
 
 let jogos = []
 
 export default function Quina({ navigation }) {
-    console.log(jogos)
+
     const [pontos2, setPontos2] = useState(0)
     const [pontos3, setPontos3] = useState(0)
     const [pontos4, setPontos4] = useState(0)
     const [pontos5, setPontos5] = useState(0)
     const [carregando, setCarregando] = useState(false)
-    const [ativo, setAtivo] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
+    const [jogos, setJogos] = useState([])
     const limite = 8
     const dezenas = 5
     const url = "quina"
 
-    const array =
-    {
-        "2": 3,
-        "4": 3,
-        "5": 3,
-        "8": 3
-    }
+    // const focused = useIsFocused();
+    // const [corStatus, setCorStatus] = useState("#FFF")
 
-
+    // React.useEffect(() => {
+    //     setCorStatus(COR_QUINA)
+    // }, [focused])
 
     const [numerosSelecionados, setArray] = useState([])
     const cor = "#2A2DA8"
-
-    const jogo = new Jogos()
-
-    function salvarNumeroNaLista(numero) {
-        setArray(jogo.salvarNumeroNaLista(numero, numerosSelecionados, limite))
+    function salvarNumero(numero) {
+        setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
         setQtdNum(numerosSelecionados.length)
 
     }
@@ -56,17 +51,17 @@ export default function Quina({ navigation }) {
     }
 
 
-    function preencher() {
-        setArray(jogo.preencher(numerosSelecionados, dezenas, QTD_DEZENAS_QUINA))
+    function preencherJogo() {
+        setArray(preencher(numerosSelecionados, dezenas, QTD_DEZENAS_QUINA))
         setQtdNum(numerosSelecionados.length)
     }
 
 
     async function compararJogo() {
         setCarregando(true)
-
         if (jogos.length < 1) {
-            jogos = await jogo.buscarDados(URL_BASE + url);
+            const jogos = await axiosBusca(URL_BASE + url);
+            setJogos(jogos)
         }
 
         let contador = 0
@@ -91,14 +86,10 @@ export default function Quina({ navigation }) {
 
             } else if (contador === 4) {
                 pontos4++
-
-
             } else if (contador === 3) {
-
                 pontos3++
 
             } else if (contador === 2) {
-
                 pontos2++
 
             }
@@ -117,22 +108,20 @@ export default function Quina({ navigation }) {
 
     return (
         <Layout>
-
+            {/* <StatusBar backgroundColor={corStatus} animated={true} /> */}
             <ViewCarregando carregando={carregando} />
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_QUINA} qtdNum={qtdNum} />
-
-
             <Cartela dezenas={QTD_DEZENAS_QUINA}
-                jogo={jogo}
+
                 numerosSelecionados={numerosSelecionados}
-                salvarNumeroNaLista={salvarNumeroNaLista}
+                salvarNumeroNaLista={salvarNumero}
                 cor={cor} />
 
             <View style={styles.botoes}>
                 <ViewCarregando carregando={carregando} />
 
                 <ViewBotao value={COMPARAR} onPress={() => compararJogo()} />
-                <ViewBotao value={PRENCHER} onPress={() => preencher()} />
+                <ViewBotao value={PRENCHER} onPress={() => preencherJogo()} />
                 <ViewBotao value={LIMPAR} onPress={() => limpar()} />
 
             </View>
