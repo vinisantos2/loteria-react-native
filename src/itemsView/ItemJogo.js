@@ -1,10 +1,11 @@
 
 import { StyleSheet, View, } from 'react-native';
-import ViewText from './ViewText';
+import ViewText from '../components/ViewText';
 import DezenasSelecionados from './DezenasSelecionados';
-import { COR_FUNDO_CARTELA } from '../constants/Cores';
-import ViewLoteca from './ViewLoteca';
+import { COR_BRANCO, COR_FUNDO_CARTELA } from '../constants/Cores';
+import ViewLoteca from '../components/ViewLoteca';
 import { gerarKey } from '../utils/ultil';
+import ItemPremiacao from './ItemPremiacao';
 
 
 export default function ItemJogo({ item, indice, cor = "#001122" }) {
@@ -21,6 +22,7 @@ export default function ItemJogo({ item, indice, cor = "#001122" }) {
     const trevos = item["resultado"]["trevos_sorteados"]
     const time = item["resultado"]["time_coracao"]
     const mesSorte = item["resultado"]["mes_da_sorte"]
+    const arrayPremiacao = item["resultado"]["premiacao"]
     return (
         <View style={styles.content}>
             <View style={[styles.viewLegenda, { backgroundColor: cor }]} >
@@ -29,16 +31,31 @@ export default function ItemJogo({ item, indice, cor = "#001122" }) {
             <View style={styles.view}>
                 <ViewText value={"Concurso: " + numeroConcurso}></ViewText>
                 <ViewText value={"Concurso data: " + data}></ViewText>
-                <ViewText value={"Acumulou: " + acumulou}></ViewText>
+                <ViewText value={acumulou ? "Acumulou: Sim" : " Acumulou: Não"}></ViewText>
                 <ViewText value={"Valor proximo concurso: " + valorProximoConcurso}></ViewText>
                 {trevos ?
-                    <ViewText value={"Trevos: " + trevos} />
+                    <View style={{ flexDirection: 'row' }}>
+                        <ViewText value={"Trevos: "} />
+                        <DezenasSelecionados numerosSelecionados={trevos} cor={cor} />
+                    </View>
                     : null}
                 {time ?
-                    <ViewText value={"Time do coração: " + time} />
+                    <View style={{ flexDirection: 'row' }}>
+                        <ViewText value={"Time do coração: "} />
+                        <View  style={[styles.item, { backgroundColor: cor }]}>
+                            <ViewText value={time} />
+                        </View>
+                    </View>
                     : null}
                 {mesSorte ?
-                    <ViewText value={"Mês da sorte: " + mesSorte} />
+
+                    <View style={{ flexDirection: 'row' }}>
+                        <ViewText value={"Mês da sorte: "} />
+                        <View style={[styles.item, { backgroundColor: cor }]}>
+                            <ViewText value={mesSorte} />
+                        </View>
+                    </View>
+
                     : null}
             </View>
             {!arrayDezenas.length < 1 ?
@@ -47,6 +64,7 @@ export default function ItemJogo({ item, indice, cor = "#001122" }) {
             {arrayDezenas2 ?
                 <DezenasSelecionados key={gerarKey()} numerosSelecionados={arrayDezenas2} cor={cor} />
                 : null}
+            <ItemPremiacao arrayPremiacao={arrayPremiacao} />
         </View>
     )
 
@@ -57,13 +75,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: COR_FUNDO_CARTELA
     },
+    item: {
+        borderWidth: 1,
+        padding: 5,
+        borderRadius: 5
+    },
 
     view: {
         alignItems: 'flex-start',
-        alignContent: 'flex-start',
+        alignContent: 'center',
         textAlign: 'left',
-        width: "100%",
-        backgroundColor: COR_FUNDO_CARTELA
+        borderWidth: 1,
+        padding: 10,
+        marginVertical: 5,
+        backgroundColor: "#808080"
 
     },
     viewLegenda: {

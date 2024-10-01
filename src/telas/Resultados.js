@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
 import BotaoOpcao from "../components/BotaoOpcoes";
 import Layout from "../components/Layout";
 import { COR_BRANCO, COR_DE_FUNDO, COR_DIA, COR_DUPLA, COR_FEDERAL, COR_FUNDO_CARTELA, COR_LOTECA, COR_LOTOFACIL, COR_LOTOMAIA, COR_MEGA, COR_MILIONARIA, COR_PRETO, COR_QUINA, COR_SUPER_SETE, COR_TIME } from "../constants/Cores";
@@ -9,23 +9,27 @@ import { useIsFocused } from "@react-navigation/native";
 import Jogos, { axiosUltimos, gerarKey } from "../utils/ultil";
 import { URL_BASE } from "../constants/Constants";
 import ViewText from "../components/ViewText";
-import ItemJogo from "../components/ItemJogo";
+import ItemJogo from "../itemsView/ItemJogo"
 import { DIA, DUPLA, FEDERAL, LOTECA, LOTOFACIL, LOTOMANIA, MEGA, MILIONARIA, QUINA, SUPER, TIME } from "../constants/Nomes";
+import ViewCarregando from "../components/ViewCarregando";
 
 export default function Resultados({ navigation }) {
 
     const url = "ultimos"
     const isFocused = useIsFocused()
     const [array, setArray] = React.useState([])
+    const [carregando, setCarregando] = React.useState(true)
 
     React.useEffect(() => {
         buscarDados()
     }, [isFocused])
 
     async function buscarDados() {
+
         if (array > 1) return
         let array2 = await axiosUltimos(URL_BASE + url)
         setArray(array2)
+        setCarregando(false)
     }
 
     function mudaCor(jogo) {
@@ -62,7 +66,16 @@ export default function Resultados({ navigation }) {
     }
 
     return (
+
         <Layout>
+            {carregando ? <ViewCarregando /> : null}
+
+            {/* <Button
+                title="Go to Jane's loto"
+                onPress={() =>
+                    navigation.navigate("L")
+                }
+            /> */}
             {array ? array.map((item) => {
                 return (
                     <ItemJogo key={gerarKey()} item={item} cor={mudaCor(item["loteria"])} />

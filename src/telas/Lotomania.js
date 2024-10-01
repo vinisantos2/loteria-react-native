@@ -34,13 +34,22 @@ export default function Lotomania({ navigation }) {
     const limite = 60
     const qtdDezenasLotomania = 100
     const dezenas = 50
-    // const focused = useIsFocused();
-    // const [corStatus, setCorStatus] = useState("#FFF")
+    const focused = useIsFocused();
+    const [corStatus, setCorStatus] = useState("#FFF")
 
-    // React.useEffect(() => {
-    //    setCorStatus(COR_LOTOMAIA)
-    // }, [focused])
+    React.useEffect(() => {
+       buscarJogos()
+    }, [focused])
 
+
+    async function buscarJogos() {
+        setCarregando(true)
+        if (jogos.length < 1) {
+            const jogos = await axiosBusca(URL_BASE + url);
+            setJogos(jogos)
+        }
+        setCarregando(false)
+    }
 
     function salvarNNaLista(numero) {
 
@@ -125,7 +134,7 @@ export default function Lotomania({ navigation }) {
     return (
         <Layout>
             {/* <StatusBar backgroundColor={corStatus} /> */}
-            <ViewCarregando carregando={carregando} />
+            {carregando ? <ViewCarregando /> : null}
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_LOTOMAIA} qtdNum={qtdNum} />
 
             <Cartela dezenas={qtdDezenasLotomania}
@@ -135,7 +144,7 @@ export default function Lotomania({ navigation }) {
                 cor={cor} />
 
             <View style={styles.botoes}>
-                <ViewCarregando carregando={carregando} />
+                
                 <ViewBotao value={COMPARAR} onPress={() => compararJogo()} />
                 <ViewBotao value={PRENCHER} onPress={() => preencherJogo()} />
                 <ViewBotao value={LIMPAR} onPress={() => limpar()} />

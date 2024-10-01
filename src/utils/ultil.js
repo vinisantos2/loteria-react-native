@@ -19,11 +19,16 @@ export function gerarKey() {
 
 export async function axiosBusca(url) {
 
-    let arrayJogos = await axios(url).then(resp => resp.data)
-        .catch(e => console.log('erro: ' + e))
-
-    let array = arrayJogos.map((item) => item.dezenas);
-
+    let arrayJogos = await axios(url)
+        .then(resp => resp.data)
+        .catch(e => {
+            console.log('erro: ' + e)
+            return
+        })
+    let array = []
+    if (arrayJogos) {
+        array = arrayJogos.map((item) => item.dezenas);
+    }
     return array
 
 }

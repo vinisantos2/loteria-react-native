@@ -8,4 +8,6 @@ export const DEZENAS_LOTOMNIA = 10
 export const DEZENAS_LOTOFACIL = 10
 
 export const QTD_DEZENAS_QUINA = 80
-export const URL_BASE = "http://192.168.0.12:3001/"
+export const QTD_DEZENAS_MILIONARIA = 50
+export const QTD_DEZENAS_TIME = 80
+export const URL_BASE = "http://192.168.0.14:3001/"

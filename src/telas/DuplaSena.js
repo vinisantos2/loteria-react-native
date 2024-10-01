@@ -1,38 +1,40 @@
 import React, { useState } from 'react';
-
 import {
-    StyleSheet, View
+
+    StyleSheet,
+    View,
 } from 'react-native';
-import Cartela from '../components/Cartela';
-import ViewBotao from '../components/ViewBotao';
-import { COR_QUINA } from '../constants/Cores';
+
 import Layout from '../components/Layout';
+import ViewBotao from '../components/ViewBotao';
+import Cartela from '../components/Cartela';
+import { COMPARAR, LIMPAR, PRENCHER, URL_BASE } from '../constants/Constants';
 import ViewSelecionados from '../components/ViewSelecionados';
-import { COMPARAR, LIMPAR, PRENCHER, QTD_DEZENAS_QUINA, URL_BASE } from '../constants/Constants';
+import { COR_DUPLA, COR_MEGA } from '../constants/Cores';
 import ViewCarregando from '../components/ViewCarregando';
 import LayoutResposta from '../components/Resposta';
 import ViewText from '../components/ViewText';
 import { useIsFocused } from '@react-navigation/native';
 import { axiosBusca, preencher, salvarNumeroNaLista } from '../utils/ultil';
 
-let jogos = []
 
-export default function Quina({ navigation }) {
+export default function DuplaSena({ navigation }) {
 
-    const [pontos2, setPontos2] = useState(0)
-    const [pontos3, setPontos3] = useState(0)
-    const [pontos4, setPontos4] = useState(0)
+    const [pontos6, setPontos6] = useState(0)
     const [pontos5, setPontos5] = useState(0)
+    const [pontos4, setPontos4] = useState(0)
     const [carregando, setCarregando] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
+    const [numerosSelecionados, setArray] = useState([])
     const [jogos, setJogos] = useState([])
-    const limite = 8
-    const dezenas = 5
-    const url = "quina"
-    const cor = COR_QUINA
+
+    const qtdDezenasMega = 60
+    const url = "duplasena"
+    const cor = COR_DUPLA
+    const limite = 12
+    const dezenas = 6
 
     const focused = useIsFocused();
-    const [corStatus, setCorStatus] = useState("#FFF")
 
     React.useEffect(() => {
         buscarJogos()
@@ -47,12 +49,9 @@ export default function Quina({ navigation }) {
         setCarregando(false)
     }
 
-    const [numerosSelecionados, setArray] = useState([])
-
-    function salvarNumero(numero) {
+    function salvarNNaLista(numero) {
         setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
         setQtdNum(numerosSelecionados.length)
-
     }
 
     function limpar() {
@@ -61,19 +60,22 @@ export default function Quina({ navigation }) {
     }
 
 
-    function preencherJogo() {
-        setArray(preencher(numerosSelecionados, dezenas, QTD_DEZENAS_QUINA))
+    function preencherNumeros() {
+        setArray(preencher(numerosSelecionados, dezenas, qtdDezenasMega))
         setQtdNum(numerosSelecionados.length)
     }
 
-
     async function compararJogo() {
+        setCarregando(true)
+        if (jogos.length < 1) {
+            const jogos = await axiosBusca(URL_BASE + url);
+            setJogos(jogos)
+        }
 
         let contador = 0
+        let pontos6 = 0
         let pontos5 = 0
         let pontos4 = 0
-        let pontos3 = 0
-        let pontos2 = 0
 
         // primeiro for para ver os jogos que ja foram sorteados 
         for (let i = 0; i < jogos.length; i++) {
@@ -86,56 +88,63 @@ export default function Quina({ navigation }) {
                 }
             }
             // verifica se a quantidade de pontos feito pelo cliente em cada jogo 
-            if (contador === 5) {
+            if (contador === 6) {
+                pontos6++
+
+            } else if (contador === 5) {
                 pontos5++
 
-            } else if (contador === 4) {
-                pontos4++
-            } else if (contador === 3) {
-                pontos3++
 
-            } else if (contador === 2) {
-                pontos2++
+            } else if (contador === 4) {
+
+                pontos4++
 
             }
-
             contador = 0
 
-
         }
+
+        setPontos6(pontos6)
         setPontos5(pontos5)
         setPontos4(pontos4)
-        setPontos3(pontos3)
-        setPontos2(pontos2)
         setCarregando(false)
 
     }
 
+    function limpar() {
+        setArray([])
+        setQtdNum(0)
+    }
+
+
+    function preencherNumeros() {
+        setArray(preencher(numerosSelecionados, dezenas, qtdDezenasMega))
+        setQtdNum(numerosSelecionados.length)
+    }
+
     return (
-        <Layout>
-            {/* <StatusBar backgroundColor={corStatus} animated={true} /> */}
+        <Layout >
+            {/* <StatusBar backgroundColor={corStatus}  /> */}
             {carregando ? <ViewCarregando /> : null}
+
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={cor} qtdNum={qtdNum} />
-            <Cartela dezenas={QTD_DEZENAS_QUINA}
+
+            <Cartela dezenas={qtdDezenasMega}
                 numerosSelecionados={numerosSelecionados}
-                salvarNumeroNaLista={salvarNumero}
+                salvarNumeroNaLista={salvarNNaLista}
                 cor={cor} />
+
             <View style={styles.botoes}>
 
-
                 <ViewBotao value={COMPARAR} onPress={() => compararJogo()} />
-                <ViewBotao value={PRENCHER} onPress={() => preencherJogo()} />
+                <ViewBotao value={PRENCHER} onPress={() => preencherNumeros()} />
                 <ViewBotao value={LIMPAR} onPress={() => limpar()} />
-
             </View>
 
             <LayoutResposta>
+                <ViewText value={"Jogos com 6 pontos: " + pontos6} />
                 <ViewText value={"Jogos com 5 pontos: " + pontos5} />
                 <ViewText value={"Jogos com 4 pontos: " + pontos4} />
-                <ViewText value={"Jogos com 3 pontos: " + pontos3} />
-                <ViewText value={"Jogos com 2 pontos: " + pontos2} />
-
-
             </LayoutResposta>
 
         </Layout>
@@ -145,6 +154,15 @@ export default function Quina({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+
+
+
+
+
+
+
+
+
     botoes: {
         alignItems: 'center'
     }

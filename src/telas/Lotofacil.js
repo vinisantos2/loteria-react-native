@@ -26,7 +26,7 @@ export default function Lotofacil({ navigation }) {
     const [pontos12, setPontos12] = useState(0)
     const [pontos11, setPontos11] = useState(0)
     const [jogos, setJogos] = useState([])
-    const [carregando, setCarregando] = useState(false)
+    const [carregando, setCarregando] = useState(true)
     const [qtdNum, setQtdNum] = useState(0)
     const url = "lotofacil"
     const cor = "#A8358E"
@@ -35,7 +35,7 @@ export default function Lotofacil({ navigation }) {
     const [corStatus, setCorStatus] = useState("#FFF")
 
     React.useEffect(() => {
-        setCorStatus(COR_LOTOFACIL)
+        buscarJogos()
     }, [focused])
 
     const qtdDezenasLotofacil = 25
@@ -52,18 +52,22 @@ export default function Lotofacil({ navigation }) {
         setQtdNum(0)
     }
 
-
-    function preencherJogo() {
-        setArray(preencher(numerosSelecionados, dezenas, qtdDezenasLotofacil,))
-        setQtdNum(numerosSelecionados.length)
-    }
-    
-    async function compararJogo() {
+    async function buscarJogos() {
         setCarregando(true)
         if (jogos.length < 1) {
             const jogos = await axiosBusca(URL_BASE + url);
             setJogos(jogos)
         }
+        setCarregando(false)
+    }
+
+
+    function preencherJogo() {
+        setArray(preencher(numerosSelecionados, dezenas, qtdDezenasLotofacil,))
+        setQtdNum(numerosSelecionados.length)
+    }
+
+    async function compararJogo() {
 
         let contador = 0
         let pontos15 = 0
@@ -120,7 +124,7 @@ export default function Lotofacil({ navigation }) {
     return (
         <Layout>
             {/* <StatusBar backgroundColor={corStatus} /> */}
-            <ViewCarregando carregando={carregando} />
+            {carregando ? <ViewCarregando /> : null}
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_LOTOFACIL} qtdNum={qtdNum} />
             <Cartela
                 dezenas={qtdDezenasLotofacil}
@@ -128,7 +132,6 @@ export default function Lotofacil({ navigation }) {
                 salvarNumeroNaLista={salvarNumero}
                 cor={cor} />
             <View style={styles.botoes}>
-                <ViewCarregando carregando={carregando} />
                 <ViewBotao value={COMPARAR} onPress={() => compararJogo()} />
                 <ViewBotao value={PRENCHER} onPress={() => preencherJogo()} />
                 <ViewBotao value={LIMPAR} onPress={() => limpar()} />
