@@ -9,11 +9,13 @@ import { COMPARAR, LIMPAR, PRENCHER, URL_BASE } from '../constants/Constants';
 import ViewSelecionados from '../components/ViewSelecionados';
 import ViewCarregando from '../components/ViewCarregando';
 import { COR_LOTOMAIA } from '../constants/Cores';
-import LayoutResposta from '../components/Resposta';
+import LayoutResposta from '../components/LayoutResposta';
 import ViewText from '../components/ViewText';
 import { useIsFocused } from '@react-navigation/native';
-import { axiosBusca, preencher, salvarNumeroNaLista } from '../utils/ultil';
-
+import { axiosBusca, preencher, retornarDezenas, salvarNumeroNaLista } from '../utils/ultil';
+import { STYLES } from '../Style';
+import ViewMsgErro from '../components/ViewMsgErro';
+import { ViewBotoes } from '../components/ViewBotoes';
 
 export default function Lotomania({ navigation }) {
     const [pontos00, setPontos00] = useState(0)
@@ -24,12 +26,13 @@ export default function Lotomania({ navigation }) {
     const [pontos19, setPontos19] = useState(0)
     const [pontos20, setPontos20] = useState(0)
     const [carregando, setCarregando] = useState(false)
+    const [erroServer, setErroServer] = useState(false)
+
     const [qtdNum, setQtdNum] = useState(0)
 
     const [numerosSelecionados, setArray] = useState([])
     const [jogos, setJogos] = useState([])
     const cor = COR_LOTOMAIA
-
     const url = "lotomania"
     const limite = 60
     const qtdDezenasLotomania = 100
@@ -38,15 +41,22 @@ export default function Lotomania({ navigation }) {
     const [corStatus, setCorStatus] = useState("#FFF")
 
     React.useEffect(() => {
-       buscarJogos()
+        buscarJogos()
     }, [focused])
 
 
     async function buscarJogos() {
+        let array = jogos
         setCarregando(true)
         if (jogos.length < 1) {
-            const jogos = await axiosBusca(URL_BASE + url);
-            setJogos(jogos)
+            array = await axiosBusca(URL_BASE + url);
+            const arrayDezenas = await retornarDezenas(array)
+            setJogos(arrayDezenas)
+        }
+        if (array.length < 1) {
+            setErroServer(true)
+        } else {
+            setErroServer(false)
         }
         setCarregando(false)
     }
@@ -70,12 +80,6 @@ export default function Lotomania({ navigation }) {
     }
 
     async function compararJogo() {
-        setCarregando(true)
-        if (jogos.length < 1) {
-            console.log("Aqui")
-            const array = await axiosBusca(URL_BASE + url);
-            setJogos(array)
-        }
 
         let contador = 0
         let pontos20 = 0
@@ -132,52 +136,51 @@ export default function Lotomania({ navigation }) {
     }
 
     return (
-        <Layout>
+        <Layout cor={cor}>
             {/* <StatusBar backgroundColor={corStatus} /> */}
             {carregando ? <ViewCarregando /> : null}
+            {erroServer ? <ViewMsgErro /> : null}
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_LOTOMAIA} qtdNum={qtdNum} />
 
             <Cartela dezenas={qtdDezenasLotomania}
-
                 numerosSelecionados={numerosSelecionados}
                 salvarNumeroNaLista={salvarNNaLista}
                 cor={cor} />
 
-            <View style={styles.botoes}>
-                
-                <ViewBotao value={COMPARAR} onPress={() => compararJogo()} />
-                <ViewBotao value={PRENCHER} onPress={() => preencherJogo()} />
-                <ViewBotao value={LIMPAR} onPress={() => limpar()} />
-            </View>
 
+            <ViewBotoes numJogos={jogos.length}
+                limpar={() => limpar()}
+                preencherJogo={() => preencherJogo()}
+                compararJogo={() => compararJogo()}
+                cor={cor}
+            />
 
             <LayoutResposta>
-                <ViewText value={"Jogos com 20 pontos: " + pontos20} />
-                <ViewText value={"Jogos com 19 pontos: " + pontos19} />
-                <ViewText value={"Jogos com 18 pontos: " + pontos18} />
-                <ViewText value={"Jogos com 17 pontos: " + pontos17} />
-                <ViewText value={"Jogos com 16 pontos: " + pontos16} />
-                <ViewText value={"Jogos com 15 pontos: " + pontos15} />
-                <ViewText value={"Jogos com 00 pontos: " + pontos00} />
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor={"#FFF"} value={"Jogos com 20 pontos: " + pontos20} />
+                </View>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor={"#FFF"} value={"Jogos com 00 pontos: " + pontos00} />
+                </View>
 
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor={"#FFF"} value={"Jogos com 19 pontos: " + pontos19} />
+                </View>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor={"#FFF"} value={"Jogos com 18 pontos: " + pontos18} />
+                </View>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor={"#FFF"} value={"Jogos com 17 pontos: " + pontos17} />
+                </View>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor={"#FFF"} value={"Jogos com 16 pontos: " + pontos16} />
+                </View>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor={"#FFF"} value={"Jogos com 15 pontos: " + pontos15} />
+                </View>
             </LayoutResposta>
         </Layout>
 
 
     );
 }
-
-const styles = StyleSheet.create({
-
-    carregando: {
-        position: 'absolute',
-        margin: 'auto',
-    },
-
-    botoes: {
-        alignItems: 'center'
-    }
-
-
-
-});

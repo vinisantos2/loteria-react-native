@@ -1,34 +1,58 @@
-import { Button, StyleSheet, View } from "react-native";
-import BotaoOpcao from "../components/BotaoOpcoes";
+import { StyleSheet } from "react-native";
+
 import Layout from "../components/Layout";
-import { COR_BRANCO, COR_DE_FUNDO, COR_DIA, COR_DUPLA, COR_FEDERAL, COR_FUNDO_CARTELA, COR_LOTECA, COR_LOTOFACIL, COR_LOTOMAIA, COR_MEGA, COR_MILIONARIA, COR_PRETO, COR_QUINA, COR_SUPER_SETE, COR_TIME } from "../constants/Cores";
-import { ROTA_LOTOFACIL, ROTA_LOTOMANIA, ROTA_MEGA, ROTA_QUINA } from "../rotas/Rotas";
-import { StatusBar } from "expo-status-bar";
-import React from "react";
+import {
+    COR_DE_FUNDO,
+    COR_DIA, COR_DUPLA,
+    COR_FEDERAL, COR_LOTECA,
+    COR_LOTOFACIL, COR_LOTOMAIA,
+    COR_MEGA, COR_MILIONARIA, COR_QUINA,
+    COR_SUPER_SETE, COR_TIME
+} from "../constants/Cores";
+
+import React, { useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import Jogos, { axiosUltimos, gerarKey } from "../utils/ultil";
-import { URL_BASE } from "../constants/Constants";
-import ViewText from "../components/ViewText";
+import { axiosBusca, gerarKey } from "../utils/ultil";
+import { URL_BASE, URL_BASE_ULTIMOS } from "../constants/Constants";
 import ItemJogo from "../itemsView/ItemJogo"
 import { DIA, DUPLA, FEDERAL, LOTECA, LOTOFACIL, LOTOMANIA, MEGA, MILIONARIA, QUINA, SUPER, TIME } from "../constants/Nomes";
 import ViewCarregando from "../components/ViewCarregando";
+import ViewMsgErro from "../components/ViewMsgErro";
 
-export default function Resultados({ navigation }) {
+export default function Resultados({ }) {
 
     const url = "ultimos"
     const isFocused = useIsFocused()
-    const [array, setArray] = React.useState([])
+    const [jogos, setJogos] = React.useState([])
     const [carregando, setCarregando] = React.useState(true)
+    const [erroServer, setErroServer] = useState(false)
 
     React.useEffect(() => {
         buscarDados()
     }, [isFocused])
 
-    async function buscarDados() {
+    function compare(a, b) {
+        const v1 = (a["resultado"]["valor_estimado_proximo_concurso"])
+        const v2 = (b["resultado"]["valor_estimado_proximo_concurso"])
+        if (v1 < v2) return -1;
+        if (v1 > v2) return 1;
+        return 0;
+    }
 
-        if (array > 1) return
-        let array2 = await axiosUltimos(URL_BASE + url)
-        setArray(array2)
+    async function buscarDados() {
+        let array = jogos
+        if (array.length < 1) {
+            array = await axiosBusca(URL_BASE + url)
+            array.sort(compare)
+            array.reverse()
+            setJogos(array)
+        }
+
+        if (array.length < 1) {
+            setErroServer(true)
+
+        }
+
         setCarregando(false)
     }
 
@@ -69,21 +93,19 @@ export default function Resultados({ navigation }) {
 
         <Layout>
             {carregando ? <ViewCarregando /> : null}
-
+            {erroServer ? <ViewMsgErro /> : null}
             {/* <Button
                 title="Go to Jane's loto"
                 onPress={() =>
                     navigation.navigate("L")
                 }
             /> */}
-            {array ? array.map((item) => {
+            {jogos ? jogos.map((item) => {
                 return (
                     <ItemJogo key={gerarKey()} item={item} cor={mudaCor(item["loteria"])} />
                 )
             }) :
-                <View style={{ justifyContent: "center", alignItems: "center", backgroundColor: COR_BRANCO }}>
-                    <ViewText value={"Erro servidor"} />
-                </View>
+                <ViewMsgErro />
             }
         </Layout>
 

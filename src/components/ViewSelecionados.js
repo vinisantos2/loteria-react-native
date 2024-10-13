@@ -19,8 +19,9 @@ export default function ViewSelecionados({ qtdNum, numerosSelecionados, cor = CO
 
 const styles = StyleSheet.create({
     content: {
+        marginTop: 10,
         alignItems: 'center',
-        width: "90%",
+        width: "95%",
         padding: 10,
         backgroundColor: COR_FUNDO_CARTELA,
         borderRadius: 15,

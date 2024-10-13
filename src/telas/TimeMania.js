@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
-
-import {
-    StyleSheet, View
-} from 'react-native';
+import { View } from 'react-native';
 import Cartela from '../components/Cartela';
 import ViewBotao from '../components/ViewBotao';
-import { COR_QUINA, COR_TIME } from '../constants/Cores';
+import { COR_TIME } from '../constants/Cores';
 import Layout from '../components/Layout';
 import ViewSelecionados from '../components/ViewSelecionados';
 import { COMPARAR, LIMPAR, PRENCHER, QTD_DEZENAS_TIME, URL_BASE } from '../constants/Constants';
 import ViewCarregando from '../components/ViewCarregando';
-import LayoutResposta from '../components/Resposta';
+import LayoutResposta from '../components/LayoutResposta';
 import ViewText from '../components/ViewText';
 import { useIsFocused } from '@react-navigation/native';
-import { axiosBusca, preencher, salvarNumeroNaLista } from '../utils/ultil';
+import { axiosBusca, preencher, retornarDezenas, salvarNumeroNaLista } from '../utils/ultil';
+import { STYLES } from '../Style';
+import ViewMsgErro from '../components/ViewMsgErro';
+import { ViewBotoes } from '../components/ViewBotoes';
+
 
 export default function TimeMania({ navigation }) {
 
@@ -23,23 +24,40 @@ export default function TimeMania({ navigation }) {
     const [pontos6, setPontos6] = useState(0)
     const [pontos7, setPontos7] = useState(0)
     const [carregando, setCarregando] = useState(false)
+    const [erroServer, setErroServer] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
     const [jogos, setJogos] = useState([])
     const limite = 8
     const dezenas = 10
-    const url = "timeMania"
+    const url = "timemania"
     const focused = useIsFocused();
-    const [corStatus, setCorStatus] = useState("#FFF")
+    const cor = COR_TIME
 
     React.useEffect(() => {
         buscarJogos()
     }, [focused])
 
+    async function buscarJogos() {
+        let array = jogos
+        setCarregando(true)
+        if (jogos.length < 1) {
+            array = await axiosBusca(URL_BASE + url);
+            const arrayDezenas = await retornarDezenas(array)
+            setJogos(arrayDezenas)
+        }
+
+        if (array.length < 1) {
+            setErroServer(true)
+        } else {
+            setErroServer(false)
+        }
+        setCarregando(false)
+    }
+
     const [numerosSelecionados, setArray] = useState([])
     function salvarNumero(numero) {
         setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
         setQtdNum(numerosSelecionados.length)
-
     }
 
     function limpar() {
@@ -52,14 +70,6 @@ export default function TimeMania({ navigation }) {
         setQtdNum(numerosSelecionados.length)
     }
 
-    async function buscarJogos() {
-        setCarregando(true)
-        if (jogos.length < 1) {
-            //const jogos = await axiosBusca(URL_BASE + url);
-            setJogos(jogos)
-        }
-        setCarregando(false)
-    }
 
 
     async function compararJogo() {
@@ -111,9 +121,10 @@ export default function TimeMania({ navigation }) {
     }
 
     return (
-        <Layout>
+        <Layout cor={cor}>
             {/* <StatusBar backgroundColor={corStatus} animated={true} /> */}
-            <ViewCarregando carregando={carregando} />
+            {carregando ? <ViewCarregando /> : null}
+            {erroServer ? <ViewMsgErro /> : null}
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_TIME} qtdNum={qtdNum} />
             <Cartela dezenas={QTD_DEZENAS_TIME}
 
@@ -121,23 +132,31 @@ export default function TimeMania({ navigation }) {
                 salvarNumeroNaLista={salvarNumero}
                 cor={COR_TIME} />
 
-            <View style={styles.botoes}>
-                <ViewCarregando carregando={carregando} />
-                <ViewBotao value={COMPARAR} onPress={() => compararJogo()} />
-                <ViewBotao value={PRENCHER} onPress={() => preencherJogo()} />
-                <ViewBotao value={LIMPAR} onPress={() => limpar()} />
-
-            </View>
+            <ViewBotoes
+                cor={cor}
+                numJogos={jogos.length}
+                limpar={() => limpar()}
+                preencherJogo={() => preencherJogo()}
+                compararJogo={() => compararJogo()} />
 
 
 
             <LayoutResposta>
-                <ViewText value={"Jogos com 7 pontos: " + pontos7} />
-                <ViewText value={"Jogos com 6 pontos: " + pontos6} />
-                <ViewText value={"Jogos com 5 pontos: " + pontos5} />
-                <ViewText value={"Jogos com 4 pontos: " + pontos4} />
-                <ViewText value={"Jogos com 3 pontos: " + pontos4} />
-
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText value={"Jogos com 7 pontos: " + pontos7} />
+                </View>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText value={"Jogos com 6 pontos: " + pontos6} />
+                </View>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText value={"Jogos com 5 pontos: " + pontos5} />
+                </View>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText value={"Jogos com 4 pontos: " + pontos4} />
+                </View>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText value={"Jogos com 3 pontos: " + pontos4} />
+                </View>
             </LayoutResposta>
 
         </Layout>
@@ -146,10 +165,3 @@ export default function TimeMania({ navigation }) {
     );
 }
 
-const styles = StyleSheet.create({
-    botoes: {
-        alignItems: 'center'
-    }
-
-
-});

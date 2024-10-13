@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-vector-icons/ionicons": "^7.4.0-alpha.27",
     "@react-navigation/drawer": "^6.6.15",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.11.0",
@@ -19,6 +20,7 @@
     "expo-updates": "^0.25.17",
     "react": "18.2.0",
     "react-native": "0.74.2",
+    "react-native-animated-hide-view": "^1.0.0",
     "react-native-cli": "^2.0.1",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-reanimated": "~3.10.1",

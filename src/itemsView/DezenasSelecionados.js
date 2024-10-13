@@ -30,6 +30,8 @@ const styles = StyleSheet.create({
     },
 
     viewItens: {
+        padding: 10,
+        justifyContent: 'center',
         flexDirection: 'row',
         alignContent: 'center',
         alignItems: 'center',

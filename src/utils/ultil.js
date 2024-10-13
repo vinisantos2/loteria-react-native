@@ -16,34 +16,66 @@ export function gerarKey() {
     return password;
 }
 
-
-export async function axiosBusca(url) {
-
-    let arrayJogos = await axios(url)
-        .then(resp => resp.data)
-        .catch(e => {
-            console.log('erro: ' + e)
-            return
+export function estatistica(arrayDezenas, arrayEstatistica) {
+    arrayDezenas.map((item, i) => {
+        item.map(num => {
+            arrayEstatistica.map((obj => {
+                if (obj.dezena === num) {
+                    obj.contador++
+                }
+            }))
         })
-    let array = []
-    if (arrayJogos) {
-        array = arrayJogos.map((item) => item.dezenas);
-    }
-    return array
+    })
+
+    return arrayEstatistica
+}
+
+export function formatarReal(num){
+   return new Intl.NumberFormat('pt-br', { currency: "BRL", style: 'currency' }).format(num)
 
 }
-export async function axiosUltimos(url) {
+
+// export async function axiosBusca(url) {
+
+//     let arrayJogos = await axios(url)
+//         .then(resp => resp.data)
+//         .catch(e => {
+//             console.log('erro: ' + e)
+//             return
+//         })
+//     let array = []
+//     if (arrayJogos) {
+//         array = arrayJogos.map((item) => item.dezenas);
+//     }
+//     return array
+
+// }
+export async function axiosBusca(url) {
 
     let arrayJogos = await axios(url).then(resp => resp.data)
-        .catch(e => console.log('erro: ' + e))
+        .catch(e => {
+            console.log('erro: ' + e)
+            return []
+        })
 
+    return arrayJogos
 
+}
+export async function retornarDezenas(array) {
+    if (array.length < 1) return []
+
+    let arrayJogos = array.map(item => item.dezenas)
 
     return arrayJogos
 
 }
 
-export function converterString(n) {
+
+
+export function converterString(n, trevo) {
+    if (trevo) {
+        return (n + 1).toString()
+    }
 
     if (n + 1 < 10) {
         return '0' + (n + 1)

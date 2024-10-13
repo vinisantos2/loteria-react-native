@@ -1,13 +1,13 @@
 
 import { Text } from 'react-native';
-import { COR_PRETO } from '../constants/Cores';
+import { COR_BRANCO, COR_PRETO } from '../constants/Cores';
 
 
 
-export default function ViewText({cor = COR_PRETO, value, fontSize = 20 }) {
+export default function ViewText({ cor = COR_PRETO, value, fontSize = 20, fontWeight }) {
 
     return (
-        <Text style={{  color: cor, fontSize: fontSize }}>{value}</Text>
+        <Text style={{ color: cor, fontSize: fontSize, fontWeight: fontWeight }}>{value}</Text>
     )
 
 }

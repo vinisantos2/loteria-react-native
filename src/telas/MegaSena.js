@@ -12,10 +12,13 @@ import { COMPARAR, LIMPAR, PRENCHER, URL_BASE } from '../constants/Constants';
 import ViewSelecionados from '../components/ViewSelecionados';
 import { COR_MEGA } from '../constants/Cores';
 import ViewCarregando from '../components/ViewCarregando';
-import LayoutResposta from '../components/Resposta';
+import LayoutResposta from '../components/LayoutResposta';
 import ViewText from '../components/ViewText';
 import { useIsFocused } from '@react-navigation/native';
-import { axiosBusca, preencher, salvarNumeroNaLista } from '../utils/ultil';
+import { axiosBusca, preencher, retornarDezenas, salvarNumeroNaLista } from '../utils/ultil';
+import { STYLES } from '../Style';
+import ViewMsgErro from '../components/ViewMsgErro';
+import { ViewBotoes } from '../components/ViewBotoes';
 
 
 export default function MegaSena({ navigation }) {
@@ -24,6 +27,7 @@ export default function MegaSena({ navigation }) {
     const [pontos5, setPontos5] = useState(0)
     const [pontos4, setPontos4] = useState(0)
     const [carregando, setCarregando] = useState(false)
+    const [erroServer, setErroServer] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
     const [numerosSelecionados, setArray] = useState([])
     const [jogos, setJogos] = useState([])
@@ -33,14 +37,30 @@ export default function MegaSena({ navigation }) {
     const cor = COR_MEGA
     const limite = 12
     const dezenas = 6
+    const focused = useIsFocused();
+
+    React.useEffect(() => {
+        buscarJogos()
+    }, [focused])
 
 
-    // const focused = useIsFocused();
-    // const [corStatus, setCorStatus] = useState("#FFF")
+    async function buscarJogos() {
+        let array = jogos
+        setCarregando(true)
+        if (jogos.length < 1) {
+            array = await axiosBusca(URL_BASE + url);
+            const arrayDezenas = await retornarDezenas(array)
+            setJogos(arrayDezenas)
+        }
 
-    // React.useEffect(() => {
-    //     setCorStatus(COR_MEGA)
-    // }, [focused])
+        if (array.length < 1) {
+            setErroServer(true)
+        } else {
+            setErroServer(false)
+        }
+
+        setCarregando(false)
+    }
 
     function salvarNNaLista(numero) {
         setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
@@ -58,12 +78,8 @@ export default function MegaSena({ navigation }) {
         setQtdNum(numerosSelecionados.length)
     }
 
+
     async function compararJogo() {
-        setCarregando(true)
-        if (jogos.length < 1) {
-            const jogos = await axiosBusca(URL_BASE + url);
-            setJogos(jogos)
-        }
 
         let contador = 0
         let pontos6 = 0
@@ -116,28 +132,36 @@ export default function MegaSena({ navigation }) {
     }
 
     return (
-        <Layout >
+        <Layout cor={cor} >
             {/* <StatusBar backgroundColor={corStatus}  /> */}
-            <ViewCarregando carregando={carregando} />
+            {carregando ? <ViewCarregando /> : null}
+            {erroServer ? <ViewMsgErro /> : null}
 
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_MEGA} qtdNum={qtdNum} />
 
-            <Cartela dezenas={qtdDezenasMega}
+            <Cartela
+                dezenas={qtdDezenasMega}
                 numerosSelecionados={numerosSelecionados}
                 salvarNumeroNaLista={salvarNNaLista}
                 cor={cor} />
 
-            <View style={styles.botoes}>
-                <ViewCarregando carregando={carregando} />
-                <ViewBotao value={COMPARAR} onPress={() => compararJogo()} />
-                <ViewBotao value={PRENCHER} onPress={() => preencherNumeros()} />
-                <ViewBotao value={LIMPAR} onPress={() => limpar()} />
-            </View>
+            <ViewBotoes
+                cor={cor}
+                numJogos={jogos.length}
+                limpar={() => limpar()}
+                preencherJogo={() => preencherNumeros()}
+                compararJogo={() => compararJogo()} />
 
             <LayoutResposta>
-                <ViewText value={"Jogos com 6 pontos: " + pontos6} />
-                <ViewText value={"Jogos com 5 pontos: " + pontos5} />
-                <ViewText value={"Jogos com 4 pontos: " + pontos4} />
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor='#FFF' value={"Jogos com 6 pontos: " + pontos6} />
+                </View>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor='#FFF' value={"Jogos com 5 pontos: " + pontos5} />
+                </View>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
+                </View>
             </LayoutResposta>
 
         </Layout>
@@ -145,20 +169,3 @@ export default function MegaSena({ navigation }) {
 
     );
 }
-
-const styles = StyleSheet.create({
-
-
-
-
-
-
-
-
-
-    botoes: {
-        alignItems: 'center'
-    }
-
-
-});

@@ -10,10 +10,14 @@ import Layout from '../components/Layout';
 import ViewSelecionados from '../components/ViewSelecionados';
 import { COMPARAR, LIMPAR, PRENCHER, QTD_DEZENAS_QUINA, URL_BASE } from '../constants/Constants';
 import ViewCarregando from '../components/ViewCarregando';
-import LayoutResposta from '../components/Resposta';
+import LayoutResposta from '../components/LayoutResposta';
 import ViewText from '../components/ViewText';
 import { useIsFocused } from '@react-navigation/native';
-import { axiosBusca, preencher, salvarNumeroNaLista } from '../utils/ultil';
+import { axiosBusca, preencher, retornarDezenas, salvarNumeroNaLista } from '../utils/ultil';
+import { STYLES } from '../Style';
+import ViewMsgErro from '../components/ViewMsgErro';
+import { ViewBotoes } from '../components/ViewBotoes';
+
 
 let jogos = []
 
@@ -24,6 +28,7 @@ export default function Quina({ navigation }) {
     const [pontos4, setPontos4] = useState(0)
     const [pontos5, setPontos5] = useState(0)
     const [carregando, setCarregando] = useState(false)
+    const [erroServer, setErroServer] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
     const [jogos, setJogos] = useState([])
     const limite = 8
@@ -39,10 +44,18 @@ export default function Quina({ navigation }) {
     }, [focused])
 
     async function buscarJogos() {
+        let array = jogos
         setCarregando(true)
         if (jogos.length < 1) {
-            const jogos = await axiosBusca(URL_BASE + url);
-            setJogos(jogos)
+            array = await axiosBusca(URL_BASE + url);
+            const arrayDezenas = await retornarDezenas(array)
+            setJogos(arrayDezenas)
+        }
+
+        if (array.length < 1) {
+            setErroServer(true)
+        } else {
+            setErroServer(false)
         }
         setCarregando(false)
     }
@@ -93,7 +106,6 @@ export default function Quina({ navigation }) {
                 pontos4++
             } else if (contador === 3) {
                 pontos3++
-
             } else if (contador === 2) {
                 pontos2++
 
@@ -115,26 +127,31 @@ export default function Quina({ navigation }) {
         <Layout>
             {/* <StatusBar backgroundColor={corStatus} animated={true} /> */}
             {carregando ? <ViewCarregando /> : null}
+            {erroServer ? <ViewMsgErro /> : null}
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={cor} qtdNum={qtdNum} />
             <Cartela dezenas={QTD_DEZENAS_QUINA}
                 numerosSelecionados={numerosSelecionados}
                 salvarNumeroNaLista={salvarNumero}
                 cor={cor} />
-            <View style={styles.botoes}>
 
-
-                <ViewBotao value={COMPARAR} onPress={() => compararJogo()} />
-                <ViewBotao value={PRENCHER} onPress={() => preencherJogo()} />
-                <ViewBotao value={LIMPAR} onPress={() => limpar()} />
-
-            </View>
+            <ViewBotoes numJogos={jogos.length}
+                limpar={() => limpar()}
+                preencherJogo={() => preencherJogo()}
+                compararJogo={() => compararJogo()} />
 
             <LayoutResposta>
-                <ViewText value={"Jogos com 5 pontos: " + pontos5} />
-                <ViewText value={"Jogos com 4 pontos: " + pontos4} />
-                <ViewText value={"Jogos com 3 pontos: " + pontos3} />
-                <ViewText value={"Jogos com 2 pontos: " + pontos2} />
-
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor='#FFF' value={"Jogos com 5 pontos: " + pontos5} />
+                </View>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
+                </View>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor='#FFF' value={"Jogos com 3 pontos: " + pontos3} />
+                </View>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor='#FFF' value={"Jogos com 2 pontos: " + pontos2} />
+                </View>
 
             </LayoutResposta>
 
@@ -143,11 +160,3 @@ export default function Quina({ navigation }) {
 
     );
 }
-
-const styles = StyleSheet.create({
-    botoes: {
-        alignItems: 'center'
-    }
-
-
-});

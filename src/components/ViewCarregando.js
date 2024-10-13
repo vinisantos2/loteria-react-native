@@ -1,6 +1,6 @@
 
 import { StyleSheet, View, ActivityIndicator, Modal } from 'react-native';
-import { COR_BRANCO, COR_CINZA } from '../constants/Cores';
+import { COR_BRANCO, COR_RESULTADOS } from '../constants/Cores';
 
 
 export default function ViewCarregando({ carregando }) {
@@ -8,7 +8,7 @@ export default function ViewCarregando({ carregando }) {
 
     return (
         <Modal>
-            <View style={{ backgroundColor: COR_CINZA, flex: 1, justifyContent: 'center'}}>
+            <View style={{ backgroundColor: COR_RESULTADOS, flex: 1, justifyContent: 'center'}}>
                 <ActivityIndicator color="#0000ff" size={'large'} animating={carregando} />
             </View>
         </Modal>
