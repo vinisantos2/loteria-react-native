@@ -17,10 +17,5 @@ export const STYLES = StyleSheet.create({
 
     },
 
-    estatistica: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        backgroundColor: "#FFF"
-    }
-
+   
 })

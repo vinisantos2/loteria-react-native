@@ -14,15 +14,16 @@ import ViewSelecionados from '../components/ViewSelecionados';
 import ViewCarregando from '../components/ViewCarregando';
 import LayoutResposta from '../components/LayoutResposta';
 import ViewText from '../components/ViewText';
-import { useIsFocused } from '@react-navigation/native';
+import { NavigationContainer, useIsFocused } from '@react-navigation/native';
 import { STYLES } from '../Style';
 import ViewMsgErro from '../components/ViewMsgErro';
 import { ViewBotoes } from '../components/ViewBotoes';
 
 import ItemEstatistica from '../itemsView/ItemEstatistica';
+import { ROTA_ESTATISTICA } from '../rotas/Rotas';
 const isChildVisible = true;
 
-export default function Lotofacil() {
+export default function Lotofacil({ navigation }) {
     const [pontos15, setPontos15] = useState(0)
     const [pontos14, setPontos14] = useState(0)
     const [pontos13, setPontos13] = useState(0)
@@ -39,6 +40,8 @@ export default function Lotofacil() {
     const [numerosSelecionados, setArray] = useState([])
     const focused = useIsFocused();
     const [altura, setAltura] = useState(new Animated.Value(50))
+
+
 
     // function animar() {
     //     Animated.timing(
@@ -71,21 +74,6 @@ export default function Lotofacil() {
         buscarJogos()
     }, [focused])
 
-
-    const qtdDezenasLotofacil = 25
-    const limite = 18
-    const dezenas = 15
-
-    function salvarNumero(numero) {
-        setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
-        setQtdNum(numerosSelecionados.length)
-    }
-
-    function limpar() {
-        setArray([])
-        setQtdNum(0)
-    }
-
     async function buscarJogos() {
         let array = arrayJogos
         setCarregando(true)
@@ -107,6 +95,23 @@ export default function Lotofacil() {
         }
         setCarregando(false)
     }
+
+
+    const qtdDezenasLotofacil = 25
+    const limite = 18
+    const dezenas = 15
+
+    function salvarNumero(numero) {
+        setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
+        setQtdNum(numerosSelecionados.length)
+    }
+
+    function limpar() {
+        setArray([])
+        setQtdNum(0)
+    }
+
+
 
 
     function preencherJogo() {
@@ -201,6 +206,7 @@ export default function Lotofacil() {
             <ViewBotoes
                 numJogos={arrayJogos.length}
                 limpar={() => limpar()}
+                estatistica={() => navigation.navigate(ROTA_ESTATISTICA)}
                 preencherJogo={() => preencherJogo()}
                 compararJogo={() => compararJogo()}
                 cor={cor}

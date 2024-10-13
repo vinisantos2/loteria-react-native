@@ -5,7 +5,9 @@ import { STYLES } from "../Style";
 import { COMPARAR, LIMPAR, PRENCHER } from "../constants/Constants";
 import { COR_BRANCO, COR_FUNDO_CARTELA, COR_LEGENDA } from "../constants/Cores";
 
-export function ViewBotoes({ numJogos, compararJogo, preencherJogo, limpar, cor }) {
+export function ViewBotoes({ numJogos, compararJogo,
+    preencherJogo, estatistica,
+    limpar, cor }) {
     return (
         <View style={styles.viewBotoes}>
             <View style={[styles.item, { backgroundColor: cor }]}>
@@ -14,6 +16,7 @@ export function ViewBotoes({ numJogos, compararJogo, preencherJogo, limpar, cor 
             <ViewBotao value={COMPARAR} onPress={compararJogo} />
             <ViewBotao value={PRENCHER} onPress={preencherJogo} />
             <ViewBotao value={LIMPAR} onPress={limpar} />
+            <ViewBotao value={"Estatistica"} onPress={estatistica} />
         </View>
     )
 }
