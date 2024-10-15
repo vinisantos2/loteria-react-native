@@ -10,7 +10,8 @@ export const Dropdown = ({ valor, click, placeHolder, array }) => {
             <RNPickerSelect
                 onValueChange={click}
                 items={array}
-                placeholder={placeHolder}
+                placeholder={{ label: placeHolder, }}
+                style={{ inputAndroid: { alignItems: "center", justifyContent: "center" } }}
             />
 
         </View>

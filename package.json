@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-picker/picker": "2.7.5",
     "@react-native-vector-icons/ionicons": "^7.4.0-alpha.27",
     "@react-navigation/drawer": "^6.6.15",
     "@react-navigation/native": "^6.1.17",

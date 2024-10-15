@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StatusBar, StyleSheet } from "react-native";
 
 import Layout from "../components/Layout";
 import {
@@ -7,6 +7,7 @@ import {
     COR_FEDERAL, COR_LOTECA,
     COR_LOTOFACIL, COR_LOTOMAIA,
     COR_MEGA, COR_MILIONARIA, COR_QUINA,
+    COR_RESULTADOS,
     COR_SUPER_SETE, COR_TIME
 } from "../constants/Cores";
 
@@ -29,7 +30,10 @@ export default function Resultados({ }) {
 
     React.useEffect(() => {
         buscarDados()
+
     }, [isFocused])
+
+
 
     function compare(a, b) {
         const v1 = (a["resultado"]["valor_estimado_proximo_concurso"])
@@ -92,6 +96,7 @@ export default function Resultados({ }) {
     return (
 
         <Layout>
+            <StatusBar backgroundColor={COR_RESULTADOS} />
             {carregando ? <ViewCarregando /> : null}
             {erroServer ? <ViewMsgErro /> : null}
             {/* <Button

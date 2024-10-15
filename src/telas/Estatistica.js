@@ -1,7 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import ViewText from "../components/ViewText";
 import ItemEstatistica from "../itemsView/ItemEstatistica";
-import { STYLES } from "../Style";
 import React, { useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { axiosBusca, converterString, estatistica, gerarKey, retornarDezenas } from "../utils/ultil";
@@ -14,25 +13,24 @@ export default function TelaEstatistica({ route }) {
 
 
 
-    const {  nomeJogo } = route.params ? route.params : "";
+    const { nomeJogo } = route.params ? route.params : "";
     const { dezenas } = route.params ? route.params : "";
     const { cor } = route.params ? route.params : "";
     const { arrayDezenas } = route.params ? route.params : "";
     const [arrayViewEstatistica, setArrayViewEstatistica] = useState([])
     const [total, setTotal] = useState(0)
     const focused = useIsFocused();
-
-
+    const label = "Últimos "
 
     const arrayFiltro =
         [
             { label: 'todos', value: '*' },
-            { label: '150', value: 150 },
-            { label: '100', value: 100 },
-            { label: '50', value: 50 },
-            { label: '25', value: 25 },
-            { label: '10', value: 10 },
-            { label: '5', value: 5 },
+            { label: label + '200', value: 200 },
+            { label: label + '100', value: 100 },
+            { label: label + '50', value: 50 },
+            { label: label + '25', value: 25 },
+            { label: label + '10', value: 10 },
+            { label: label + '5', value: 5 },
         ]
     React.useEffect(() => {
         buscarJogos()
@@ -82,8 +80,6 @@ export default function TelaEstatistica({ route }) {
         })
 
         mostrarArray(arrayFiltroJogos, arrayEs, arrayFiltroJogos.length)
-
-
     }
 
 
@@ -94,7 +90,7 @@ export default function TelaEstatistica({ route }) {
                     <ViewText fontWeight={"bold"} fontSize={25} cor="#FFF" value={nomeJogo} />
                 </View>
                 <View>
-                    <Dropdown valor={"Filtro"} click={(e) => filtro(e)} array={arrayFiltro} />
+                    <Dropdown valor={"Filtro"} click={(e) => filtro(e)} placeHolder={"Selecione quantidade de jogos"} array={arrayFiltro} />
                 </View>
 
                 <View style={styles.viewLegenda}>

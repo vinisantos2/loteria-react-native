@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 
 import {
     Animated,
+    StatusBar,
     View,
 
 } from 'react-native';
@@ -14,7 +15,7 @@ import ViewSelecionados from '../components/ViewSelecionados';
 import ViewCarregando from '../components/ViewCarregando';
 import LayoutResposta from '../components/LayoutResposta';
 import ViewText from '../components/ViewText';
-import { NavigationContainer, useIsFocused } from '@react-navigation/native';
+import { NavigationContainer, useIsFocused, useNavigation } from '@react-navigation/native';
 import { STYLES } from '../Style';
 import ViewMsgErro from '../components/ViewMsgErro';
 import { ViewBotoes } from '../components/ViewBotoes';
@@ -169,11 +170,19 @@ export default function Lotofacil({ navigation }) {
     function limpar() {
         setArray([])
         setQtdNum(0)
+        setPontos15(0)
+        setPontos14(0)
+        setPontos13(0)
+        setPontos12(0)
+        setPontos11(0)
     }
 
-    function estatistica() {
+    async function estatistica() {
+        setCarregando(true)
         const dezenas = qtdDezenasLotofacil
-        navigation.navigate(ROTA_ESTATISTICA, { arrayDezenas, nomeJogo, cor, dezenas })
+
+        await navigation.navigate(ROTA_ESTATISTICA, { arrayDezenas, nomeJogo, cor, dezenas })
+        setCarregando(false)
     }
 
     return (
@@ -182,7 +191,6 @@ export default function Lotofacil({ navigation }) {
             {/* <StatusBar backgroundColor={corStatus} /> */}
             {carregando ? <ViewCarregando /> : null}
             {erroServer ? <ViewMsgErro /> : null}
-
 
             {/* <Animated.View
                 style={{ height: altura }}

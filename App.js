@@ -8,7 +8,7 @@ import StackNavigator from './src/rotas/DrawerNavigator';
 
 export default function App() {
   return (
-    <NavigationContainer theme={{ colors: { card: COR_DE_FUNDO, border: "#FFFFFF00", text: "#FFF" } }}>
+    <NavigationContainer theme={{ colors: { card: COR_DE_FUNDO, border: "#FFFFFF00",  } }}>
 
       <StackNavigator />
     </NavigationContainer>

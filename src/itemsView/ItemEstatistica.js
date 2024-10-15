@@ -17,7 +17,7 @@ export default function ItemEstatistica({ obj, cor, total, indice }) {
                 <ViewText fontWeight={"bold"} cor='#FFF' fontSize={20} value={obj.contador} />
             </View>
             <View style={styles.item}>
-                <ViewText fontWeight={"bold"} cor='#FFF' fontSize={20} value={(obj.contador / total * 100).toPrecision(4) + "%"} />
+                <ViewText fontWeight={"bold"} cor='#FFF' fontSize={20} value={(obj.contador / total * 100).toFixed(2) + "%"} />
             </View>
 
 
