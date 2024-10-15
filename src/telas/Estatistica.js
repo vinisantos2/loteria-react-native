@@ -8,45 +8,53 @@ import { axiosBusca, converterString, estatistica, gerarKey, retornarDezenas } f
 import { URL_BASE } from "../constants/Constants";
 import { Dropdown } from "../components/Dropdown";
 import Layout from "../components/Layout";
+import { COR_LEGENDA } from "../constants/Cores";
 
-export default function TelaEstatistica({ }) {
+export default function TelaEstatistica({ route }) {
 
-    const [arrayJogos, setArrayJogos] = useState([])
-    const [arrayDezenas, setArrayDezenas] = useState([])
-    const [arrayEstatistica, setArrayEstatistica] = useState([])
+
+
+    const {  nomeJogo } = route.params ? route.params : "";
+    const { dezenas } = route.params ? route.params : "";
+    const { cor } = route.params ? route.params : "";
+    const { arrayDezenas } = route.params ? route.params : "";
+    const [arrayViewEstatistica, setArrayViewEstatistica] = useState([])
+    const [total, setTotal] = useState(0)
     const focused = useIsFocused();
+
+
+
     const arrayFiltro =
         [
             { label: 'todos', value: '*' },
+            { label: '150', value: 150 },
             { label: '100', value: 100 },
             { label: '50', value: 50 },
+            { label: '25', value: 25 },
             { label: '10', value: 10 },
+            { label: '5', value: 5 },
         ]
     React.useEffect(() => {
         buscarJogos()
     }, [focused])
 
+    function mostrarArray(arrayDezenas, arrayEs, total) {
+
+        const array = estatistica(arrayDezenas, arrayEs)
+        array.sort(compare)
+        array.reverse()
+        setArrayViewEstatistica(array)
+        setTotal(total)
+
+    }
+
     async function buscarJogos() {
 
-        const array = await axiosBusca(URL_BASE + "lotofacil");
-        const arrayDezenas = await retornarDezenas(array)
-        const arrayEs = Array.from({ length: 25 }).map((_, index) => {
+        const arrayEs = Array.from({ length: dezenas }).map((_, index) => {
             return { dezena: converterString(index, false), contador: 0 }
         })
-        setArrayEstatistica(estatistica(arrayDezenas, arrayEs))
-        arrayEs.sort(compare)
-        arrayEs.reverse()
-        setArrayDezenas(arrayDezenas)
-        setArrayJogos(array)
 
-
-
-        // if (array.length < 1) {
-        //     setErroServer(true)
-        // } else {
-        //     setErroServer(false)
-        // }
-        // setCarregando(false)
+        mostrarArray(arrayDezenas, arrayEs, arrayDezenas.length)
     }
 
     function compare(a, b) {
@@ -58,31 +66,87 @@ export default function TelaEstatistica({ }) {
         return 0;
     }
 
-    function filtro() {
+    async function filtro(e) {
+
+        let arrayFiltroJogos = []
+        const arrayEs = Array.from({ length: 25 }).map((_, index) => {
+            return { dezena: converterString(index, false), contador: 0 }
+        })
+        if (e === "*") {
+            mostrarArray(arrayDezenas, arrayEs, arrayDezenas.length)
+            return
+        }
+
+        arrayDezenas.map((item, i) => {
+            if (i < e) arrayFiltroJogos.push(item)
+        })
+
+        mostrarArray(arrayFiltroJogos, arrayEs, arrayFiltroJogos.length)
+
 
     }
 
 
     return (
-        <Layout style={styles.estatistica}>
-            <View>
-                <Dropdown valor={"Filtro"} click={() => filtro()} array={arrayFiltro} />
+        <Layout>
+            <View style={styles.content}>
+                <View style={[styles.titulo, { backgroundColor: cor }]}>
+                    <ViewText fontWeight={"bold"} fontSize={25} cor="#FFF" value={nomeJogo} />
+                </View>
+                <View>
+                    <Dropdown valor={"Filtro"} click={(e) => filtro(e)} array={arrayFiltro} />
+                </View>
+
+                <View style={styles.viewLegenda}>
+                    <View style={styles.legenda}>
+                        <ViewText fontSize={20} value={"Dezenas"} />
+                    </View>
+
+                    <View style={styles.legenda}>
+                        <ViewText fontSize={20} value={"Vezes"} />
+                    </View>
+                    <View style={styles.legenda}>
+                        <ViewText fontSize={20} value={"%"} />
+                    </View>
+                    {/* <View style={styles.legenda}>
+                        <ViewText fontSize={20} value={total} />
+                    </View> */}
+                </View>
+
+
+                {arrayViewEstatistica.length > 1 ? arrayViewEstatistica.map(item => {
+                    return (
+                        <ItemEstatistica key={gerarKey()} obj={item} total={total} cor={"#000"} />
+                    )
+                }) : null}
+
             </View>
 
-
-            {arrayEstatistica.length > 1 ? arrayEstatistica.map(item => {
-                return (
-                    <ItemEstatistica key={gerarKey()} obj={item} total={arrayDezenas.length} cor={"#000"} />
-                )
-            }) : null}
         </Layout>
     )
 }
 
 const styles = StyleSheet.create({
-    estatistica: {
+    content: {
+        backgroundColor: "#FFF",
 
+    },
+    legenda: {
+        backgroundColor: COR_LEGENDA,
+        padding: 5,
+        width: "33.33%",
+        borderWidth: 1,
+        alignItems: "center",
+        justifyContent: "center"
 
+    },
+    titulo: {
+        padding: 15,
+        alignItems: "center"
+
+    },
+    viewLegenda: {
+        flexDirection: "row"
     }
 
 })

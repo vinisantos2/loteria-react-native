@@ -20,7 +20,7 @@ import ViewMsgErro from '../components/ViewMsgErro';
 import { ViewBotoes } from '../components/ViewBotoes';
 
 import ItemEstatistica from '../itemsView/ItemEstatistica';
-import { ROTA_ESTATISTICA } from '../rotas/Rotas';
+import { ROTA_ESTATISTICA, ROTA_LOTOFACIL } from '../rotas/Rotas';
 const isChildVisible = true;
 
 export default function Lotofacil({ navigation }) {
@@ -31,17 +31,15 @@ export default function Lotofacil({ navigation }) {
     const [pontos11, setPontos11] = useState(0)
     const [arrayJogos, setArrayJogos] = useState([])
     const [arrayDezenas, setArrayDezenas] = useState([])
-    const [arrayEstatistica, setArrayEstatistica] = useState([])
     const [carregando, setCarregando] = useState(true)
     const [erroServer, setErroServer] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
     const url = "lotofacil"
     const cor = COR_LOTOFACIL
+    const nomeJogo = ROTA_LOTOFACIL
     const [numerosSelecionados, setArray] = useState([])
     const focused = useIsFocused();
     const [altura, setAltura] = useState(new Animated.Value(50))
-
-
 
     // function animar() {
     //     Animated.timing(
@@ -80,12 +78,8 @@ export default function Lotofacil({ navigation }) {
         if (arrayJogos.length < 1) {
             array = await axiosBusca(URL_BASE + url);
             const arrayDezenas = await retornarDezenas(array)
-            const arrayEs = Array.from({ length: qtdDezenasLotofacil }).map((_, index) => {
-                return { dezena: converterString(index, false), contador: 0 }
-            })
             setArrayDezenas(arrayDezenas)
             setArrayJogos(array)
-            setArrayEstatistica(estatistica(arrayDezenas, arrayEs))
         }
 
         if (array.length < 1) {
@@ -109,6 +103,11 @@ export default function Lotofacil({ navigation }) {
     function limpar() {
         setArray([])
         setQtdNum(0)
+        setPontos11(0)
+        setPontos12(0)
+        setPontos13(0)
+        setPontos14(0)
+        setPontos15(0)
     }
 
 
@@ -172,8 +171,10 @@ export default function Lotofacil({ navigation }) {
         setQtdNum(0)
     }
 
-
-
+    function estatistica() {
+        const dezenas = qtdDezenasLotofacil
+        navigation.navigate(ROTA_ESTATISTICA, { arrayDezenas, nomeJogo, cor, dezenas })
+    }
 
     return (
         <Layout cor={cor}>
@@ -206,7 +207,7 @@ export default function Lotofacil({ navigation }) {
             <ViewBotoes
                 numJogos={arrayJogos.length}
                 limpar={() => limpar()}
-                estatistica={() => navigation.navigate(ROTA_ESTATISTICA)}
+                estatistica={() => estatistica()}
                 preencherJogo={() => preencherJogo()}
                 compararJogo={() => compararJogo()}
                 cor={cor}

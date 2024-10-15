@@ -16,6 +16,7 @@ import { axiosBusca, preencher, retornarDezenas, salvarNumeroNaLista } from '../
 import { STYLES } from '../Style';
 import ViewMsgErro from '../components/ViewMsgErro';
 import { ViewBotoes } from '../components/ViewBotoes';
+import { ROTA_ESTATISTICA, ROTA_LOTOMANIA } from '../rotas/Rotas';
 
 export default function Lotomania({ navigation }) {
     const [pontos00, setPontos00] = useState(0)
@@ -31,8 +32,10 @@ export default function Lotomania({ navigation }) {
     const [qtdNum, setQtdNum] = useState(0)
 
     const [numerosSelecionados, setArray] = useState([])
-    const [jogos, setJogos] = useState([])
+    const [arrayJogos, setArrayJogos] = useState([])
+    const [arrayDezenas, setArrayDezenas] = useState([])
     const cor = COR_LOTOMAIA
+    const nomeJogo = ROTA_LOTOMANIA
     const url = "lotomania"
     const limite = 60
     const qtdDezenasLotomania = 100
@@ -46,12 +49,13 @@ export default function Lotomania({ navigation }) {
 
 
     async function buscarJogos() {
-        let array = jogos
+        let array = arrayJogos
         setCarregando(true)
-        if (jogos.length < 1) {
+        if (arrayJogos.length < 1) {
             array = await axiosBusca(URL_BASE + url);
             const arrayDezenas = await retornarDezenas(array)
-            setJogos(arrayDezenas)
+            setArrayDezenas(arrayDezenas)
+            setArrayJogos(array)
         }
         if (array.length < 1) {
             setErroServer(true)
@@ -71,6 +75,13 @@ export default function Lotomania({ navigation }) {
     function limpar() {
         setArray([])
         setQtdNum(0)
+        setPontos00(0)
+        setPontos20(0)
+        setPontos19(0)
+        setPontos18(0)
+        setPontos17(0)
+        setPontos16(0)
+        setPontos15(0)
     }
 
 
@@ -91,12 +102,12 @@ export default function Lotomania({ navigation }) {
         let pontos00 = 0
 
         // primeiro for para ver os jogos que ja foram sorteados 
-        for (let i = 0; i < jogos.length; i++) {
+        for (let i = 0; i < arrayDezenas.length; i++) {
             // segundo for para percorrer as dezenas escolhidas pelo cliente
             for (let j = 0; j < numerosSelecionados.length; j++) {
                 //verifica se a dezena escolhida pelo cliente existe no jogo ja sorteado
 
-                if (jogos[i].includes(numerosSelecionados[j])) {
+                if (arrayDezenas[i].includes(numerosSelecionados[j])) {
                     contador++
                 }
             }
@@ -135,6 +146,11 @@ export default function Lotomania({ navigation }) {
 
     }
 
+    function estatistica() {
+        const dezenas = qtdDezenasLotomania
+        navigation.navigate(ROTA_ESTATISTICA, { arrayDezenas, nomeJogo, cor, dezenas })
+    }
+
     return (
         <Layout cor={cor}>
             {/* <StatusBar backgroundColor={corStatus} /> */}
@@ -148,12 +164,15 @@ export default function Lotomania({ navigation }) {
                 cor={cor} />
 
 
-            <ViewBotoes numJogos={jogos.length}
+            <ViewBotoes numJogos={arrayJogos.length}
                 limpar={() => limpar()}
+                estatistica={() => estatistica()}
                 preencherJogo={() => preencherJogo()}
                 compararJogo={() => compararJogo()}
                 cor={cor}
             />
+
+
 
             <LayoutResposta>
                 <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>

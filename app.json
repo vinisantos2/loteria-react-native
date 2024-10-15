@@ -2,15 +2,22 @@
   "expo": {
     "name": "loteria",
     "slug": "loteria",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true
     },
-    
+    "android": {
+      "versionCode": 2
+    },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "04fefcaa-5cbf-4a2f-8ebc-b27e80f16859"
+      }
     }
   }
 }

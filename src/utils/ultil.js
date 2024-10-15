@@ -1,6 +1,8 @@
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'
 
 import { Alert } from 'react-native';
+import { ROTA_ESTATISTICA } from '../rotas/Rotas';
 
 
 
@@ -30,10 +32,11 @@ export function estatistica(arrayDezenas, arrayEstatistica) {
     return arrayEstatistica
 }
 
-export function formatarReal(num){
-   return new Intl.NumberFormat('pt-br', { currency: "BRL", style: 'currency' }).format(num)
+export function formatarReal(num) {
+    return new Intl.NumberFormat('pt-br', { currency: "BRL", style: 'currency' }).format(num)
 
 }
+
 
 // export async function axiosBusca(url) {
 

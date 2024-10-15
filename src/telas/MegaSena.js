@@ -15,10 +15,11 @@ import ViewCarregando from '../components/ViewCarregando';
 import LayoutResposta from '../components/LayoutResposta';
 import ViewText from '../components/ViewText';
 import { useIsFocused } from '@react-navigation/native';
-import { axiosBusca, preencher, retornarDezenas, salvarNumeroNaLista } from '../utils/ultil';
+import { axiosBusca, estatistica, preencher, retornarDezenas, salvarNumeroNaLista } from '../utils/ultil';
 import { STYLES } from '../Style';
 import ViewMsgErro from '../components/ViewMsgErro';
 import { ViewBotoes } from '../components/ViewBotoes';
+import { ROTA_ESTATISTICA, ROTA_MEGA } from '../rotas/Rotas';
 
 
 export default function MegaSena({ navigation }) {
@@ -30,11 +31,13 @@ export default function MegaSena({ navigation }) {
     const [erroServer, setErroServer] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
     const [numerosSelecionados, setArray] = useState([])
-    const [jogos, setJogos] = useState([])
+    const [arrayJogos, setArrayJogos] = useState([])
+    const [arrayDezenas, setArrayDezenas] = useState([])
 
     const qtdDezenasMega = 60
     const url = "megasena"
     const cor = COR_MEGA
+    const nomeJogo = ROTA_MEGA
     const limite = 12
     const dezenas = 6
     const focused = useIsFocused();
@@ -45,12 +48,13 @@ export default function MegaSena({ navigation }) {
 
 
     async function buscarJogos() {
-        let array = jogos
+        let array = arrayJogos
         setCarregando(true)
-        if (jogos.length < 1) {
+        if (arrayJogos.length < 1) {
             array = await axiosBusca(URL_BASE + url);
             const arrayDezenas = await retornarDezenas(array)
-            setJogos(arrayDezenas)
+            setArrayDezenas(arrayDezenas)
+            setArrayJogos(array)
         }
 
         if (array.length < 1) {
@@ -87,12 +91,12 @@ export default function MegaSena({ navigation }) {
         let pontos4 = 0
 
         // primeiro for para ver os jogos que ja foram sorteados 
-        for (let i = 0; i < jogos.length; i++) {
+        for (let i = 0; i < arrayDezenas.length; i++) {
             // segundo for para percorrer as dezenas escolhidas pelo cliente
             for (let j = 0; j < numerosSelecionados.length; j++) {
                 //verifica se a dezena escolhida pelo cliente existe no jogo ja sorteado
 
-                if (jogos[i].includes(numerosSelecionados[j])) {
+                if (arrayDezenas[i].includes(numerosSelecionados[j])) {
                     contador++
                 }
             }
@@ -131,6 +135,11 @@ export default function MegaSena({ navigation }) {
         setQtdNum(numerosSelecionados.length)
     }
 
+    function estatistica() {
+        const dezenas = qtdDezenasMega
+        navigation.navigate(ROTA_ESTATISTICA, { arrayDezenas, nomeJogo, cor, dezenas })
+    }
+
     return (
         <Layout cor={cor} >
             {/* <StatusBar backgroundColor={corStatus}  /> */}
@@ -147,7 +156,8 @@ export default function MegaSena({ navigation }) {
 
             <ViewBotoes
                 cor={cor}
-                numJogos={jogos.length}
+                numJogos={arrayJogos.length}
+                estatistica={() => estatistica()}
                 limpar={() => limpar()}
                 preencherJogo={() => preencherNumeros()}
                 compararJogo={() => compararJogo()} />

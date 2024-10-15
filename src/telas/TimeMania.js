@@ -14,6 +14,7 @@ import { axiosBusca, preencher, retornarDezenas, salvarNumeroNaLista } from '../
 import { STYLES } from '../Style';
 import ViewMsgErro from '../components/ViewMsgErro';
 import { ViewBotoes } from '../components/ViewBotoes';
+import { ROTA_ESTATISTICA, ROTA_TIME } from '../rotas/Rotas';
 
 
 export default function TimeMania({ navigation }) {
@@ -26,24 +27,27 @@ export default function TimeMania({ navigation }) {
     const [carregando, setCarregando] = useState(false)
     const [erroServer, setErroServer] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
-    const [jogos, setJogos] = useState([])
+    const [arrayJogos, setArrayJogos] = useState([])
+    const [arrayDezenas, setArrayDezenas] = useState([])
     const limite = 8
     const dezenas = 10
     const url = "timemania"
     const focused = useIsFocused();
     const cor = COR_TIME
+    const nomeJogo = ROTA_TIME
 
     React.useEffect(() => {
         buscarJogos()
     }, [focused])
 
     async function buscarJogos() {
-        let array = jogos
+        let array = arrayJogos
         setCarregando(true)
-        if (jogos.length < 1) {
+        if (arrayJogos.length < 1) {
             array = await axiosBusca(URL_BASE + url);
             const arrayDezenas = await retornarDezenas(array)
-            setJogos(arrayDezenas)
+            setArrayDezenas(arrayDezenas)
+            setArrayJogos(array)
         }
 
         if (array.length < 1) {
@@ -63,6 +67,12 @@ export default function TimeMania({ navigation }) {
     function limpar() {
         setArray([])
         setQtdNum(0)
+        setPontos7(0)
+        setPontos6(0)
+        setPontos5(0)
+        setPontos4(0)
+        setPontos3(0)
+
     }
 
     function preencherJogo() {
@@ -82,11 +92,11 @@ export default function TimeMania({ navigation }) {
         let pontos3 = 0
 
         // primeiro for para ver os jogos que ja foram sorteados 
-        for (let i = 0; i < jogos.length; i++) {
+        for (let i = 0; i < arrayDezenas.length; i++) {
             // segundo for para percorrer as dezenas escolhidas pelo cliente
             for (let j = 0; j < numerosSelecionados.length; j++) {
                 //verifica se a dezena escolhida pelo cliente existe no jogo ja sorteado
-                if (jogos[i].includes(numerosSelecionados[j])) {
+                if (arrayDezenas[i].includes(numerosSelecionados[j])) {
                     contador++
                 }
             }
@@ -120,6 +130,12 @@ export default function TimeMania({ navigation }) {
 
     }
 
+    function estatistica() {
+        const dezenas = QTD_DEZENAS_TIME
+        navigation.navigate(ROTA_ESTATISTICA, { arrayDezenas, nomeJogo, cor, dezenas })
+    }
+
+
     return (
         <Layout cor={cor}>
             {/* <StatusBar backgroundColor={corStatus} animated={true} /> */}
@@ -134,7 +150,8 @@ export default function TimeMania({ navigation }) {
 
             <ViewBotoes
                 cor={cor}
-                numJogos={jogos.length}
+                numJogos={arrayJogos.length}
+                estatistica={() => estatistica()}
                 limpar={() => limpar()}
                 preencherJogo={() => preencherJogo()}
                 compararJogo={() => compararJogo()} />

@@ -17,6 +17,7 @@ import { axiosBusca, preencher, retornarDezenas, salvarNumeroNaLista } from '../
 import { STYLES } from '../Style';
 import ViewMsgErro from '../components/ViewMsgErro';
 import { ViewBotoes } from '../components/ViewBotoes';
+import { ROTA_ESTATISTICA, ROTA_QUINA } from '../rotas/Rotas';
 
 
 let jogos = []
@@ -29,12 +30,14 @@ export default function Quina({ navigation }) {
     const [pontos5, setPontos5] = useState(0)
     const [carregando, setCarregando] = useState(false)
     const [erroServer, setErroServer] = useState(false)
+    const [arrayDezenas, setArrayDezenas] = useState([])
     const [qtdNum, setQtdNum] = useState(0)
-    const [jogos, setJogos] = useState([])
+    const [arrayJogos, setArrayJogos] = useState([])
     const limite = 8
     const dezenas = 5
     const url = "quina"
     const cor = COR_QUINA
+    const nomeJogo = ROTA_QUINA
 
     const focused = useIsFocused();
     const [corStatus, setCorStatus] = useState("#FFF")
@@ -44,12 +47,13 @@ export default function Quina({ navigation }) {
     }, [focused])
 
     async function buscarJogos() {
-        let array = jogos
+        let array = arrayJogos
         setCarregando(true)
-        if (jogos.length < 1) {
+        if (arrayJogos.length < 1) {
             array = await axiosBusca(URL_BASE + url);
             const arrayDezenas = await retornarDezenas(array)
-            setJogos(arrayDezenas)
+            setArrayDezenas(arrayDezenas)
+            setArrayJogos(array)
         }
 
         if (array.length < 1) {
@@ -71,6 +75,11 @@ export default function Quina({ navigation }) {
     function limpar() {
         setArray([])
         setQtdNum(0)
+        setPontos2(0)
+        setPontos3(0)
+        setPontos4(0)
+        setPontos5(0)
+
     }
 
 
@@ -89,19 +98,18 @@ export default function Quina({ navigation }) {
         let pontos2 = 0
 
         // primeiro for para ver os jogos que ja foram sorteados 
-        for (let i = 0; i < jogos.length; i++) {
+        for (let i = 0; i < arrayDezenas.length; i++) {
             // segundo for para percorrer as dezenas escolhidas pelo cliente
             for (let j = 0; j < numerosSelecionados.length; j++) {
                 //verifica se a dezena escolhida pelo cliente existe no jogo ja sorteado
 
-                if (jogos[i].includes(numerosSelecionados[j])) {
+                if (arrayDezenas[i].includes(numerosSelecionados[j])) {
                     contador++
                 }
             }
             // verifica se a quantidade de pontos feito pelo cliente em cada jogo 
             if (contador === 5) {
                 pontos5++
-
             } else if (contador === 4) {
                 pontos4++
             } else if (contador === 3) {
@@ -123,6 +131,11 @@ export default function Quina({ navigation }) {
 
     }
 
+    function estatistica() {
+        const dezenas = QTD_DEZENAS_QUINA
+        navigation.navigate(ROTA_ESTATISTICA, { arrayDezenas, nomeJogo, cor, dezenas })
+    }
+
     return (
         <Layout>
             {/* <StatusBar backgroundColor={corStatus} animated={true} /> */}
@@ -134,8 +147,11 @@ export default function Quina({ navigation }) {
                 salvarNumeroNaLista={salvarNumero}
                 cor={cor} />
 
-            <ViewBotoes numJogos={jogos.length}
+            <ViewBotoes
+                cor={cor}
+                numJogos={arrayJogos.length}
                 limpar={() => limpar()}
+                estatistica={() => estatistica()}
                 preencherJogo={() => preencherJogo()}
                 compararJogo={() => compararJogo()} />
 

@@ -11,13 +11,14 @@ import TimeMania from "../telas/TimeMania";
 import MaisMilionaria from "../telas/Milionaria";
 import DuplaSena from "../telas/DuplaSena";
 import TelaEstatistica from "../telas/Estatistica";
+import { createStackNavigator } from "@react-navigation/stack";
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
-
-export default function DrawerNav() {
+export function DrawerNav() {
     return (
-        <Drawer.Navigator initialRouteName={ROTA_ESTATISTICA}>
+        <Drawer.Navigator initialRouteName={ROTA_RESULTADOS}>
             <Drawer.Screen options={{ drawerItemStyle: { backgroundColor: COR_RESULTADOS, }, headerStyle: { backgroundColor: COR_RESULTADOS } }} name={ROTA_RESULTADOS} component={Resultados} />
             <Drawer.Screen options={{ drawerItemStyle: { backgroundColor: COR_LOTOFACIL, }, headerStyle: { backgroundColor: COR_LOTOFACIL, }, }} name={ROTA_LOTOFACIL} component={Lotofacil} />
             <Drawer.Screen options={{ drawerItemStyle: { backgroundColor: COR_LOTOMAIA }, headerStyle: { backgroundColor: COR_LOTOMAIA } }} name={ROTA_LOTOMANIA} component={Lotomania} />
@@ -26,9 +27,17 @@ export default function DrawerNav() {
             <Drawer.Screen options={{ drawerItemStyle: { backgroundColor: COR_DUPLA }, headerStyle: { backgroundColor: COR_DUPLA } }} name={ROTA_DUPLA} component={DuplaSena} />
             <Drawer.Screen options={{ drawerItemStyle: { backgroundColor: COR_TIME }, headerStyle: { backgroundColor: COR_TIME } }} name={ROTA_TIME} component={TimeMania} />
             <Drawer.Screen options={{ drawerItemStyle: { backgroundColor: COR_MILIONARIA }, headerStyle: { backgroundColor: COR_MILIONARIA } }} name={ROTA_MILIONARIA} component={MaisMilionaria} />
-            <Drawer.Screen options={{ drawerItemStyle: { backgroundColor: COR_MILIONARIA }, headerStyle: { backgroundColor: COR_MILIONARIA } }} name={ROTA_ESTATISTICA} component={TelaEstatistica} />
+
         </Drawer.Navigator>
 
     );
 }
 
+export default function StackNavigator() {
+    return (
+        <Stack.Navigator initialRouteName="nav">
+            <Stack.Screen options={{ headerShown: false, title: '' }} name="nav" component={DrawerNav} />
+            <Stack.Screen name={ROTA_ESTATISTICA} component={TelaEstatistica} />
+        </Stack.Navigator>
+    )
+}

@@ -4,18 +4,26 @@
 import { StyleSheet, Text, View } from 'react-native';
 import ViewText from '../components/ViewText';
 
-export default function ItemEstatistica({ obj, cor, total }) {
+export default function ItemEstatistica({ obj, cor, total, indice }) {
 
 
     return (
         <View style={styles.viewItens}>
 
-            <View style={[styles.dezena, { backgroundColor: cor }]}>
-                <ViewText fontWeight={"bold"} cor='#FFF' fontSize={10} value={obj.dezena} />
+            <View style={styles.item}>
+                <ViewText fontWeight={"bold"} cor='#FFF' fontSize={20} value={obj.dezena} />
+            </View>
+            <View style={styles.item}>
+                <ViewText fontWeight={"bold"} cor='#FFF' fontSize={20} value={obj.contador} />
+            </View>
+            <View style={styles.item}>
+                <ViewText fontWeight={"bold"} cor='#FFF' fontSize={20} value={(obj.contador / total * 100).toPrecision(4) + "%"} />
             </View>
 
+
+
             <ViewText value={obj.contador} />
-            <ViewText value={" " + (obj.contador / total * 100).toPrecision(4) + "%"} />
+            <ViewText value={" Porcentagem " + (obj.contador / total * 100).toPrecision(4) + "%"} />
         </View>
 
     )
@@ -23,25 +31,22 @@ export default function ItemEstatistica({ obj, cor, total }) {
 }
 
 const styles = StyleSheet.create({
-    content: {
-        width: "100%",
+
+    item: {
+        width: "33.33%",
+        backgroundColor: "#002233",
+        borderWidth: 1,
         alignItems: 'center',
-        padding: 5
+        justifyContent: 'center'
 
     },
 
     viewItens: {
-        padding: 10,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-    },
-    dezena: {
-        padding: 10,
-        borderRadius: 15,
-        alignItems: 'center',
-        justifyContent: 'center',
 
-    }
+        flexDirection: 'row',
+
+    },
+
 
 
 })

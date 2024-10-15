@@ -42,7 +42,7 @@ export default function Resultados({ }) {
     async function buscarDados() {
         let array = jogos
         if (array.length < 1) {
-            array = await axiosBusca(URL_BASE + url)
+            array = await axiosBusca(URL_BASE_ULTIMOS)
             array.sort(compare)
             array.reverse()
             setJogos(array)

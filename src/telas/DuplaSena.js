@@ -6,7 +6,7 @@ import {
 
 import Layout from '../components/Layout';
 import Cartela from '../components/Cartela';
-import { COMPARAR, LIMPAR, PRENCHER, URL_BASE } from '../constants/Constants';
+import { COMPARAR, LIMPAR, PRENCHER, QTD_DEZENAS_DUPLA, URL_BASE } from '../constants/Constants';
 import ViewSelecionados from '../components/ViewSelecionados';
 import { COR_DUPLA, COR_MEGA } from '../constants/Cores';
 import ViewCarregando from '../components/ViewCarregando';
@@ -16,6 +16,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { axiosBusca, preencher, retornarDezenas, salvarNumeroNaLista } from '../utils/ultil';
 import { STYLES } from '../Style';
 import { ViewBotoes } from '../components/ViewBotoes';
+import { ROTA_ESTATISTICA } from '../rotas/Rotas';
 
 let contador = 0
 let p6 = 0
@@ -30,13 +31,15 @@ export default function DuplaSena({ navigation }) {
     const [erroServer, setErroServer] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
     const [numerosSelecionados, setArray] = useState([])
-    const [jogos, setJogos] = useState([])
+    const [arrayJogos, setArrayJogos] = useState([])
+    const [arrayDezenas, setArrayDezenas] = useState([])
     const [arraYdezenas1, setArrayDezenas1] = useState([])
     const [arraYdezenas2, setArrayDezenas2] = useState([])
 
-    const qtdDezenasMega = 60
+    const qtdDezenasDupla = QTD_DEZENAS_DUPLA
     const url = "duplasena"
     const cor = COR_DUPLA
+    const nomeJogo = "Dupla sena"
     const limite = 12
     const dezenas = 6
 
@@ -47,12 +50,14 @@ export default function DuplaSena({ navigation }) {
     }, [focused])
 
     async function buscarJogos() {
-        let array = jogos
+        let array = arrayJogos
         setCarregando(true)
-        if (jogos.length < 1) {
+        if (arrayJogos.length < 1) {
             array = await axiosBusca(URL_BASE + url);
             const arrayDezenas = await retornarDezenas(array)
-            setJogos(arrayDezenas)
+            setArrayDezenas(arrayDezenas)
+            setArrayJogos(array)
+
         }
 
         if (array.length < 1) {
@@ -72,34 +77,36 @@ export default function DuplaSena({ navigation }) {
     function limpar() {
         setArray([])
         setQtdNum(0)
+        setPontos4(0)
+        setPontos5(0)
+        setPontos6(0)
     }
 
-
     function preencherNumeros() {
-        setArray(preencher(numerosSelecionados, dezenas, qtdDezenasMega))
+        setArray(preencher(numerosSelecionados, dezenas, qtdDezenasDupla))
         setQtdNum(numerosSelecionados.length)
     }
 
     function dividirDezenas() {
         const array1 = []
         const array2 = []
-        for (let i = 0; i < jogos.length; i++) {
+        for (let i = 0; i < arrayDezenas.length; i++) {
             array1.push([
-                jogos[i][0],
-                jogos[i][1],
-                jogos[i][2],
-                jogos[i][3],
-                jogos[i][4],
-                jogos[i][5],
+                arrayDezenas[i][0],
+                arrayDezenas[i][1],
+                arrayDezenas[i][2],
+                arrayDezenas[i][3],
+                arrayDezenas[i][4],
+                arrayDezenas[i][5],
 
             ])
             array2.push([
-                jogos[i][6],
-                jogos[i][7],
-                jogos[i][8],
-                jogos[i][9],
-                jogos[i][10],
-                jogos[i][11],
+                arrayDezenas[i][6],
+                arrayDezenas[i][7],
+                arrayDezenas[i][8],
+                arrayDezenas[i][9],
+                arrayDezenas[i][10],
+                arrayDezenas[i][11],
 
             ])
 
@@ -158,8 +165,13 @@ export default function DuplaSena({ navigation }) {
 
 
     function preencherNumeros() {
-        setArray(preencher(numerosSelecionados, dezenas, qtdDezenasMega))
+        setArray(preencher(numerosSelecionados, dezenas, qtdDezenasDupla))
         setQtdNum(numerosSelecionados.length)
+    }
+
+    function estatistica() {
+        const dezenas = qtdDezenasDupla
+        navigation.navigate(ROTA_ESTATISTICA, { arrayDezenas, nomeJogo, cor, dezenas })
     }
 
     return (
@@ -169,14 +181,15 @@ export default function DuplaSena({ navigation }) {
             {erroServer ? <ViewMsgErro /> : null}
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={cor} qtdNum={qtdNum} />
 
-            <Cartela dezenas={qtdDezenasMega}
+            <Cartela dezenas={qtdDezenasDupla}
                 numerosSelecionados={numerosSelecionados}
                 salvarNumeroNaLista={salvarNNaLista}
                 cor={cor} />
 
             <ViewBotoes
-                numJogos={jogos.length}
+                numJogos={arrayJogos.length}
                 limpar={() => limpar()}
+                estatistica={() => estatistica()}
                 preencherJogo={() => preencherNumeros()}
                 compararJogo={() => compararDuplaSena()}
                 cor={cor}
