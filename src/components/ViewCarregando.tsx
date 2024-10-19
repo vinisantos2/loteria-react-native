@@ -5,9 +5,8 @@ import { COR_BRANCO, COR_RESULTADOS } from '../constants/Cores';
 
 export default function ViewCarregando({  }) {
 
-
     return (
-        <Modal>
+        <Modal visible={true}>
             <View style={{ backgroundColor: COR_RESULTADOS, flex: 1, justifyContent: 'center'}}>
                 <ActivityIndicator color="#0000ff" size={'large'} animating={true} />
             </View>

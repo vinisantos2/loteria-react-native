@@ -9,7 +9,7 @@ export default function ViewLoteca({ arrayLoteca }) {
 
     return (
         <View style={styles.content}>
-            {arrayLoteca.map((item, index) => {
+            {arrayLoteca.map((item: Array<Object>,) => {
                 const jogo = item["jogo"]
                 const time1 = item["nome_time1"]
                 const time2 = item["nome_time2"]
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     },
     viewLegenda: {
         padding: 10,
-        backgroundColor: "#000",
+        backgroundColor: "#4D4B4A",
         width: "100%",
         alignItems: "center"
 

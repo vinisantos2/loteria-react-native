@@ -13,11 +13,13 @@ import ViewCarregando from '../components/ViewCarregando';
 import LayoutResposta from '../components/LayoutResposta';
 import ViewText from '../components/ViewText';
 import { useIsFocused } from '@react-navigation/native';
-import { axiosBusca, preencher, salvarNumeroNaLista } from '../utils/ultil';
+import { axiosBusca, jogoSorteados, preencher, salvarNumeroNaLista } from '../utils/ultil';
 import ViewMsgErro from '../components/ViewMsgErro';
 import { STYLES } from '../Style';
 import { ViewBotoes } from '../components/ViewBotoes';
 import { ROTA_ESTATISTICA, ROTA_MILIONARIA } from '../rotas/Rotas';
+import { Premio } from '../model/Premio';
+import ViewPremio from '../components/ViewPremio';
 
 export default function MaisMilionaria({ navigation }) {
 
@@ -34,6 +36,7 @@ export default function MaisMilionaria({ navigation }) {
 
     const [carregando, setCarregando] = useState(false)
     const [erroServer, setErroServer] = useState(false)
+    const [arrayPremiacao, setArrayPremiacao] = useState(Array<Premio>)
     const [qtdNum, setQtdNum] = useState(0)
     const [qtdNumTrevos, setQtdNumTrevos] = useState(0)
     const [arrayJogos, setArrayJogos] = useState([])
@@ -41,7 +44,7 @@ export default function MaisMilionaria({ navigation }) {
     const dezenas = 6
     const url = "maismilionaria"
     const focused = useIsFocused();
-    const [arrayDezenas, setArrayDezenas] = useState([])
+    const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
     const cor = COR_MILIONARIA
     const nomeJogo = ROTA_MILIONARIA
     React.useEffect(() => {
@@ -54,20 +57,9 @@ export default function MaisMilionaria({ navigation }) {
         setCarregando(true)
         if (arrayJogos.length < 1) {
             array = await axiosBusca(URL_BASE + url);
-            let arrayDezenasTrevos = []
-            let arrayDezenas = []
-            if (array) {
-                arrayDezenasTrevos = array.map(item => {
-                    arrayDezenas.push(item.dezenas)
-                    return {
-                        dezenas: item.dezenas,
-                        trevos: item.trevos
-                    }
-                })
-            }
-            setArrayDezenas(arrayDezenas)
-
-            setArrayJogos(arrayDezenasTrevos)
+            const arrayJogos = await jogoSorteados(array)
+            setArrayJogosSorteado(arrayJogos)
+            setArrayJogos(array)
         }
 
         if (array.length < 1) {
@@ -106,7 +98,6 @@ export default function MaisMilionaria({ navigation }) {
         setPontos2e1trevos(0)
     }
 
-
     function preencherJogo() {
         setArray(preencher(numerosSelecionados, dezenas, QTD_DEZENAS_MILIONARIA))
         setQtdNum(numerosSelecionados.length)
@@ -115,6 +106,7 @@ export default function MaisMilionaria({ navigation }) {
     async function compararJogo() {
         let contador = 0
         let trevos = 0
+        const arrayPremiacao = new Array<Premio>
 
         let pontos6e2trevos = 0
         let pontos6e1trevos = 0
@@ -127,41 +119,79 @@ export default function MaisMilionaria({ navigation }) {
         let pontos2e2trevos = 0
         let pontos2e1trevos = 0
 
-        console.log(arrayJogos)
-
         // primeiro for para ver os jogos que ja foram sorteados 
         for (let i = 0; i < arrayJogos.length; i++) {
 
             // segundo for para percorrer as dezenas escolhidas pelo cliente
             for (let j = 0; j < numerosSelecionados.length; j++) {
                 //verifica se a dezena escolhida pelo cliente existe no jogo ja sorteado
-                if (arrayJogos[i].dezenas.includes(numerosSelecionados[j])) {
+                if (arrayJogosSorteados[i].dezenas.includes(numerosSelecionados[j])) {
                     contador++
                 }
             }
             for (let j = 0; j < numerosSelecionadosTrevos.length; j++) {
                 //verifica se a dezena escolhida pelo cliente existe no jogo ja sorteado
-                if (arrayJogos[i].trevos.includes(numerosSelecionadosTrevos[j])) {
+                if (arrayJogosSorteados[i].trevos.includes(numerosSelecionadosTrevos[j])) {
                     trevos++
                 }
             }
             // verifica se a quantidade de pontos feito pelo cliente em cada jogo 
             if (contador === 6 && trevos === 2) {
                 pontos6e2trevos++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '6 pontos e 2 trevos'
+                )
+                arrayPremiacao.push(obj)
             } else if (contador === 6 && trevos < 2) {
                 pontos6e1trevos++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '6 pontos e 1 ou 0 trevo'
+                )
+                arrayPremiacao.push(obj)
             } else if (contador === 5 && trevos === 2) {
                 pontos5e2trevos++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '5 pontos e 2 trevos'
+                )
+                arrayPremiacao.push(obj)
             } else if (contador === 5 && trevos < 2) {
                 pontos5e1trevos++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '5 pontos e 1 ou 0 trevo'
+                )
+                arrayPremiacao.push(obj)
             } else if (contador === 4 && trevos === 2) {
                 pontos4e2trevos++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '4 pontos e 2 trevos'
+                )
+                arrayPremiacao.push(obj)
             } else if (contador === 4 && trevos < 2) {
                 pontos4e1trevos++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '4 pontos e 1 ou 0 trevo'
+                )
+                arrayPremiacao.push(obj)
             } else if (contador === 3 && trevos === 2) {
                 pontos3e2trevos++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '3 pontos e 2 trevos'
+                )
+                arrayPremiacao.push(obj)
             } else if (contador === 3 && trevos === 1) {
                 pontos3e1trevos++
+                 const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '3 pontos e 1 trevo'
+                )
+                arrayPremiacao.push(obj)
             } else if (contador === 2 && trevos === 2) {
                 pontos2e2trevos++
             } else if (contador === 2 && trevos === 1) {
@@ -170,7 +200,6 @@ export default function MaisMilionaria({ navigation }) {
 
             contador = 0
             trevos = 0
-
 
         }
 
@@ -185,6 +214,7 @@ export default function MaisMilionaria({ navigation }) {
         setPontos3e1trevos(pontos3e1trevos)
         setPontos2e2trevos(pontos2e2trevos)
         setPontos2e1trevos(pontos2e1trevos)
+        setArrayPremiacao(arrayPremiacao)
         setCarregando(false)
 
     }
@@ -192,7 +222,7 @@ export default function MaisMilionaria({ navigation }) {
     function estatistica() {
         const dezenas = QTD_DEZENAS_MILIONARIA
 
-        navigation.navigate(ROTA_ESTATISTICA, { arrayDezenas, nomeJogo, cor, dezenas })
+        navigation.navigate(ROTA_ESTATISTICA, {  arrayJogosSorteados: arrayJogosSorteados, nomeJogo, cor, dezenas })
     }
 
     return (
@@ -210,7 +240,7 @@ export default function MaisMilionaria({ navigation }) {
                 numerosSelecionados={numerosSelecionadosTrevos}
                 salvarNumeroNaLista={salvarNumeroTrevo}
                 cor={COR_MILIONARIA}
-                
+
             />
             <View style={{ alignItems: 'center' }}>
                 <ViewText fontSize={25} value={"Dezenas"} cor='#FFF' fontWeight={"bold"} />
@@ -262,6 +292,8 @@ export default function MaisMilionaria({ navigation }) {
                     <ViewText cor={COR_BRANCO} value={"Jogos com 2 pontos e 1 trevo: " + pontos2e1trevos} />
                 </View>
             </LayoutResposta>
+
+            {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
 
         </Layout>
 

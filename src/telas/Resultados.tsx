@@ -19,6 +19,7 @@ import ItemJogo from "../itemsView/ItemJogo"
 import { DIA, DUPLA, FEDERAL, LOTECA, LOTOFACIL, LOTOMANIA, MEGA, MILIONARIA, QUINA, SUPER, TIME } from "../constants/Nomes";
 import ViewCarregando from "../components/ViewCarregando";
 import ViewMsgErro from "../components/ViewMsgErro";
+import StatusBarView from "../components/StatusBarView";
 
 export default function Resultados({ }) {
 
@@ -27,13 +28,17 @@ export default function Resultados({ }) {
     const [jogos, setJogos] = React.useState([])
     const [carregando, setCarregando] = React.useState(true)
     const [erroServer, setErroServer] = useState(false)
+    const [corStatus, setCorStatus] = useState(COR_RESULTADOS)
 
     React.useEffect(() => {
         buscarDados()
+        // mudaCorStatus()
 
     }, [isFocused])
 
-
+    function mudaCorStatus() {
+        setCorStatus(COR_RESULTADOS)
+    }
 
     function compare(a, b) {
         const v1 = (a["resultado"]["valor_estimado_proximo_concurso"])
@@ -97,7 +102,7 @@ export default function Resultados({ }) {
     return (
 
         <Layout>
-            <StatusBar backgroundColor={COR_RESULTADOS} />
+            <StatusBarView cor={corStatus} />
             {carregando ? <ViewCarregando /> : null}
             {erroServer ? <ViewMsgErro /> : null}
             {/* <Button

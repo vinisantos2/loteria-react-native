@@ -19,8 +19,6 @@ const Stack = createStackNavigator();
 
 
 
-
-
 export function DrawerNav() {
 
     return (

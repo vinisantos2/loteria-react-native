@@ -3,17 +3,18 @@ import ViewText from "../components/ViewText";
 import ItemEstatistica from "../itemsView/ItemEstatistica";
 import React, { useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import {  converterString, estatistica, gerarKey } from "../utils/ultil";
+import { converterString, estatistica, gerarKey } from "../utils/ultil";
 import { Dropdown } from "../components/Dropdown";
 import Layout from "../components/Layout";
 import { COR_LEGENDA } from "../constants/Cores";
+import { Estatistica } from "../model/Estatistica";
 
 export default function TelaEstatistica({ route }) {
 
     const { nomeJogo } = route.params ? route.params : "";
     const { dezenas } = route.params ? route.params : "";
     const { cor } = route.params ? route.params : "";
-    const { arrayDezenas } = route.params ? route.params : "";
+    const { arrayJogosSorteados } = route.params ? route.params : "";
     const [arrayViewEstatistica, setArrayViewEstatistica] = useState([])
     const [total, setTotal] = useState(0)
     const focused = useIsFocused();
@@ -33,9 +34,9 @@ export default function TelaEstatistica({ route }) {
         buscarJogos()
     }, [focused])
 
-    function mostrarArray(arrayDezenas, arrayEs, total) {
+    function mostrarArray(arrayJogosSorteados: Array<JogoSorteado>, arrayEs: Array<Estatistica>, total) {
 
-        const array = estatistica(arrayDezenas, arrayEs)
+        const array = estatistica(arrayJogosSorteados, arrayEs)
         array.sort(compare)
         array.reverse()
         setArrayViewEstatistica(array)
@@ -45,13 +46,11 @@ export default function TelaEstatistica({ route }) {
 
     async function buscarJogos() {
 
-        
-
-        const arrayEs = Array.from({ length: dezenas }).map((_, index) => {
+        const arrayEs: Array<Estatistica> = Array.from({ length: dezenas }).map((_, index) => {
             return { dezena: converterString(index, false), contador: 0 }
         })
 
-        mostrarArray(arrayDezenas, arrayEs, arrayDezenas.length)
+        mostrarArray(arrayJogosSorteados, arrayEs, arrayJogosSorteados.length)
     }
 
     function compare(a, b) {
@@ -69,11 +68,11 @@ export default function TelaEstatistica({ route }) {
             return { dezena: converterString(index, false), contador: 0 }
         })
         if (e === "*") {
-            mostrarArray(arrayDezenas, arrayEs, arrayDezenas.length)
+            mostrarArray(arrayJogosSorteados, arrayEs, arrayJogosSorteados.length)
             return
         }
 
-        arrayDezenas.map((item, i) => {
+        arrayJogosSorteados.map((item, i) => {
             if (i < e) arrayFiltroJogos.push(item)
         })
 
@@ -83,7 +82,7 @@ export default function TelaEstatistica({ route }) {
 
     return (
         <Layout>
-            
+
             <View style={styles.content}>
                 <View style={[styles.titulo, { backgroundColor: cor }]}>
                     <ViewText fontWeight={"bold"} fontSize={25} cor="#FFF" value={nomeJogo} />

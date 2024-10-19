@@ -6,7 +6,7 @@ import {
     View,
 
 } from 'react-native';
-import { axiosBusca, conexao, converterString, estatistica, gerarKey, preencher, retornarDezenas, salvarNumeroNaLista } from '../utils/ultil';
+import { axiosBusca, conexao, converterString, estatistica, gerarKey, preencher, jogoSorteados, salvarNumeroNaLista } from '../utils/ultil';
 import Layout from '../components/Layout';
 import { COR_LOTOFACIL } from '../constants/Cores';
 import Cartela from '../components/Cartela';
@@ -22,6 +22,9 @@ import { ViewBotoes } from '../components/ViewBotoes';
 
 import ItemEstatistica from '../itemsView/ItemEstatistica';
 import { ROTA_ESTATISTICA, ROTA_LOTOFACIL } from '../rotas/Rotas';
+import ViewPremio from '../components/ViewPremio';
+import { Premio } from '../model/Premio';
+import StatusBarView from '../components/StatusBarView';
 const isChildVisible = true;
 
 export default function Lotofacil({ navigation }) {
@@ -30,8 +33,8 @@ export default function Lotofacil({ navigation }) {
     const [pontos13, setPontos13] = useState(0)
     const [pontos12, setPontos12] = useState(0)
     const [pontos11, setPontos11] = useState(0)
-    const [arrayJogos, setArrayJogos] = useState(Array<Object>)
-    const [arrayDezenas, setArrayDezenas] = useState([])
+    const [arrayJogos, setArrayJogos] = useState([])
+    const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
     const [carregando, setCarregando] = useState(true)
     const [erroServer, setErroServer] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
@@ -40,8 +43,8 @@ export default function Lotofacil({ navigation }) {
     const nomeJogo = ROTA_LOTOFACIL
     const [numerosSelecionados, setArray] = useState([])
     const focused = useIsFocused();
-    const [altura, setAltura] = useState(new Animated.Value(50))
-
+    const [arrayPremiacao, setArrayPremiacao] = useState(Array<Premio>)
+    const [corStatus, setCorStatus] = useState(COR_LOTOFACIL)
     // function animar() {
     //     Animated.timing(
     //         altura,
@@ -71,16 +74,22 @@ export default function Lotofacil({ navigation }) {
 
     React.useEffect(() => {
         buscarJogos()
+       // mudaCorStatus()
 
     }, [focused])
 
+    function mudaCorStatus() {
+        console.log("Aui")
+        setCorStatus(COR_LOTOFACIL)
+    }
+
     async function buscarJogos() {
-        let array: Array<Object> = arrayJogos
+        let array = arrayJogos
         setCarregando(true)
         if (arrayJogos.length < 1) {
             array = await axiosBusca(URL_BASE + url);
-            const arrayDezenas = await retornarDezenas(array)
-            setArrayDezenas(arrayDezenas)
+            const arrayJogos = await jogoSorteados(array)
+            setArrayJogosSorteado(arrayJogos)
             setArrayJogos(array)
         }
 
@@ -108,38 +117,53 @@ export default function Lotofacil({ navigation }) {
     }
 
     async function compararJogo() {
+        setCarregando(true)
+        const arrayPremiacao = new Array<Premio>
         let contador = 0
         let pontos15 = 0
         let pontos14 = 0
         let pontos13 = 0
         let pontos12 = 0
         let pontos11 = 0
-
         // primeiro for para ver os jogos que ja foram sorteados 
-        for (let i = 0; i < arrayDezenas.length; i++) {
+        for (let i = 0; i < arrayJogosSorteados.length; i++) {
             // segundo for para percorrer as dezenas escolhidas pelo cliente
             for (let j = 0; j < numerosSelecionados.length; j++) {
                 //verifica se a dezena escolhida pelo cliente existe no jogo ja sorteado
-                if (arrayDezenas[i].includes(numerosSelecionados[j])) {
+                if (arrayJogosSorteados[i].dezenas.includes(numerosSelecionados[j])) {
                     contador++
                 }
             }
             // verifica se a quantidade de pontos feito pelo cliente em cada jogo 
             if (contador === 15) {
                 pontos15++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '15'
+                )
+                arrayPremiacao.push(obj)
 
             } else if (contador === 14) {
                 pontos14++
-
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '14'
+                )
+                arrayPremiacao.push(obj)
             } else if (contador === 13) {
                 pontos13++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '13'
+                )
+                arrayPremiacao.push(obj)
 
             } else if (contador === 12) {
                 pontos12++
+              
 
             } else if (contador === 11) {
                 pontos11++
-
             }
             contador = 0
         }
@@ -151,6 +175,7 @@ export default function Lotofacil({ navigation }) {
         setPontos11(pontos11)
         setPontos11(pontos11)
         setPontos11(pontos11)
+        setArrayPremiacao(arrayPremiacao)
         setCarregando(false)
 
     }
@@ -163,19 +188,19 @@ export default function Lotofacil({ navigation }) {
         setPontos13(0)
         setPontos12(0)
         setPontos11(0)
+        setArrayPremiacao([])
     }
 
     async function estatistica() {
         const dezenas = qtdDezenasLotofacil
-        await navigation.navigate(ROTA_ESTATISTICA, { arrayDezenas, nomeJogo, cor, dezenas })
+        await navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, nomeJogo, cor, dezenas })
     }
 
     return (
-        <Layout>
-            {/* <StatusBar backgroundColor={corStatus} /> */}
+        <Layout cor={cor}>
+            {/* <StatusBarView cor={corStatus} /> */}
             {carregando ? <ViewCarregando /> : null}
             {erroServer ? <ViewMsgErro /> : null}
-
             {/* <Animated.View
                 style={{ height: altura }}
             >
@@ -222,6 +247,8 @@ export default function Lotofacil({ navigation }) {
                     <ViewText cor="#FFF" value={"Jogos com 11 pontos: " + pontos11} />
                 </View>
             </LayoutResposta>
+
+            {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
 
         </Layout>
 

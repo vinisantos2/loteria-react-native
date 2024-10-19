@@ -13,11 +13,14 @@ import ViewCarregando from '../components/ViewCarregando';
 import LayoutResposta from '../components/LayoutResposta';
 import ViewText from '../components/ViewText';
 import { useIsFocused } from '@react-navigation/native';
-import { axiosBusca, conexao, preencher, retornarDezenas, salvarNumeroNaLista } from '../utils/ultil';
+import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../utils/ultil';
 import { STYLES } from '../Style';
 import { ViewBotoes } from '../components/ViewBotoes';
 import { ROTA_ESTATISTICA } from '../rotas/Rotas';
 import ViewMsgErro from '../components/ViewMsgErro';
+import { Premio } from '../model/Premio';
+import ViewPremio from '../components/ViewPremio';
+import { JogoSorteado } from '../model/jogoSorteado';
 
 let contador = 0
 let p6 = 0
@@ -33,17 +36,17 @@ export default function DuplaSena({ navigation }) {
     const [qtdNum, setQtdNum] = useState(0)
     const [numerosSelecionados, setArray] = useState([])
     const [arrayJogos, setArrayJogos] = useState([])
-    const [arrayDezenas, setArrayDezenas] = useState([])
-    const [arraYdezenas1, setArrayDezenas1] = useState([])
-    const [arraYdezenas2, setArrayDezenas2] = useState([])
+    const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
+    const [arraYdezenas1, setArrayDezenas1] = useState(Array<JogoSorteado>)
+    const [arraYdezenas2, setArrayDezenas2] = useState(Array<JogoSorteado>)
     const qtdDezenasDupla = QTD_DEZENAS_DUPLA
     const url = "duplasena"
     const cor = COR_DUPLA
     const nomeJogo = "Dupla sena"
     const limite = 12
     const dezenas = 6
-
     const focused = useIsFocused();
+    const [arrayPremiacao, setArrayPremiacao] = useState(Array<Premio>)
 
     React.useEffect(() => {
         buscarJogos()
@@ -54,14 +57,14 @@ export default function DuplaSena({ navigation }) {
         setCarregando(true)
         if (arrayJogos.length < 1) {
             array = await axiosBusca(URL_BASE + url);
-            const arrayDezenas = await retornarDezenas(array)
-            setArrayDezenas(arrayDezenas)
+            const arrayJogos = await jogoSorteados(array)
+            setArrayJogosSorteado(arrayJogos)
             setArrayJogos(array)
-
+            dividirDezenas(arrayJogos)
         }
 
         setErroServer(conexao(array))
-        dividirDezenas()
+
         setCarregando(false)
     }
 
@@ -76,6 +79,7 @@ export default function DuplaSena({ navigation }) {
         setPontos4(0)
         setPontos5(0)
         setPontos6(0)
+        setArrayPremiacao([])
     }
 
     function preencherNumeros() {
@@ -83,31 +87,38 @@ export default function DuplaSena({ navigation }) {
         setQtdNum(numerosSelecionados.length)
     }
 
-    function dividirDezenas() {
-        const array1 = []
-        const array2 = []
-        for (let i = 0; i < arrayDezenas.length; i++) {
-            array1.push([
-                arrayDezenas[i][0],
-                arrayDezenas[i][1],
-                arrayDezenas[i][2],
-                arrayDezenas[i][3],
-                arrayDezenas[i][4],
-                arrayDezenas[i][5],
+    function teste(array: Array<JogoSorteado>, dezenas1: boolean) {
 
-            ])
-            array2.push([
-                arrayDezenas[i][6],
-                arrayDezenas[i][7],
-                arrayDezenas[i][8],
-                arrayDezenas[i][9],
-                arrayDezenas[i][10],
-                arrayDezenas[i][11],
+        const arrayJogos: Array<JogoSorteado> = []
+        array.map(item => {
+            const data = item.data
+            const concurso = item.concurso
+            const dezenas: Array<String> = []
+            item.dezenas.map((numero, i = 0) => {
+                if (dezenas1) {
+                    if (i < 6) {
+                        dezenas.push(numero)
+                    }
 
-            ])
+                } else {
+                    if (i > 5 && i < 12)
+                        dezenas.push(numero)
+                }
 
-        }
+            })
 
+            const obj = new JogoSorteado(dezenas, concurso, data, [])
+            arrayJogos.push(obj)
+
+
+        })
+
+        return arrayJogos
+    }
+
+    async function dividirDezenas(array: Array<JogoSorteado>) {
+        const array1: Array<JogoSorteado> = await teste(array, true)
+        const array2: Array<JogoSorteado> = await teste(array, false)
         setArrayDezenas1(array1)
         setArrayDezenas2(array2)
 
@@ -118,30 +129,48 @@ export default function DuplaSena({ navigation }) {
         p6 = 0
         p5 = 0
         p4 = 0
-        await compararJogo(arraYdezenas1)
-        await compararJogo(arraYdezenas2)
+
+        compararJogo(arraYdezenas1)
+        compararJogo(arraYdezenas2)
     }
 
-    async function compararJogo(arrayJogo) {
-        if (!arrayJogo) return
+    async function compararJogo(arrayJogo: Array<JogoSorteado>) {
+
+        if (arrayJogo.length < 1) return
+
         // primeiro for para ver os jogos que ja foram sorteados 
         for (let i = 0; i < arrayJogo.length; i++) {
             // segundo for para percorrer as dezenas escolhidas pelo cliente
             for (let j = 0; j < numerosSelecionados.length; j++) {
                 //verifica se a dezena escolhida pelo cliente existe no jogo ja sorteado
-                if (arrayJogo[i].includes(numerosSelecionados[j])) {
+                if (arrayJogo[i].dezenas.includes(numerosSelecionados[j])) {
                     contador++
                 }
             }
             // verifica se a quantidade de pontos feito pelo cliente em cada jogo 
             if (contador === 6) {
                 p6++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '6'
+                )
+                arrayPremiacao.push(obj)
 
             } else if (contador === 5) {
                 p5++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '5'
+                )
+                arrayPremiacao.push(obj)
 
             } else if (contador === 4) {
                 p4++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '4'
+                )
+                arrayPremiacao.push(obj)
             }
             contador = 0
 
@@ -150,17 +179,18 @@ export default function DuplaSena({ navigation }) {
         setPontos6(p6)
         setPontos5(p5)
         setPontos4(p4)
+        setArrayPremiacao(arrayPremiacao)
         setCarregando(false)
 
     }
 
     function estatistica() {
         const dezenas = qtdDezenasDupla
-        navigation.navigate(ROTA_ESTATISTICA, { arrayDezenas, nomeJogo, cor, dezenas })
+        navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, nomeJogo, cor, dezenas })
     }
 
     return (
-        <Layout>
+        <Layout cor={cor}>
             {/* <StatusBar backgroundColor={corStatus}  /> */}
             {carregando ? <ViewCarregando /> : null}
             {erroServer ? <ViewMsgErro /> : null}
@@ -191,6 +221,9 @@ export default function DuplaSena({ navigation }) {
                     <ViewText cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
                 </View>
             </LayoutResposta>
+
+            {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
+
 
         </Layout>
 

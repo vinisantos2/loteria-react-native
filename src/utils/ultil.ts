@@ -2,8 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'
 
 import { Alert } from 'react-native';
-
-
+import { Estatistica } from '../model/Estatistica';
 
 export function gerarKey() {
     var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ!@#$%^&*()+?><:{}[]";
@@ -17,9 +16,9 @@ export function gerarKey() {
     return password;
 }
 
-export function estatistica(arrayDezenas, arrayEstatistica) {
-    arrayDezenas.map((item, i) => {
-        item.map(num => {
+export function estatistica(arrayJogos:Array<JogoSorteado>, arrayEstatistica: Array<Estatistica>) {
+    arrayJogos.map((item, i) => {
+        item.dezenas.map(num => {
             arrayEstatistica.map((obj => {
                 if (obj.dezena === num) {
                     obj.contador++
@@ -72,10 +71,17 @@ export async function axiosBusca(url) {
     return arrayJogos
 
 }
-export async function retornarDezenas(array) {
+export async function jogoSorteados(array: Array<JogoSorteado>) {
     if (array.length < 1) return []
 
-    let arrayJogos = array.map(item => item.dezenas)
+    let arrayJogos = array.map(item => {
+        return {
+            dezenas: item.dezenas,
+            concurso: item.concurso,
+            data: item.data,
+            trevos: item.trevos
+        }
+    })
 
     return arrayJogos
 

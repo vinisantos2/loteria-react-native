@@ -10,11 +10,13 @@ import ViewCarregando from '../components/ViewCarregando';
 import LayoutResposta from '../components/LayoutResposta';
 import ViewText from '../components/ViewText';
 import { useIsFocused } from '@react-navigation/native';
-import { axiosBusca, conexao, preencher, retornarDezenas, salvarNumeroNaLista } from '../utils/ultil';
+import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../utils/ultil';
 import { STYLES } from '../Style';
 import ViewMsgErro from '../components/ViewMsgErro';
 import { ViewBotoes } from '../components/ViewBotoes';
 import { ROTA_ESTATISTICA, ROTA_TIME } from '../rotas/Rotas';
+import { Premio } from '../model/Premio';
+import ViewPremio from '../components/ViewPremio';
 
 
 export default function TimeMania({ navigation }) {
@@ -28,7 +30,8 @@ export default function TimeMania({ navigation }) {
     const [erroServer, setErroServer] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
     const [arrayJogos, setArrayJogos] = useState([])
-    const [arrayDezenas, setArrayDezenas] = useState([])
+    const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
+    const [arrayPremiacao, setArrayPremiacao] = useState(Array<Premio>)
     const limite = 8
     const dezenas = 10
     const url = "timemania"
@@ -45,8 +48,8 @@ export default function TimeMania({ navigation }) {
         setCarregando(true)
         if (arrayJogos.length < 1) {
             array = await axiosBusca(URL_BASE + url);
-            const arrayDezenas = await retornarDezenas(array)
-            setArrayDezenas(arrayDezenas)
+            const arrayJogos = await jogoSorteados(array)
+            setArrayJogosSorteado(arrayJogos)
             setArrayJogos(array)
         }
 
@@ -76,10 +79,9 @@ export default function TimeMania({ navigation }) {
         setQtdNum(numerosSelecionados.length)
     }
 
-
-
     async function compararJogo() {
-
+        setCarregando(true)
+        const arrayPremiacao = new Array<Premio>
         let contador = 0
         let pontos7 = 0
         let pontos6 = 0
@@ -88,25 +90,45 @@ export default function TimeMania({ navigation }) {
         let pontos3 = 0
 
         // primeiro for para ver os jogos que ja foram sorteados 
-        for (let i = 0; i < arrayDezenas.length; i++) {
+        for (let i = 0; i < arrayJogosSorteados.length; i++) {
             // segundo for para percorrer as dezenas escolhidas pelo cliente
             for (let j = 0; j < numerosSelecionados.length; j++) {
                 //verifica se a dezena escolhida pelo cliente existe no jogo ja sorteado
-                if (arrayDezenas[i].includes(numerosSelecionados[j])) {
+                if (arrayJogosSorteados[i].dezenas.includes(numerosSelecionados[j])) {
                     contador++
                 }
             }
             // verifica se a quantidade de pontos feito pelo cliente em cada jogo 
             if (contador === 7) {
                 pontos7++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '7'
+                )
+                arrayPremiacao.push(obj)
 
             } else if (contador === 6) {
                 pontos6++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '6'
+                )
+                arrayPremiacao.push(obj)
             } else if (contador === 5) {
                 pontos5++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '5'
+                )
+                arrayPremiacao.push(obj)
 
             } else if (contador === 4) {
                 pontos4++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '4'
+                )
+                arrayPremiacao.push(obj)
 
             } else if (contador === 3) {
                 pontos3++
@@ -122,14 +144,16 @@ export default function TimeMania({ navigation }) {
         setPontos5(pontos5)
         setPontos4(pontos4)
         setPontos3(pontos3)
+        setArrayPremiacao(arrayPremiacao)
         setCarregando(false)
+
 
     }
 
     async function estatistica() {
         setCarregando(true)
         const dezenas = QTD_DEZENAS_TIME
-        await navigation.navigate(ROTA_ESTATISTICA, { arrayDezenas, nomeJogo, cor, dezenas })
+        await navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, nomeJogo, cor, dezenas })
         setCarregando(false)
     }
 
@@ -172,6 +196,7 @@ export default function TimeMania({ navigation }) {
                     <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 3 pontos: " + pontos3} />
                 </View>
             </LayoutResposta>
+            {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
 
         </Layout>
 

@@ -13,11 +13,13 @@ import ViewCarregando from '../components/ViewCarregando';
 import LayoutResposta from '../components/LayoutResposta';
 import ViewText from '../components/ViewText';
 import { useIsFocused } from '@react-navigation/native';
-import { axiosBusca, conexao, preencher, retornarDezenas, salvarNumeroNaLista } from '../utils/ultil';
+import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../utils/ultil';
 import { STYLES } from '../Style';
 import ViewMsgErro from '../components/ViewMsgErro';
 import { ViewBotoes } from '../components/ViewBotoes';
 import { ROTA_ESTATISTICA, ROTA_QUINA } from '../rotas/Rotas';
+import { Premio } from '../model/Premio';
+import ViewPremio from '../components/ViewPremio';
 
 
 let jogos = []
@@ -30,7 +32,9 @@ export default function Quina({ navigation }) {
     const [pontos5, setPontos5] = useState(0)
     const [carregando, setCarregando] = useState(false)
     const [erroServer, setErroServer] = useState(false)
-    const [arrayDezenas, setArrayDezenas] = useState([])
+    const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
+    const [arrayPremiacao, setArrayPremiacao] = useState(Array<Premio>)
+
     const [qtdNum, setQtdNum] = useState(0)
     const [arrayJogos, setArrayJogos] = useState([])
     const limite = 8
@@ -51,8 +55,8 @@ export default function Quina({ navigation }) {
         setCarregando(true)
         if (arrayJogos.length < 1) {
             array = await axiosBusca(URL_BASE + url);
-            const arrayDezenas = await retornarDezenas(array)
-            setArrayDezenas(arrayDezenas)
+            const arrayJogos = await jogoSorteados(array)
+            setArrayJogosSorteado(arrayJogos)
             setArrayJogos(array)
         }
 
@@ -75,6 +79,7 @@ export default function Quina({ navigation }) {
         setPontos3(0)
         setPontos4(0)
         setPontos5(0)
+        setArrayPremiacao([])
 
     }
 
@@ -86,7 +91,7 @@ export default function Quina({ navigation }) {
 
 
     async function compararJogo() {
-
+        const arrayPremiacao = new Array<Premio>
         let contador = 0
         let pontos5 = 0
         let pontos4 = 0
@@ -94,25 +99,39 @@ export default function Quina({ navigation }) {
         let pontos2 = 0
 
         // primeiro for para ver os jogos que ja foram sorteados 
-        for (let i = 0; i < arrayDezenas.length; i++) {
+        for (let i = 0; i < arrayJogosSorteados.length; i++) {
             // segundo for para percorrer as dezenas escolhidas pelo cliente
             for (let j = 0; j < numerosSelecionados.length; j++) {
                 //verifica se a dezena escolhida pelo cliente existe no jogo ja sorteado
 
-                if (arrayDezenas[i].includes(numerosSelecionados[j])) {
+                if (arrayJogosSorteados[i].dezenas.includes(numerosSelecionados[j])) {
                     contador++
                 }
             }
             // verifica se a quantidade de pontos feito pelo cliente em cada jogo 
             if (contador === 5) {
                 pontos5++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '5'
+                )
+                arrayPremiacao.push(obj)
             } else if (contador === 4) {
                 pontos4++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '4'
+                )
+                arrayPremiacao.push(obj)
             } else if (contador === 3) {
                 pontos3++
+                const obj = new Premio(arrayJogosSorteados[i].data,
+                    arrayJogosSorteados[i].concurso,
+                    '3'
+                )
+                arrayPremiacao.push(obj)
             } else if (contador === 2) {
                 pontos2++
-
             }
 
             contador = 0
@@ -124,16 +143,17 @@ export default function Quina({ navigation }) {
         setPontos3(pontos3)
         setPontos2(pontos2)
         setCarregando(false)
+        setArrayPremiacao(arrayPremiacao)
 
     }
 
     function estatistica() {
         const dezenas = QTD_DEZENAS_QUINA
-        navigation.navigate(ROTA_ESTATISTICA, { arrayDezenas, nomeJogo, cor, dezenas })
+        navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, cor, dezenas, nomeJogo})
     }
 
     return (
-        <Layout>
+        <Layout cor={cor}>
             {/* <StatusBar backgroundColor={corStatus} animated={true} /> */}
             {carregando ? <ViewCarregando /> : null}
             {erroServer ? <ViewMsgErro /> : null}
@@ -166,6 +186,8 @@ export default function Quina({ navigation }) {
                 </View>
 
             </LayoutResposta>
+
+            {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
 
         </Layout>
 
