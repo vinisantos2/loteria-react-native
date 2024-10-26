@@ -20,12 +20,13 @@ import { DIA, DUPLA, FEDERAL, LOTECA, LOTOFACIL, LOTOMANIA, MEGA, MILIONARIA, QU
 import ViewCarregando from "../components/ViewCarregando";
 import ViewMsgErro from "../components/ViewMsgErro";
 import StatusBarView from "../components/StatusBarView";
+import { jogoDoBanco, JogoSorteado } from "../model/jogoSorteado";
 
 export default function Resultados({ }) {
 
     const url = "ultimos"
     const isFocused = useIsFocused()
-    const [jogos, setJogos] = React.useState([])
+    const [jogosSorteados, setJogosSorteados] = React.useState(Array<JogoSorteado>)
     const [carregando, setCarregando] = React.useState(true)
     const [erroServer, setErroServer] = useState(false)
     const [corStatus, setCorStatus] = useState(COR_RESULTADOS)
@@ -33,7 +34,6 @@ export default function Resultados({ }) {
     React.useEffect(() => {
         buscarDados()
         // mudaCorStatus()
-
     }, [isFocused])
 
     function mudaCorStatus() {
@@ -49,12 +49,12 @@ export default function Resultados({ }) {
     }
 
     async function buscarDados() {
-        let array = jogos
+        let array = jogosSorteados
         if (array.length < 1) {
             array = await axiosBusca(URL_BASE_ULTIMOS)
             array.sort(compare)
             array.reverse()
-            setJogos(array)
+            setJogosSorteados(array)
         }
 
         if (array.length < 1) {
@@ -111,9 +111,10 @@ export default function Resultados({ }) {
                     navigation.navigate("L")
                 }
             /> */}
-            {jogos ? jogos.map((item) => {
+            {jogosSorteados ? jogosSorteados.map((item) => {
+                const jogo = jogoDoBanco(item)
                 return (
-                    <ItemJogo key={gerarKey()} item={item} cor={mudaCor(item["loteria"])} />
+                    <ItemJogo key={gerarKey()} item={jogo} cor={mudaCor(item.loteria)} />
                 )
             }) :
                 <ViewMsgErro />

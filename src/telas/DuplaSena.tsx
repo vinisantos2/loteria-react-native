@@ -6,7 +6,7 @@ import {
 
 import Layout from '../components/Layout';
 import Cartela from '../components/Cartela';
-import { COMPARAR, LIMPAR, PRENCHER, QTD_DEZENAS_DUPLA, URL_BASE } from '../constants/Constants';
+import { QTD_DEZENAS_DUPLA, URL_BASE } from '../constants/Constants';
 import ViewSelecionados from '../components/ViewSelecionados';
 import { COR_DUPLA, COR_MEGA } from '../constants/Cores';
 import ViewCarregando from '../components/ViewCarregando';
@@ -16,16 +16,12 @@ import { useIsFocused } from '@react-navigation/native';
 import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../utils/ultil';
 import { STYLES } from '../Style';
 import { ViewBotoes } from '../components/ViewBotoes';
-import { ROTA_ESTATISTICA } from '../rotas/Rotas';
+import { ROTA_BUSCA, ROTA_ESTATISTICA } from '../rotas/Rotas';
 import ViewMsgErro from '../components/ViewMsgErro';
-import { Premio } from '../model/Premio';
 import ViewPremio from '../components/ViewPremio';
 import { JogoSorteado } from '../model/jogoSorteado';
+import BuscaView from '../components/BuscaView';
 
-let contador = 0
-let p6 = 0
-let p5 = 0
-let p4 = 0
 export default function DuplaSena({ navigation }) {
 
     const [pontos6, setPontos6] = useState(0)
@@ -37,8 +33,6 @@ export default function DuplaSena({ navigation }) {
     const [numerosSelecionados, setArray] = useState([])
     const [arrayJogos, setArrayJogos] = useState([])
     const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
-    const [arraYdezenas1, setArrayDezenas1] = useState(Array<JogoSorteado>)
-    const [arraYdezenas2, setArrayDezenas2] = useState(Array<JogoSorteado>)
     const qtdDezenasDupla = QTD_DEZENAS_DUPLA
     const url = "duplasena"
     const cor = COR_DUPLA
@@ -46,7 +40,7 @@ export default function DuplaSena({ navigation }) {
     const limite = 12
     const dezenas = 6
     const focused = useIsFocused();
-    const [arrayPremiacao, setArrayPremiacao] = useState(Array<Premio>)
+    const [arrayPremiacao, setArrayPremiacao] = useState(Array<JogoSorteado>)
 
     React.useEffect(() => {
         buscarJogos()
@@ -87,100 +81,91 @@ export default function DuplaSena({ navigation }) {
         setQtdNum(numerosSelecionados.length)
     }
 
-    function teste(array: Array<JogoSorteado>, dezenas1: boolean) {
-
+    async function dividirDezenas(array: Array<JogoSorteado>) {
         const arrayJogos: Array<JogoSorteado> = []
-        array.map(item => {
-            const data = item.data
-            const concurso = item.concurso
-            const dezenas: Array<String> = []
-            item.dezenas.map((numero, i = 0) => {
-                if (dezenas1) {
-                    if (i < 6) {
-                        dezenas.push(numero)
-                    }
-
-                } else {
-                    if (i > 5 && i < 12)
-                        dezenas.push(numero)
-                }
-
-            })
-
-            const obj = new JogoSorteado(dezenas, concurso, data, [])
-            arrayJogos.push(obj)
-
-
+        let dezenas1: Array<string> = []
+        let dezenas2: Array<string> = []
+        array.map((item) => {
+            dezenas1.push(
+                item.dezenas[0].toString(),
+                item.dezenas[1].toString(),
+                item.dezenas[2].toString(),
+                item.dezenas[3].toString(),
+                item.dezenas[4].toString(),
+                item.dezenas[5].toString()
+            )
+            dezenas2.push(
+                item.dezenas[6].toString(),
+                item.dezenas[7].toString(),
+                item.dezenas[8].toString(),
+                item.dezenas[9].toString(),
+                item.dezenas[10].toString(),
+                item.dezenas[11].toString()
+            )
+            item.dezenas = dezenas1
+            item.dezenas2 = dezenas2
+            arrayJogos.push(item)
+            dezenas1 = []
+            dezenas2 = []
         })
 
-        return arrayJogos
+        setArrayJogosSorteado(arrayJogos)
     }
 
-    async function dividirDezenas(array: Array<JogoSorteado>) {
-        const array1: Array<JogoSorteado> = await teste(array, true)
-        const array2: Array<JogoSorteado> = await teste(array, false)
-        setArrayDezenas1(array1)
-        setArrayDezenas2(array2)
-
-    }
-
-    async function compararDuplaSena() {
-        contador = 0
-        p6 = 0
-        p5 = 0
-        p4 = 0
-
-        compararJogo(arraYdezenas1)
-        compararJogo(arraYdezenas2)
-    }
-
-    async function compararJogo(arrayJogo: Array<JogoSorteado>) {
-
-        if (arrayJogo.length < 1) return
-
+    async function compararJogo() {
+        const arrayPremiacao = new Array<JogoSorteado>
+        let contador1 = 0
+        let contador2 = 0
+        let ponto6 = 0
+        let ponto5 = 0
+        let ponto4 = 0
+        if (arrayJogosSorteados.length < 1) return
         // primeiro for para ver os jogos que ja foram sorteados 
-        for (let i = 0; i < arrayJogo.length; i++) {
+        for (let i = 0; i < arrayJogosSorteados.length; i++) {
             // segundo for para percorrer as dezenas escolhidas pelo cliente
             for (let j = 0; j < numerosSelecionados.length; j++) {
                 //verifica se a dezena escolhida pelo cliente existe no jogo ja sorteado
-                if (arrayJogo[i].dezenas.includes(numerosSelecionados[j])) {
-                    contador++
+                if (arrayJogosSorteados[i].dezenas.includes(numerosSelecionados[j])) {
+                    contador1++
+                }
+                if (arrayJogosSorteados[i].dezenas2.includes(numerosSelecionados[j])) {
+                    contador2++
                 }
             }
             // verifica se a quantidade de pontos feito pelo cliente em cada jogo 
-            if (contador === 6) {
-                p6++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '6'
-                )
+            if (contador1 === 6 || contador2 === 6) {
+                ponto6++
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = "6 acertos"
                 arrayPremiacao.push(obj)
 
-            } else if (contador === 5) {
-                p5++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '5'
-                )
+            } else if (contador1 === 5 || contador2 === 5) {
+                ponto5++
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = "5 acertos"
                 arrayPremiacao.push(obj)
 
-            } else if (contador === 4) {
-                p4++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '4'
-                )
+            } else if (contador1 === 4 || contador2 === 4) {
+                ponto4++
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = "4 acertos"
                 arrayPremiacao.push(obj)
             }
-            contador = 0
-
+            contador1 = 0
+            contador2 = 0
         }
 
-        setPontos6(p6)
-        setPontos5(p5)
-        setPontos4(p4)
+        setPontos6(ponto6)
+        setPontos5(ponto5)
+        setPontos4(ponto4)
         setArrayPremiacao(arrayPremiacao)
         setCarregando(false)
+
+    }
+
+    async function abrirBuscador() {
+
+        await navigation.navigate(ROTA_BUSCA, { arrayJogosSorteados: arrayJogos, nomeJogo, cor })
 
     }
 
@@ -194,6 +179,7 @@ export default function DuplaSena({ navigation }) {
             {/* <StatusBar backgroundColor={corStatus}  /> */}
             {carregando ? <ViewCarregando /> : null}
             {erroServer ? <ViewMsgErro /> : null}
+            <BuscaView onPress={() => abrirBuscador()} />
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={cor} qtdNum={qtdNum} />
 
             <Cartela dezenas={qtdDezenasDupla}
@@ -206,7 +192,7 @@ export default function DuplaSena({ navigation }) {
                 limpar={() => limpar()}
                 estatistica={() => estatistica()}
                 preencherJogo={() => preencherNumeros()}
-                compararJogo={() => compararDuplaSena()}
+                compararJogo={() => compararJogo()}
                 cor={cor}
             />
 

@@ -19,10 +19,11 @@ import { axiosBusca, conexao, estatistica, preencher, jogoSorteados, salvarNumer
 import { STYLES } from '../Style';
 import ViewMsgErro from '../components/ViewMsgErro';
 import { ViewBotoes } from '../components/ViewBotoes';
-import { ROTA_ESTATISTICA, ROTA_MEGA } from '../rotas/Rotas';
+import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_MEGA } from '../rotas/Rotas';
 import { Premio } from '../model/Premio';
 import ViewPremio from '../components/ViewPremio';
-
+import { JogoSorteado } from '../model/jogoSorteado';
+import BuscaView from '../components/BuscaView';
 
 export default function MegaSena({ navigation }) {
 
@@ -35,7 +36,7 @@ export default function MegaSena({ navigation }) {
     const [numerosSelecionados, setArray] = useState([])
     const [arrayJogos, setArrayJogos] = useState([])
     const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
-    const [arrayPremiacao, setArrayPremiacao] = useState(Array<Premio>)
+    const [arrayPremiacao, setArrayPremiacao] = useState(Array<JogoSorteado>)
     const qtdDezenasMega = 60
     const url = "megasena"
     const cor = COR_MEGA
@@ -86,7 +87,7 @@ export default function MegaSena({ navigation }) {
 
 
     async function compararJogo() {
-        const arrayPremiacao = new Array<Premio>
+        const arrayPremiacao = new Array<JogoSorteado>
         let contador = 0
         let pontos6 = 0
         let pontos5 = 0
@@ -105,25 +106,19 @@ export default function MegaSena({ navigation }) {
             // verifica se a quantidade de pontos feito pelo cliente em cada jogo 
             if (contador === 6) {
                 pontos6++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '6'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[0].descricao
                 arrayPremiacao.push(obj)
 
             } else if (contador === 5) {
                 pontos5++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '5'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[1].descricao
                 arrayPremiacao.push(obj)
             } else if (contador === 4) {
                 pontos4++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '4'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[2].descricao
                 arrayPremiacao.push(obj)
             }
             contador = 0
@@ -139,9 +134,15 @@ export default function MegaSena({ navigation }) {
 
     }
 
+    async function abrirBuscador() {
+
+        await navigation.navigate(ROTA_BUSCA, { arrayJogosSorteados: arrayJogos, nomeJogo, cor })
+
+    }
+
     function estatistica() {
         const dezenas = qtdDezenasMega
-        navigation.navigate(ROTA_ESTATISTICA, {  arrayJogosSorteados: arrayJogosSorteados, nomeJogo, cor, dezenas })
+        navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, nomeJogo, cor, dezenas })
     }
 
     return (
@@ -149,7 +150,7 @@ export default function MegaSena({ navigation }) {
             {/* <StatusBar backgroundColor={corStatus}  /> */}
             {carregando ? <ViewCarregando /> : null}
             {erroServer ? <ViewMsgErro /> : null}
-
+            <BuscaView onPress={() => abrirBuscador()} />
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_MEGA} qtdNum={qtdNum} />
 
             <Cartela

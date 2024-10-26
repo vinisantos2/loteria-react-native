@@ -14,10 +14,11 @@ import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } fr
 import { STYLES } from '../Style';
 import ViewMsgErro from '../components/ViewMsgErro';
 import { ViewBotoes } from '../components/ViewBotoes';
-import { ROTA_ESTATISTICA, ROTA_TIME } from '../rotas/Rotas';
+import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_TIME } from '../rotas/Rotas';
 import { Premio } from '../model/Premio';
 import ViewPremio from '../components/ViewPremio';
-
+import { JogoSorteado } from '../model/jogoSorteado';
+import BuscaView from '../components/BuscaView';
 
 export default function TimeMania({ navigation }) {
 
@@ -31,7 +32,7 @@ export default function TimeMania({ navigation }) {
     const [qtdNum, setQtdNum] = useState(0)
     const [arrayJogos, setArrayJogos] = useState([])
     const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
-    const [arrayPremiacao, setArrayPremiacao] = useState(Array<Premio>)
+    const [arrayPremiacao, setArrayPremiacao] = useState(Array<JogoSorteado>)
     const limite = 8
     const dezenas = 10
     const url = "timemania"
@@ -81,7 +82,7 @@ export default function TimeMania({ navigation }) {
 
     async function compararJogo() {
         setCarregando(true)
-        const arrayPremiacao = new Array<Premio>
+        const arrayPremiacao = new Array<JogoSorteado>
         let contador = 0
         let pontos7 = 0
         let pontos6 = 0
@@ -101,41 +102,31 @@ export default function TimeMania({ navigation }) {
             // verifica se a quantidade de pontos feito pelo cliente em cada jogo 
             if (contador === 7) {
                 pontos7++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '7'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[0].descricao
                 arrayPremiacao.push(obj)
 
             } else if (contador === 6) {
                 pontos6++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '6'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[1].descricao
                 arrayPremiacao.push(obj)
             } else if (contador === 5) {
                 pontos5++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '5'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[2].descricao
                 arrayPremiacao.push(obj)
 
             } else if (contador === 4) {
                 pontos4++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '4'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[3].descricao
                 arrayPremiacao.push(obj)
 
             } else if (contador === 3) {
                 pontos3++
-
             }
             contador = 0
-
 
         }
 
@@ -156,13 +147,16 @@ export default function TimeMania({ navigation }) {
         await navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, nomeJogo, cor, dezenas })
         setCarregando(false)
     }
-
+    async function abrirBuscador() {
+        await navigation.navigate(ROTA_BUSCA, { arrayJogosSorteados: arrayJogos, nomeJogo, cor })
+    }
 
     return (
         <Layout cor={cor}>
             {/* <StatusBar backgroundColor={corStatus} animated={true} /> */}
             {carregando ? <ViewCarregando /> : null}
             {erroServer ? <ViewMsgErro /> : null}
+            <BuscaView onPress={() => abrirBuscador()} />
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_TIME} qtdNum={qtdNum} />
             <Cartela dezenas={QTD_DEZENAS_TIME}
                 numerosSelecionados={numerosSelecionados}

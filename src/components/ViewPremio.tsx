@@ -1,18 +1,18 @@
 import { StyleSheet, View } from "react-native";
-
 import ViewText from "./ViewText";
-
 import { gerarKey } from "../utils/ultil";
-import { Premio } from "../model/Premio";
+import { JogoSorteado } from "../model/jogoSorteado";
 
 export default function ViewPremio({ array, cor }) {
-    const arrayPremiacao: Array<Premio> = array
+    const arrayPremiacao: Array<JogoSorteado> = array
+
     arrayPremiacao.sort(compare)
+
     arrayPremiacao.reverse()
 
-    function compare(a, b) {
+    function compare(a: JogoSorteado, b: JogoSorteado) {
         const v1 = a.pontos
-        const v2 = (b.pontos)
+        const v2 = b.pontos
         if (v1 < v2) return -1;
         if (v1 > v2) return 1;
         return 0;
@@ -24,10 +24,7 @@ export default function ViewPremio({ array, cor }) {
             <View style={styles.legenda}>
                 <ViewText fontSize={35} value="Premiações" />
             </View>
-
-
             {arrayPremiacao.map(item => {
-
                 return (
                     <View key={gerarKey()} style={[styles.viewItem,]}>
                         <View style={styles.viewLegenda}>
@@ -41,15 +38,10 @@ export default function ViewPremio({ array, cor }) {
                             </View>
                             <View style={styles.viewItemLegenda}>
                                 <ViewText value={"Pontos: "} />
-                                <ViewText value={item.pontos.toString()} />
+                                <ViewText value={item.pontos} />
                             </View>
-
                         </View>
 
-                        <View style={styles.viewResposta}>
-
-
-                        </View>
 
                     </View>
 

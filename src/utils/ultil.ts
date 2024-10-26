@@ -3,6 +3,7 @@ import axios from 'axios'
 
 import { Alert } from 'react-native';
 import { Estatistica } from '../model/Estatistica';
+import { JogoSorteado } from '../model/jogoSorteado';
 
 export function gerarKey() {
     var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ!@#$%^&*()+?><:{}[]";
@@ -16,7 +17,7 @@ export function gerarKey() {
     return password;
 }
 
-export function estatistica(arrayJogos:Array<JogoSorteado>, arrayEstatistica: Array<Estatistica>) {
+export function estatistica(arrayJogos: Array<JogoSorteado>, arrayEstatistica: Array<Estatistica>) {
     arrayJogos.map((item, i) => {
         item.dezenas.map(num => {
             arrayEstatistica.map((obj => {
@@ -34,6 +35,8 @@ export function formatarReal(num) {
     return new Intl.NumberFormat('pt-br', { currency: "BRL", style: 'currency' }).format(num)
 
 }
+
+
 
 export function conexao(array: Array<Object>) {
     if (array.length < 1) {
@@ -74,13 +77,9 @@ export async function axiosBusca(url) {
 export async function jogoSorteados(array: Array<JogoSorteado>) {
     if (array.length < 1) return []
 
-    let arrayJogos = array.map(item => {
-        return {
-            dezenas: item.dezenas,
-            concurso: item.concurso,
-            data: item.data,
-            trevos: item.trevos
-        }
+    let arrayJogos: Array<JogoSorteado> = []
+    array.map(item => {
+        arrayJogos.push(item)
     })
 
     return arrayJogos

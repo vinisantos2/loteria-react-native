@@ -17,10 +17,11 @@ import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } fr
 import { STYLES } from '../Style';
 import ViewMsgErro from '../components/ViewMsgErro';
 import { ViewBotoes } from '../components/ViewBotoes';
-import { ROTA_ESTATISTICA, ROTA_QUINA } from '../rotas/Rotas';
+import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_QUINA } from '../rotas/Rotas';
 import { Premio } from '../model/Premio';
 import ViewPremio from '../components/ViewPremio';
-
+import { JogoSorteado } from '../model/jogoSorteado';
+import BuscaView from '../components/BuscaView';
 
 let jogos = []
 
@@ -33,7 +34,7 @@ export default function Quina({ navigation }) {
     const [carregando, setCarregando] = useState(false)
     const [erroServer, setErroServer] = useState(false)
     const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
-    const [arrayPremiacao, setArrayPremiacao] = useState(Array<Premio>)
+    const [arrayPremiacao, setArrayPremiacao] = useState(Array<JogoSorteado>)
 
     const [qtdNum, setQtdNum] = useState(0)
     const [arrayJogos, setArrayJogos] = useState([])
@@ -91,7 +92,7 @@ export default function Quina({ navigation }) {
 
 
     async function compararJogo() {
-        const arrayPremiacao = new Array<Premio>
+        const arrayPremiacao = new Array<JogoSorteado>
         let contador = 0
         let pontos5 = 0
         let pontos4 = 0
@@ -111,24 +112,19 @@ export default function Quina({ navigation }) {
             // verifica se a quantidade de pontos feito pelo cliente em cada jogo 
             if (contador === 5) {
                 pontos5++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '5'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[0].descricao
                 arrayPremiacao.push(obj)
+                
             } else if (contador === 4) {
                 pontos4++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '4'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[1].descricao
                 arrayPremiacao.push(obj)
             } else if (contador === 3) {
                 pontos3++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '3'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[2].descricao
                 arrayPremiacao.push(obj)
             } else if (contador === 2) {
                 pontos2++
@@ -149,7 +145,13 @@ export default function Quina({ navigation }) {
 
     function estatistica() {
         const dezenas = QTD_DEZENAS_QUINA
-        navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, cor, dezenas, nomeJogo})
+        navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, cor, dezenas, nomeJogo })
+    }
+
+    async function abrirBuscador() {
+
+        await navigation.navigate(ROTA_BUSCA, { arrayJogosSorteados: arrayJogos, nomeJogo, cor })
+
     }
 
     return (
@@ -157,12 +159,12 @@ export default function Quina({ navigation }) {
             {/* <StatusBar backgroundColor={corStatus} animated={true} /> */}
             {carregando ? <ViewCarregando /> : null}
             {erroServer ? <ViewMsgErro /> : null}
+            <BuscaView onPress={() => abrirBuscador()} />
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={cor} qtdNum={qtdNum} />
             <Cartela dezenas={QTD_DEZENAS_QUINA}
                 numerosSelecionados={numerosSelecionados}
                 salvarNumeroNaLista={salvarNumero}
                 cor={cor} />
-
             <ViewBotoes
                 cor={cor}
                 numJogos={arrayJogos.length}

@@ -2,14 +2,24 @@
   "expo": {
     "name": "loteria",
     "slug": "loteria",
-    "version": "1.0.3",
+    "version": "1.0.5",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000"
+    },
     "ios": {
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 3
+      "adaptativeIcon": {
+        "foregroundImage": "assets/adaptive-icon.png",
+        "backgroundColor": "#49B146"
+      },
+      "versionCode": 5
     },
     "web": {
       "favicon": "./assets/favicon.png"

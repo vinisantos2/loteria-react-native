@@ -1,32 +1,35 @@
 import React, { useRef, useState } from 'react';
 
 import {
-    Animated,
-    StatusBar,
+
     View,
 
 } from 'react-native';
-import { axiosBusca, conexao, converterString, estatistica, gerarKey, preencher, jogoSorteados, salvarNumeroNaLista } from '../utils/ultil';
+import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../utils/ultil';
 import Layout from '../components/Layout';
 import { COR_LOTOFACIL } from '../constants/Cores';
 import Cartela from '../components/Cartela';
-import { COMPARAR, DEZENAS_LOTOFACIL, LIMPAR, PRENCHER, URL_BASE } from '../constants/Constants';
+import { URL_BASE } from '../constants/Constants';
 import ViewSelecionados from '../components/ViewSelecionados';
 import ViewCarregando from '../components/ViewCarregando';
 import LayoutResposta from '../components/LayoutResposta';
 import ViewText from '../components/ViewText';
-import { NavigationContainer, useIsFocused, useNavigation } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import { STYLES } from '../Style';
 import ViewMsgErro from '../components/ViewMsgErro';
 import { ViewBotoes } from '../components/ViewBotoes';
 
 import ItemEstatistica from '../itemsView/ItemEstatistica';
-import { ROTA_ESTATISTICA, ROTA_LOTOFACIL } from '../rotas/Rotas';
+import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_LOTOFACIL } from '../rotas/Rotas';
 import ViewPremio from '../components/ViewPremio';
 import { Premio } from '../model/Premio';
 import StatusBarView from '../components/StatusBarView';
+import BuscaView from '../components/BuscaView';
+import { JogoSorteado } from '../model/jogoSorteado';
+import Carregando from '../components/Carregando';
 const isChildVisible = true;
 
+let ca = false
 export default function Lotofacil({ navigation }) {
     const [pontos15, setPontos15] = useState(0)
     const [pontos14, setPontos14] = useState(0)
@@ -36,6 +39,7 @@ export default function Lotofacil({ navigation }) {
     const [arrayJogos, setArrayJogos] = useState([])
     const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
     const [carregando, setCarregando] = useState(true)
+    const [carregandoPag, setCarregandoPag] = useState(false)
     const [erroServer, setErroServer] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
     const url = "lotofacil"
@@ -43,7 +47,7 @@ export default function Lotofacil({ navigation }) {
     const nomeJogo = ROTA_LOTOFACIL
     const [numerosSelecionados, setArray] = useState([])
     const focused = useIsFocused();
-    const [arrayPremiacao, setArrayPremiacao] = useState(Array<Premio>)
+    const [arrayPremiacao, setArrayPremiacao] = useState(Array<JogoSorteado>)
     const [corStatus, setCorStatus] = useState(COR_LOTOFACIL)
     // function animar() {
     //     Animated.timing(
@@ -74,12 +78,12 @@ export default function Lotofacil({ navigation }) {
 
     React.useEffect(() => {
         buscarJogos()
-       // mudaCorStatus()
+        // mudaCorStatus()
 
     }, [focused])
 
     function mudaCorStatus() {
-        console.log("Aui")
+       
         setCorStatus(COR_LOTOFACIL)
     }
 
@@ -88,7 +92,7 @@ export default function Lotofacil({ navigation }) {
         setCarregando(true)
         if (arrayJogos.length < 1) {
             array = await axiosBusca(URL_BASE + url);
-            const arrayJogos = await jogoSorteados(array)
+            const arrayJogos: Array<JogoSorteado> = await jogoSorteados(array)
             setArrayJogosSorteado(arrayJogos)
             setArrayJogos(array)
         }
@@ -107,10 +111,6 @@ export default function Lotofacil({ navigation }) {
         setQtdNum(numerosSelecionados.length)
     }
 
-
-
-
-
     function preencherJogo() {
         setArray(preencher(numerosSelecionados, dezenas, qtdDezenasLotofacil,))
         setQtdNum(numerosSelecionados.length)
@@ -118,7 +118,7 @@ export default function Lotofacil({ navigation }) {
 
     async function compararJogo() {
         setCarregando(true)
-        const arrayPremiacao = new Array<Premio>
+        const arrayPremiacao = new Array<JogoSorteado>
         let contador = 0
         let pontos15 = 0
         let pontos14 = 0
@@ -137,31 +137,23 @@ export default function Lotofacil({ navigation }) {
             // verifica se a quantidade de pontos feito pelo cliente em cada jogo 
             if (contador === 15) {
                 pontos15++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '15'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[0].descricao
                 arrayPremiacao.push(obj)
 
             } else if (contador === 14) {
                 pontos14++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '14'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[1].descricao
                 arrayPremiacao.push(obj)
+
             } else if (contador === 13) {
                 pontos13++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '13'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos =  obj.premiacoes[2].descricao
                 arrayPremiacao.push(obj)
-
             } else if (contador === 12) {
                 pontos12++
-              
-
             } else if (contador === 11) {
                 pontos11++
             }
@@ -196,11 +188,20 @@ export default function Lotofacil({ navigation }) {
         await navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, nomeJogo, cor, dezenas })
     }
 
+    async function abrirBuscador() {
+        setCarregandoPag(true)
+        await navigation.navigate(ROTA_BUSCA, { arrayJogosSorteados: arrayJogos, nomeJogo, cor })
+        setCarregandoPag(false)
+    }
+
     return (
         <Layout cor={cor}>
             {/* <StatusBarView cor={corStatus} /> */}
             {carregando ? <ViewCarregando /> : null}
             {erroServer ? <ViewMsgErro /> : null}
+            {carregando ? <Carregando /> : null}
+
+            <BuscaView onPress={() => abrirBuscador()} />
             {/* <Animated.View
                 style={{ height: altura }}
             >

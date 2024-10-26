@@ -8,7 +8,9 @@ import { Dropdown } from "../components/Dropdown";
 import Layout from "../components/Layout";
 import { COR_LEGENDA } from "../constants/Cores";
 import { Estatistica } from "../model/Estatistica";
-
+import { JogoSorteado } from '../model/jogoSorteado';
+import { ViewLegenda } from "../components/ViewLegendaJogo";
+import LegendaView from "../components/LegendaView";
 export default function TelaEstatistica({ route }) {
 
     const { nomeJogo } = route.params ? route.params : "";
@@ -45,6 +47,7 @@ export default function TelaEstatistica({ route }) {
     }
 
     async function buscarJogos() {
+        console.log(dezenas)
 
         const arrayEs: Array<Estatistica> = Array.from({ length: dezenas }).map((_, index) => {
             return { dezena: converterString(index, false), contador: 0 }
@@ -64,7 +67,7 @@ export default function TelaEstatistica({ route }) {
     async function filtro(e) {
 
         let arrayFiltroJogos = []
-        const arrayEs = Array.from({ length: 25 }).map((_, index) => {
+        const arrayEs = Array.from({ length: dezenas }).map((_, index) => {
             return { dezena: converterString(index, false), contador: 0 }
         })
         if (e === "*") {
@@ -84,9 +87,7 @@ export default function TelaEstatistica({ route }) {
         <Layout>
 
             <View style={styles.content}>
-                <View style={[styles.titulo, { backgroundColor: cor }]}>
-                    <ViewText fontWeight={"bold"} fontSize={25} cor="#FFF" value={nomeJogo} />
-                </View>
+                <LegendaView cor={cor}  nomeJogo={nomeJogo}/>
                 <View>
                     <Dropdown valor={"Filtro"} click={(e) => filtro(e)} placeHolder={"Selecione quantidade de jogos"} array={arrayFiltro} />
                 </View>

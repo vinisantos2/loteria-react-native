@@ -4,8 +4,7 @@ import { Alert, StyleSheet, View } from 'react-native';
 
 import Layout from '../components/Layout';
 import Cartela from '../components/Cartela';
-import ViewBotao from '../components/ViewBotao';
-import { COMPARAR, LIMPAR, PRENCHER, URL_BASE } from '../constants/Constants';
+import { URL_BASE } from '../constants/Constants';
 import ViewSelecionados from '../components/ViewSelecionados';
 import ViewCarregando from '../components/ViewCarregando';
 import { COR_LOTOMAIA } from '../constants/Cores';
@@ -16,9 +15,11 @@ import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } fr
 import { STYLES } from '../Style';
 import ViewMsgErro from '../components/ViewMsgErro';
 import { ViewBotoes } from '../components/ViewBotoes';
-import { ROTA_ESTATISTICA, ROTA_LOTOMANIA } from '../rotas/Rotas';
+import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_LOTOMANIA } from '../rotas/Rotas';
 import { Premio } from '../model/Premio';
 import ViewPremio from '../components/ViewPremio';
+import { JogoSorteado } from '../model/jogoSorteado';
+import BuscaView from '../components/BuscaView';
 
 export default function Lotomania({ navigation }) {
     const [pontos00, setPontos00] = useState(0)
@@ -30,7 +31,7 @@ export default function Lotomania({ navigation }) {
     const [pontos20, setPontos20] = useState(0)
     const [carregando, setCarregando] = useState(false)
     const [erroServer, setErroServer] = useState(false)
-    const [arrayPremiacao, setArrayPremiacao] = useState(Array<Premio>)
+    const [arrayPremiacao, setArrayPremiacao] = useState(Array<JogoSorteado>)
     const [qtdNum, setQtdNum] = useState(0)
 
     const [numerosSelecionados, setArray] = useState([])
@@ -83,6 +84,11 @@ export default function Lotomania({ navigation }) {
         setArrayPremiacao([])
     }
 
+    async function abrirBuscador() {
+
+        await navigation.navigate(ROTA_BUSCA, { arrayJogosSorteados: arrayJogos, nomeJogo, cor })
+
+    }
 
     function preencherJogo() {
         setArray(preencher(numerosSelecionados, dezenas, qtdDezenasLotomania))
@@ -95,7 +101,7 @@ export default function Lotomania({ navigation }) {
             return
         }
         setCarregando(true)
-        const arrayPremiacao = new Array<Premio>
+        const arrayPremiacao = new Array<JogoSorteado>
         let contador = 0
         let pontos20 = 0
         let pontos19 = 0
@@ -118,50 +124,38 @@ export default function Lotomania({ navigation }) {
             // verifica se a quantidade de pontos feito pelo cliente em cada jogo 
             if (contador === 20) {
                 pontos20++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '20'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[0].descricao
                 arrayPremiacao.push(obj)
+
             } else if (contador === 19) {
                 pontos19++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '19'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[1].descricao
                 arrayPremiacao.push(obj)
             } else if (contador === 18) {
                 pontos18++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '18'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[2].descricao
                 arrayPremiacao.push(obj)
             } else if (contador === 17) {
                 pontos17++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '17'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[3].descricao
                 arrayPremiacao.push(obj)
             } else if (contador === 16) {
                 pontos16++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '16'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[4].descricao
                 arrayPremiacao.push(obj)
             } else if (contador === 15) {
                 pontos15++
             } else if (contador === 0) {
                 pontos00++
-                const obj = new Premio(arrayJogosSorteados[i].data,
-                    arrayJogosSorteados[i].concurso,
-                    '00'
-                )
+                const obj = arrayJogosSorteados[i]
+                obj.pontos = obj.premiacoes[6].descricao
                 arrayPremiacao.push(obj)
             }
-
 
             contador = 0
 
@@ -190,6 +184,7 @@ export default function Lotomania({ navigation }) {
             {/* <StatusBar backgroundColor={corStatus} /> */}
             {carregando ? <ViewCarregando /> : null}
             {erroServer ? <ViewMsgErro /> : null}
+            <BuscaView onPress={() => abrirBuscador()} />
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_LOTOMAIA} qtdNum={qtdNum} />
 
             <Cartela dezenas={qtdDezenasLotomania}

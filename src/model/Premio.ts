@@ -1,11 +1,17 @@
-export class Premio {
-    data: string
-    concurso: string
-    pontos: string
+import { formatarReal } from "../utils/ultil"
 
-    constructor(data: string, concurso: string, pontos: string) {
-        this.data = data
-        this.concurso = concurso
-        this.pontos = pontos
-    }
+export class Premio {
+    descricao: string
+    faixa: number
+    ganhadores: string
+    valorPremio: string
+}
+
+export function premicaoDoBanco(item) {
+    const premio = new Premio
+    premio.faixa = item['faixa']
+    premio.ganhadores = item["numero_ganhadores"]
+    premio.valorPremio = formatarReal(item["valor_premio"])
+    premio.descricao = item["quantidade_acertos"]
+    return premio
 }

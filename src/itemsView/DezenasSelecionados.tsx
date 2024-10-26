@@ -10,10 +10,10 @@ export default function DezenasSelecionados({ numerosSelecionados, cor = COR_FUN
 
     return (
         <View style={styles.viewItens}>
-            {numerosSelecionados.map((item) => (
+            {numerosSelecionados? numerosSelecionados.map((item) => (
                 <View key={gerarKey()} style={[styles.item, { backgroundColor: cor }]}>
                     <ViewText cor={COR_BRANCO} fontSize={20} value={item + " "} />
-                </View>))
+                </View>)): null
             }
         </View>
 
