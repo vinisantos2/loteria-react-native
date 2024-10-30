@@ -1,4 +1,4 @@
-package com.anonymous.loteria
+package com.vini_29.loteria
 
 import android.os.Build
 import android.os.Bundle
