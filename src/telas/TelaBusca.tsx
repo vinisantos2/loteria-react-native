@@ -1,5 +1,4 @@
 import { Alert, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import LegendaView from "../components/LegendaView";
 import { useEffect, useState } from "react";
 import { JogoSorteado } from "../model/jogoSorteado";
@@ -38,7 +37,6 @@ export default function TelaBusca({ route }) {
                     </View>
                     <TouchableOpacity style={[styles.botao, {backgroundColor: cor,}]} onPress={() => buscarConcurso()} >
                         <ViewText value="Buscar" />
-
                     </TouchableOpacity>
                 </View>
 

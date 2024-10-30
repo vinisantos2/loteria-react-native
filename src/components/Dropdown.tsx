@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native";
 
 import RNPickerSelect from 'react-native-picker-select';
 
-export const Dropdown = ({ valor, click, placeHolder, array }) => {
+export const Dropdown = ({ click, placeHolder, array }) => {
 
     return (
         <View
@@ -15,12 +15,15 @@ export const Dropdown = ({ valor, click, placeHolder, array }) => {
                 }}
 
                 style={{
-                    placeholder: { color: "#000", fontWeight: "bold" },
+                    placeholder: {
+                        color: "#000",
+                        fontWeight: "bold",
+                        textAlign: "center"
+                    },
                     inputAndroid: {
                         alignItems: "center",
                         justifyContent: "center",
-
-
+                        fontWeight: "bold",
                     }
                 }}
             />

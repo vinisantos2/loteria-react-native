@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet } from "react-native";
+import { StatusBar, StyleSheet, View } from "react-native";
 
 import Layout from "../components/Layout";
 import {
@@ -21,15 +21,31 @@ import ViewCarregando from "../components/ViewCarregando";
 import ViewMsgErro from "../components/ViewMsgErro";
 import StatusBarView from "../components/StatusBarView";
 import { jogoDoBanco, JogoSorteado } from "../model/jogoSorteado";
+import { Dropdown } from "../components/Dropdown";
 
 export default function Resultados({ }) {
 
     const url = "ultimos"
     const isFocused = useIsFocused()
     const [jogosSorteados, setJogosSorteados] = React.useState(Array<JogoSorteado>)
+    const [arrayViewJogosSorteados, setArrayViewJogosSorteados] = React.useState(Array<JogoSorteado>)
     const [carregando, setCarregando] = React.useState(true)
     const [erroServer, setErroServer] = useState(false)
     const [corStatus, setCorStatus] = useState(COR_RESULTADOS)
+
+
+    const arrayFiltro =
+        [
+            { label: DUPLA, value: DUPLA },
+            { label: LOTECA, value: LOTECA },
+            { label: LOTOFACIL, value: LOTOFACIL },
+            { label: LOTOMANIA, value: LOTOMANIA },
+            { label: MEGA, value: MEGA },
+            { label: MILIONARIA, value: MILIONARIA },
+            { label: QUINA, value: QUINA },
+            { label: TIME, value: TIME },
+            { label: SUPER, value: SUPER },
+        ]
 
     React.useEffect(() => {
         buscarDados()
@@ -55,6 +71,7 @@ export default function Resultados({ }) {
             array.sort(compare)
             array.reverse()
             setJogosSorteados(array)
+            setArrayViewJogosSorteados(array)
         }
 
         if (array.length < 1) {
@@ -99,9 +116,32 @@ export default function Resultados({ }) {
         }
     }
 
+    async function filtro(e) {
+
+        const arrayFiltro: Array<JogoSorteado> = []
+
+        jogosSorteados.map(item => {
+            if (item.loteria == e) {
+                arrayFiltro.push(item)
+            }
+        })
+
+        if (arrayFiltro.length < 1) {
+            setArrayViewJogosSorteados(jogosSorteados)
+            return
+        }
+
+        setArrayViewJogosSorteados(arrayFiltro)
+
+    }
+
+
     return (
 
         <Layout>
+            <View>
+                <Dropdown  click={(e) => filtro(e)} placeHolder={"Filtrar por jogo"} array={arrayFiltro} />
+            </View>
             <StatusBarView cor={corStatus} />
             {carregando ? <ViewCarregando /> : null}
             {erroServer ? <ViewMsgErro /> : null}
@@ -111,10 +151,11 @@ export default function Resultados({ }) {
                     navigation.navigate("L")
                 }
             /> */}
-            {jogosSorteados ? jogosSorteados.map((item) => {
+            {arrayViewJogosSorteados ? arrayViewJogosSorteados.map((item) => {
                 const jogo = jogoDoBanco(item)
                 return (
                     <ItemJogo key={gerarKey()} item={jogo} cor={mudaCor(item.loteria)} />
+                    
                 )
             }) :
                 <ViewMsgErro />

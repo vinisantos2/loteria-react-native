@@ -86,7 +86,7 @@ export default function Lotomania({ navigation }) {
 
     async function abrirBuscador() {
 
-        await navigation.navigate(ROTA_BUSCA, { arrayJogosSorteados: arrayJogos, nomeJogo, cor })
+        await navigation.navigate(ROTA_BUSCA, { arrayJogosSorteados: arrayJogos, nomeJogo, cor, dezenas })
 
     }
 
@@ -110,7 +110,6 @@ export default function Lotomania({ navigation }) {
         let pontos16 = 0
         let pontos15 = 0
         let pontos00 = 0
-
         // primeiro for para ver os jogos que ja foram sorteados 
         for (let i = 0; i < arrayJogosSorteados.length; i++) {
             // segundo for para percorrer as dezenas escolhidas pelo cliente

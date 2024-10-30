@@ -9,7 +9,6 @@ import Layout from "../components/Layout";
 import { COR_LEGENDA } from "../constants/Cores";
 import { Estatistica } from "../model/Estatistica";
 import { JogoSorteado } from '../model/jogoSorteado';
-import { ViewLegenda } from "../components/ViewLegendaJogo";
 import LegendaView from "../components/LegendaView";
 export default function TelaEstatistica({ route }) {
 
@@ -89,7 +88,7 @@ export default function TelaEstatistica({ route }) {
             <View style={styles.content}>
                 <LegendaView cor={cor}  nomeJogo={nomeJogo}/>
                 <View>
-                    <Dropdown valor={"Filtro"} click={(e) => filtro(e)} placeHolder={"Selecione quantidade de jogos"} array={arrayFiltro} />
+                    <Dropdown click={(e) => filtro(e)} placeHolder={"Selecione quantidade de jogos"} array={arrayFiltro} />
                 </View>
 
                 <View style={styles.viewLegenda}>

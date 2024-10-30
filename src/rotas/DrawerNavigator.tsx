@@ -4,7 +4,7 @@ import Lotofacil from "../telas/Lotofacil";
 import Lotomania from "../telas/Lotomania";
 import MegaSena from "../telas/MegaSena";
 import Quina from "../telas/Quina";
-import { ROTA_RESULTADOS, ROTA_LOTOMANIA, ROTA_MEGA, ROTA_QUINA, ROTA_LOTOFACIL, ROTA_TIME, ROTA_MILIONARIA, ROTA_DUPLA, ROTA_ESTATISTICA, ROTA_BUSCA } from "./Rotas";
+import { ROTA_RESULTADOS, ROTA_LOTOMANIA, ROTA_MEGA, ROTA_QUINA, ROTA_LOTOFACIL, ROTA_TIME, ROTA_MILIONARIA, ROTA_DUPLA, ROTA_ESTATISTICA, ROTA_BUSCA, ROTA_DETALHES } from "./Rotas";
 import { COR_RESULTADOS, COR_DE_FUNDO, COR_DUPLA, COR_LOTOFACIL, COR_LOTOMAIA, COR_MEGA, COR_MILIONARIA, COR_PRETO, COR_QUINA, COR_TIME } from "../constants/Cores";
 import Resultados from "../telas/Resultados";
 import TimeMania from "../telas/TimeMania";
@@ -15,6 +15,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { headerTitleStyle, styloDrwer, textDrawer } from "./DrawerItemStyle";
 import { HeaderStyleDrawer, HeaderStyleStack } from "./HeaderStyle";
 import TelaBusca from "../telas/TelaBusca";
+import MaisDetalhes from "../telas/MaisDetalhes";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -99,6 +100,7 @@ export default function StackNavigator() {
             <Stack.Screen options={{ headerShown: false, title: '' }} name="nav" component={DrawerNav} />
             <Stack.Screen name={ROTA_ESTATISTICA} component={TelaEstatistica} />
             <Stack.Screen name={ROTA_BUSCA} component={TelaBusca} />
+            <Stack.Screen name={ROTA_DETALHES} component={MaisDetalhes} />
         </Stack.Navigator>
     )
 }

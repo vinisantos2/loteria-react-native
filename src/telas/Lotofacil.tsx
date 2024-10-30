@@ -82,8 +82,13 @@ export default function Lotofacil({ navigation }) {
 
     }, [focused])
 
+    React.useEffect(() => {
+        console.log("Aqui")
+
+    }, [carregando])
+
     function mudaCorStatus() {
-       
+
         setCorStatus(COR_LOTOFACIL)
     }
 
@@ -117,7 +122,8 @@ export default function Lotofacil({ navigation }) {
     }
 
     async function compararJogo() {
-        setCarregando(true)
+        let c = true
+        setCarregando(c)
         const arrayPremiacao = new Array<JogoSorteado>
         let contador = 0
         let pontos15 = 0
@@ -150,7 +156,7 @@ export default function Lotofacil({ navigation }) {
             } else if (contador === 13) {
                 pontos13++
                 const obj = arrayJogosSorteados[i]
-                obj.pontos =  obj.premiacoes[2].descricao
+                obj.pontos = obj.premiacoes[2].descricao
                 arrayPremiacao.push(obj)
             } else if (contador === 12) {
                 pontos12++
@@ -184,20 +190,26 @@ export default function Lotofacil({ navigation }) {
     }
 
     async function estatistica() {
+        let carregando = true
+        setCarregando(carregando)
         const dezenas = qtdDezenasLotofacil
         await navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, nomeJogo, cor, dezenas })
+
     }
 
     async function abrirBuscador() {
-        setCarregandoPag(true)
+        let a = true
+
+        setCarregando(a)
         await navigation.navigate(ROTA_BUSCA, { arrayJogosSorteados: arrayJogos, nomeJogo, cor })
-        setCarregandoPag(false)
+
     }
 
     return (
         <Layout cor={cor}>
             {/* <StatusBarView cor={corStatus} /> */}
-            {carregando ? <ViewCarregando /> : null}
+
+            {carregandoPag ? <ViewCarregando /> : null}
             {erroServer ? <ViewMsgErro /> : null}
             {carregando ? <Carregando /> : null}
 
@@ -222,6 +234,7 @@ export default function Lotofacil({ navigation }) {
                 numerosSelecionados={numerosSelecionados}
                 salvarNumeroNaLista={salvarNumero}
                 cor={cor} />
+            {carregando ? <Carregando /> : null}
             <ViewBotoes
                 numJogos={arrayJogos.length}
                 limpar={() => limpar()}
