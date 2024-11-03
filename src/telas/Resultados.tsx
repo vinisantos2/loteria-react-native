@@ -35,16 +35,16 @@ export default function Resultados({ }) {
 
     const arrayFiltro =
         [
-
+            { label: DUPLA, value: DUPLA },
             { label: LOTECA, value: LOTECA },
             { label: LOTOFACIL, value: LOTOFACIL },
             { label: LOTOMANIA, value: LOTOMANIA },
-            { label: MEGA, value: MEGA },
-            { label: DUPLA, value: DUPLA },
             { label: MILIONARIA, value: MILIONARIA },
+            { label: MEGA, value: MEGA },
             { label: QUINA, value: QUINA },
-            { label: TIME, value: TIME },
             { label: SUPER, value: SUPER },
+            { label: TIME, value: TIME },
+
         ]
 
     React.useEffect(() => {

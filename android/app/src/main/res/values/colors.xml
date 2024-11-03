@@ -1,13 +1,6 @@
 <resources>
-<<<<<<< HEAD
   <color name="splashscreen_background">#808080</color>
   <color name="iconBackground">#FFFFFF</color>
   <color name="colorPrimary">#023c69</color>
   <color name="colorPrimaryDark">#808080</color>
-=======
-  <color name="splashscreen_background">#000</color>
-  <color name="iconBackground">#FFFFFF</color>
-  <color name="colorPrimary">#023c69</color>
-  <color name="colorPrimaryDark">#000</color>
->>>>>>> 51dd9f949eac828bbfb1cfb13e1751d19626a3c7
 </resources>
