@@ -3,8 +3,8 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 
 
-import { COR_DE_FUNDO, COR_LOTOMAIA } from './src/constants/Cores';
-import StackNavigator from './src/rotas/DrawerNavigator';
+import { COR_DE_FUNDO } from './src/constants/Cores';
+import StackNavigator from './src/rotas/StackNavigator';
 
 export default function App() {
   return (

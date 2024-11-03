@@ -179,12 +179,12 @@ export default function MaisMilionaria({ navigation }) {
             } else if (contador === 3 && trevos === 2) {
                 pontos3e2trevos++
                 const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[5].descricao
+                obj.pontos = obj.premiacoes[6].descricao
                 arrayPremiacao.push(obj)
             } else if (contador === 3 && trevos === 1) {
                 pontos3e1trevos++
                 const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[6].descricao
+                obj.pontos = obj.premiacoes[7].descricao
                 arrayPremiacao.push(obj)
             } else if (contador === 2 && trevos === 2) {
                 pontos2e2trevos++

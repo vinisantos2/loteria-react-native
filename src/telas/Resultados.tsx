@@ -33,14 +33,14 @@ export default function Resultados({ }) {
     const [erroServer, setErroServer] = useState(false)
     const [corStatus, setCorStatus] = useState(COR_RESULTADOS)
 
-
     const arrayFiltro =
         [
-            { label: DUPLA, value: DUPLA },
+
             { label: LOTECA, value: LOTECA },
             { label: LOTOFACIL, value: LOTOFACIL },
             { label: LOTOMANIA, value: LOTOMANIA },
             { label: MEGA, value: MEGA },
+            { label: DUPLA, value: DUPLA },
             { label: MILIONARIA, value: MILIONARIA },
             { label: QUINA, value: QUINA },
             { label: TIME, value: TIME },
@@ -56,6 +56,8 @@ export default function Resultados({ }) {
         setCorStatus(COR_RESULTADOS)
     }
 
+
+
     function compare(a, b) {
         const v1 = (a["resultado"]["valor_estimado_proximo_concurso"])
         const v2 = (b["resultado"]["valor_estimado_proximo_concurso"])
@@ -65,6 +67,7 @@ export default function Resultados({ }) {
     }
 
     async function buscarDados() {
+
         let array = jogosSorteados
         if (array.length < 1) {
             array = await axiosBusca(URL_BASE_ULTIMOS)
@@ -73,6 +76,8 @@ export default function Resultados({ }) {
             setJogosSorteados(array)
             setArrayViewJogosSorteados(array)
         }
+
+
 
         if (array.length < 1) {
             setErroServer(true)
@@ -140,7 +145,7 @@ export default function Resultados({ }) {
 
         <Layout>
             <View>
-                <Dropdown  click={(e) => filtro(e)} placeHolder={"Filtrar por jogo"} array={arrayFiltro} />
+                <Dropdown click={(e) => filtro(e)} placeHolder={"Filtrar por jogo"} array={arrayFiltro.sort()} />
             </View>
             <StatusBarView cor={corStatus} />
             {carregando ? <ViewCarregando /> : null}
@@ -155,7 +160,7 @@ export default function Resultados({ }) {
                 const jogo = jogoDoBanco(item)
                 return (
                     <ItemJogo key={gerarKey()} item={jogo} cor={mudaCor(item.loteria)} />
-                    
+
                 )
             }) :
                 <ViewMsgErro />

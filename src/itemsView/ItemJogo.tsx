@@ -6,8 +6,8 @@ import ItemPremiacao from './ItemPremiacao';
 import { ViewLegenda } from '../components/ViewLegendaJogo';
 import { ViewSorteados } from '../components/ViewSorteados';
 import { JogoSorteado } from '../model/jogoSorteado';
-import ViewInfo from '../components/ViewInfo';
-import Botao from '../components/Botao';
+import ViewInfoProximoConcurso from '../components/ViewInfoProximoConcurso';
+
 import { Ionicons } from "@expo/vector-icons";
 import { ROTA_DETALHES } from '../rotas/Rotas';
 import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
@@ -19,11 +19,11 @@ export default function ItemJogo({ item, cor = "#001122" }) {
     const diaMes = arrayData[0] + "/" + arrayData[1]
     const navigation: NavigationProp<ParamListBase> = useNavigation()
     function nav(cor) {
-        navigation.navigate(ROTA_DETALHES, { jogoSorteado, cor})
+        navigation.navigate(ROTA_DETALHES, { jogoSorteado, cor })
     }
 
     return (
-        <View style={styles.content}>
+        <View style={[styles.content]}>
             <ViewLegenda jogo={jogoSorteado.loteria} numeroConcurso={jogoSorteado.concurso} cor={cor} data={diaMes} />
             <ViewSorteados
                 arrayDezenas={jogoSorteado.dezenas}
@@ -38,8 +38,9 @@ export default function ItemJogo({ item, cor = "#001122" }) {
             <ItemPremiacao array={jogoSorteado.premiacoes} limite={1} doBanco={true} />
             <TouchableOpacity onPress={() => nav(cor)} style={styles.botao} >
                 <ViewText value='Mais informações' />
+                <Ionicons size={30} name='add' color={"#FFF"} />
             </TouchableOpacity>
-            <ViewInfo jogo={jogoSorteado} />
+            <ViewInfoProximoConcurso cor={cor} jogo={jogoSorteado} />
 
         </View>
     )
@@ -53,10 +54,14 @@ const styles = StyleSheet.create({
     },
 
     botao: {
+        alignSelf: 'center',
         alignItems: 'center',
         backgroundColor: "blue",
         justifyContent: 'center',
-        padding: 15
+        borderRadius: 15,
+        marginVertical: 5,
+        width: "50%"
+
     },
 
     view: {

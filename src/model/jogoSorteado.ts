@@ -1,4 +1,5 @@
 import { formatarReal } from "../utils/ultil"
+import LocalGanhador from "./LocalGanhador"
 import { Premio } from "./Premio"
 
 export class JogoSorteado {
@@ -16,6 +17,7 @@ export class JogoSorteado {
     valorProximoConcurso: string
     loteca: Array<Object>
     pontos: string
+    localGanhadores: Array<LocalGanhador>
 
 }
 
@@ -34,7 +36,7 @@ export function jogoDoBanco(item) {
     jogo.timeCoracao =item["resultado"]["time_coracao"]
     jogo.mesSorte = item["resultado"]["mes_da_sorte"]
     jogo.premiacoes = item["resultado"]["premiacao"]
+    jogo.localGanhadores = item["resultado"]["ganhadores"]
     return jogo
-
 }
 

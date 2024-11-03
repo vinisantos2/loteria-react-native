@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 
 import {
-
     View,
 
 } from 'react-native';
@@ -18,18 +17,12 @@ import { useIsFocused } from '@react-navigation/native';
 import { STYLES } from '../Style';
 import ViewMsgErro from '../components/ViewMsgErro';
 import { ViewBotoes } from '../components/ViewBotoes';
-
-import ItemEstatistica from '../itemsView/ItemEstatistica';
 import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_LOTOFACIL } from '../rotas/Rotas';
 import ViewPremio from '../components/ViewPremio';
-import { Premio } from '../model/Premio';
-import StatusBarView from '../components/StatusBarView';
 import BuscaView from '../components/BuscaView';
 import { JogoSorteado } from '../model/jogoSorteado';
 import Carregando from '../components/Carregando';
-const isChildVisible = true;
 
-let ca = false
 export default function Lotofacil({ navigation }) {
     const [pontos15, setPontos15] = useState(0)
     const [pontos14, setPontos14] = useState(0)
@@ -49,43 +42,12 @@ export default function Lotofacil({ navigation }) {
     const focused = useIsFocused();
     const [arrayPremiacao, setArrayPremiacao] = useState(Array<JogoSorteado>)
     const [corStatus, setCorStatus] = useState(COR_LOTOFACIL)
-    // function animar() {
-    //     Animated.timing(
-    //         altura,
-    //         {
-    //             useNativeDriver: false,
-    //             toValue: 800,
-    //             duration: 2000
-
-    //         }
-    //     ).start()
-
-    // }
-
-    // function recolher() {
-    //     Animated.timing(
-    //         altura,
-    //         {
-    //             useNativeDriver: false,
-    //             toValue: 0,
-    //             duration: 2000
-
-    //         }
-    //     ).start()
-
-    // }
-
 
     React.useEffect(() => {
         buscarJogos()
         // mudaCorStatus()
 
     }, [focused])
-
-    React.useEffect(() => {
-        console.log("Aqui")
-
-    }, [carregando])
 
     function mudaCorStatus() {
 
@@ -190,19 +152,14 @@ export default function Lotofacil({ navigation }) {
     }
 
     async function estatistica() {
-        let carregando = true
-        setCarregando(carregando)
+
         const dezenas = qtdDezenasLotofacil
         await navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, nomeJogo, cor, dezenas })
 
     }
 
     async function abrirBuscador() {
-        let a = true
-
-        setCarregando(a)
         await navigation.navigate(ROTA_BUSCA, { arrayJogosSorteados: arrayJogos, nomeJogo, cor })
-
     }
 
     return (
@@ -214,20 +171,6 @@ export default function Lotofacil({ navigation }) {
             {carregando ? <Carregando /> : null}
 
             <BuscaView onPress={() => abrirBuscador()} />
-            {/* <Animated.View
-                style={{ height: altura }}
-            >
-                {arrayJogos.length > 0? arrayJogos.map((item, i) => {
-                    if (i >= 3) return
-                    return (
-                        <ItemResultados key={gerarKey()} item={item} cor={cor} />
-                    )
-                }) : null}
-            </Animated.View>
-
-            <Button title='animar' onPress={animar} />
-            <Button title='recoclher' onPress={recolher} /> */}
-
             <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_LOTOFACIL} qtdNum={qtdNum} />
             <Cartela
                 dezenas={qtdDezenasLotofacil}

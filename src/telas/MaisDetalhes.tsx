@@ -3,6 +3,7 @@ import { JogoSorteado } from "../model/jogoSorteado";
 import { ViewLegenda } from "../components/ViewLegendaJogo";
 import { ViewSorteados } from "../components/ViewSorteados";
 import ItemPremiacao from "../itemsView/ItemPremiacao";
+import ItemLocalGanhadores from "../itemsView/ItemLocalGanhadores";
 
 export default function MaisDetalhes({ route }) {
     const { jogoSorteado } = route.params ? route.params : "";
@@ -24,7 +25,9 @@ export default function MaisDetalhes({ route }) {
                 arrayLoteca={jogo.loteca}
             />
 
-            <ItemPremiacao array={jogoSorteado.premiacoes} limite={10} doBanco={true} />
+            <ItemPremiacao array={jogo.premiacoes} limite={10} doBanco={true} />
+            <ItemLocalGanhadores array={jogo.localGanhadores} />
+
         </ScrollView>
     )
 }

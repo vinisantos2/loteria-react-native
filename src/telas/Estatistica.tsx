@@ -46,7 +46,6 @@ export default function TelaEstatistica({ route }) {
     }
 
     async function buscarJogos() {
-        console.log(dezenas)
 
         const arrayEs: Array<Estatistica> = Array.from({ length: dezenas }).map((_, index) => {
             return { dezena: converterString(index, false), contador: 0 }
@@ -86,7 +85,7 @@ export default function TelaEstatistica({ route }) {
         <Layout>
 
             <View style={styles.content}>
-                <LegendaView cor={cor}  nomeJogo={nomeJogo}/>
+                <LegendaView cor={cor} nomeJogo={nomeJogo} />
                 <View>
                     <Dropdown click={(e) => filtro(e)} placeHolder={"Selecione quantidade de jogos"} array={arrayFiltro} />
                 </View>
