@@ -2,7 +2,7 @@
   "expo": {
     "name": "loteria",
     "slug": "loteria",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "icon": "./assets/icon.png",
@@ -19,7 +19,11 @@
         "foregroundImage": "assets/adaptive-icon.png",
         "backgroundColor": "#49B146"
       },
+<<<<<<< HEAD
       "versionCode": 5,
+=======
+      "versionCode": 6,
+>>>>>>> 51dd9f949eac828bbfb1cfb13e1751d19626a3c7
       "package": "com.vini_29.loteria"
     },
     "web": {
