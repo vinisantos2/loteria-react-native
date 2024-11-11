@@ -37,3 +37,4 @@ yarn-error.*
 #firebase
 loteria-resultados-d5ffa-firebase-adminsdk-crpkj-eed5e28992.json
 google-services.json
+FirebaseConfig.ts
