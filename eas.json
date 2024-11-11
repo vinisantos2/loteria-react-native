@@ -10,6 +10,7 @@
     },
     "preview": {
       "android": {
+        "applicationArchivePath": "android/app/build/outputs/apk/release/app-release.apk",
         "buildType": "apk"
       },
       "distribution": "internal"

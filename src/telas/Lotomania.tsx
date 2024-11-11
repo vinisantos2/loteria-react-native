@@ -175,7 +175,7 @@ export default function Lotomania({ navigation }) {
 
     function estatistica() {
         const dezenas = qtdDezenasLotomania
-        navigation.navigate(ROTA_ESTATISTICA, { arrayDezenas: arrayJogosSorteados, nomeJogo, cor, dezenas })
+        navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, nomeJogo, cor, dezenas })
     }
 
     return (

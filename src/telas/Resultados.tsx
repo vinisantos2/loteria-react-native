@@ -68,14 +68,12 @@ export default function Resultados({ }) {
 
     async function buscarDados() {
 
-        let array = jogosSorteados
-        if (array.length < 1) {
-            array = await axiosBusca(URL_BASE_ULTIMOS)
-            array.sort(compare)
-            array.reverse()
-            setJogosSorteados(array)
-            setArrayViewJogosSorteados(array)
-        }
+
+        let array = await axiosBusca(URL_BASE_ULTIMOS)
+        array.sort(compare)
+        array.reverse()
+        setJogosSorteados(array)
+        setArrayViewJogosSorteados(array)
 
 
 

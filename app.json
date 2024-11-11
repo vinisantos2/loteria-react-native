@@ -15,12 +15,14 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptativeIcon": {
         "foregroundImage": "assets/adaptive-icon.png",
         "backgroundColor": "#49B146"
       },
-      "versionCode": 8,
-      "package": "com.vini_29.loteria"
+      
+      "versionCode": 12,
+      "package": "com.anonymous.loteria"
     },
     "web": {
       "favicon": "./assets/favicon.png"
