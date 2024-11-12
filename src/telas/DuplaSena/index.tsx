@@ -4,23 +4,24 @@ import {
     View,
 } from 'react-native';
 
-import Layout from '../components/Layout';
-import Cartela from '../components/Cartela';
-import { QTD_DEZENAS_DUPLA, URL_BASE } from '../constants/Constants';
-import ViewSelecionados from '../components/ViewSelecionados';
-import { COR_DUPLA, COR_MEGA } from '../constants/Cores';
-import ViewCarregando from '../components/ViewCarregando';
-import LayoutResposta from '../components/LayoutResposta';
-import ViewText from '../components/ViewText';
+import Layout from '../../components/Layout';
+import Cartela from '../../components/Cartela';
+import { QTD_DEZENAS_DUPLA, URL_BASE } from '../../constants/Constants';
+import ViewSelecionados from '../../components/ViewSelecionados';
+import { COR_DUPLA, COR_MEGA } from '../../constants/Cores';
+import ViewCarregando from '../../components/ViewCarregando';
+import LayoutResposta from '../../components/LayoutResposta';
+import ViewText from '../../components/ViewText';
 import { useIsFocused } from '@react-navigation/native';
-import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../utils/ultil';
-import { STYLES } from '../Style';
-import { ViewBotoes } from '../components/ViewBotoes';
-import { ROTA_BUSCA, ROTA_ESTATISTICA } from '../rotas/Rotas';
-import ViewMsgErro from '../components/ViewMsgErro';
-import ViewPremio from '../components/ViewPremio';
-import { JogoSorteado } from '../model/jogoSorteado';
-import BuscaView from '../components/BuscaView';
+import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../../utils/ultil';
+import { STYLES } from '../../Style';
+import { ViewBotoes } from '../../components/ViewBotoes';
+import { ROTA_BUSCA, ROTA_ESTATISTICA } from '../../rotas/Rotas';
+import ViewMsgErro from '../../components/ViewMsgErro';
+import ViewPremio from '../../components/ViewPremio';
+import { JogoSorteado } from '../../model/jogoSorteado';
+import BuscaView from '../../components/BuscaView';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 export default function DuplaSena({ navigation }) {
 
@@ -175,43 +176,57 @@ export default function DuplaSena({ navigation }) {
     }
 
     return (
-        <Layout cor={cor}>
-            {/* <StatusBar backgroundColor={corStatus}  /> */}
-            {carregando ? <ViewCarregando /> : null}
-            {erroServer ? <ViewMsgErro /> : null}
-            <BuscaView onPress={() => abrirBuscador()} />
-            <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={cor} qtdNum={qtdNum} />
+        <>
 
-            <Cartela dezenas={qtdDezenasDupla}
-                numerosSelecionados={numerosSelecionados}
-                salvarNumeroNaLista={salvarNNaLista}
-                cor={cor} />
+            <Layout cor={cor}>
+                {/* <StatusBar backgroundColor={corStatus}  /> */}
+                {carregando ? <ViewCarregando /> : null}
+                {erroServer ? <ViewMsgErro /> : null}
+                <BuscaView onPress={() => abrirBuscador()} />
+                <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={cor} qtdNum={qtdNum} />
 
-            <ViewBotoes
-                numJogos={arrayJogos.length}
-                limpar={() => limpar()}
-                estatistica={() => estatistica()}
-                preencherJogo={() => preencherNumeros()}
-                compararJogo={() => compararJogo()}
-                cor={cor}
+                <Cartela dezenas={qtdDezenasDupla}
+                    numerosSelecionados={numerosSelecionados}
+                    salvarNumeroNaLista={salvarNNaLista}
+                    cor={cor} />
+
+                <ViewBotoes
+                    numJogos={arrayJogos.length}
+                    limpar={() => limpar()}
+                    estatistica={() => estatistica()}
+                    preencherJogo={() => preencherNumeros()}
+                    compararJogo={() => compararJogo()}
+                    cor={cor}
+                />
+
+                <LayoutResposta>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor='#FFF' value={"Jogos com 6 pontos: " + pontos6} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor='#FFF' value={"Jogos com 5 pontos: " + pontos5} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
+                    </View>
+                </LayoutResposta>
+
+                {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
+
+
+            </Layout>
+            <BannerAd
+                unitId={TestIds.BANNER}
+                size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                requestOptions={{
+                    requestNonPersonalizedAdsOnly: true,
+                    networkExtras: {
+                        collapsible: "bottom"
+                    }
+                }}
+
             />
-
-            <LayoutResposta>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor='#FFF' value={"Jogos com 6 pontos: " + pontos6} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor='#FFF' value={"Jogos com 5 pontos: " + pontos5} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
-                </View>
-            </LayoutResposta>
-
-            {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
-
-
-        </Layout>
+        </>
 
     );
 }

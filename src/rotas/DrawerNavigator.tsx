@@ -1,5 +1,4 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-
 import Lotofacil from "../telas/Lotofacil";
 import Lotomania from "../telas/Lotomania";
 import MegaSena from "../telas/MegaSena";
@@ -10,13 +9,10 @@ import Resultados from "../telas/Resultados";
 import TimeMania from "../telas/TimeMania";
 import MaisMilionaria from "../telas/Milionaria";
 import DuplaSena from "../telas/DuplaSena";
-import { createStackNavigator } from "@react-navigation/stack";
 import { headerTitleStyle, styloDrwer, textDrawer } from "./DrawerItemStyle";
-import { HeaderStyleDrawer, HeaderStyleStack } from "./HeaderStyle";
+import { HeaderStyleDrawer } from "./HeaderStyle";
 
 const Drawer = createDrawerNavigator();
-const Stack = createStackNavigator();
-
 
 export function DrawerNav() {
 

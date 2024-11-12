@@ -1,6 +1,6 @@
 import { StatusBar, StyleSheet, View } from "react-native";
 
-import Layout from "../components/Layout";
+import Layout from "../../components/Layout";
 import {
     COR_DE_FUNDO,
     COR_DIA, COR_DUPLA,
@@ -9,19 +9,21 @@ import {
     COR_MEGA, COR_MILIONARIA, COR_QUINA,
     COR_RESULTADOS,
     COR_SUPER_SETE, COR_TIME
-} from "../constants/Cores";
+} from "../../constants/Cores";
+
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads'
 
 import React, { useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import { axiosBusca, gerarKey } from "../utils/ultil";
-import { URL_BASE, URL_BASE_ULTIMOS } from "../constants/Constants";
-import ItemJogo from "../itemsView/ItemJogo"
-import { DIA, DUPLA, FEDERAL, LOTECA, LOTOFACIL, LOTOMANIA, MEGA, MILIONARIA, QUINA, SUPER, TIME } from "../constants/Nomes";
-import ViewCarregando from "../components/ViewCarregando";
-import ViewMsgErro from "../components/ViewMsgErro";
-import StatusBarView from "../components/StatusBarView";
-import { jogoDoBanco, JogoSorteado } from "../model/jogoSorteado";
-import { Dropdown } from "../components/Dropdown";
+import { axiosBusca, gerarKey } from "../../utils/ultil";
+import { URL_BASE, URL_BASE_ULTIMOS } from "../../constants/Constants";
+import ItemJogo from "../../itemsView/ItemJogo"
+import { DIA, DUPLA, FEDERAL, LOTECA, LOTOFACIL, LOTOMANIA, MEGA, MILIONARIA, QUINA, SUPER, TIME } from "../../constants/Nomes";
+import ViewCarregando from "../../components/ViewCarregando";
+import ViewMsgErro from "../../components/ViewMsgErro";
+import StatusBarView from "../../components/StatusBarView";
+import { jogoDoBanco, JogoSorteado } from "../../model/jogoSorteado";
+import { Dropdown } from "../../components/Dropdown";
 
 export default function Resultados({ }) {
 
@@ -140,30 +142,48 @@ export default function Resultados({ }) {
 
 
     return (
-
-        <Layout>
-            <View>
-                <Dropdown click={(e) => filtro(e)} placeHolder={"Filtrar por jogo"} array={arrayFiltro.sort()} />
-            </View>
-            <StatusBarView cor={corStatus} />
-            {carregando ? <ViewCarregando /> : null}
-            {erroServer ? <ViewMsgErro /> : null}
-            {/* <Button
+        <>
+            <Layout>
+                <View>
+                    <Dropdown click={(e) => filtro(e)} placeHolder={"Filtrar por jogo"} array={arrayFiltro.sort()} />
+                </View>
+                <StatusBarView cor={corStatus} />
+                {carregando ? <ViewCarregando /> : null}
+                {erroServer ? <ViewMsgErro /> : null}
+                {/* <Button
                 title="Go to Jane's loto"
                 onPress={() =>
                     navigation.navigate("L")
                 }
             /> */}
-            {arrayViewJogosSorteados ? arrayViewJogosSorteados.map((item) => {
-                const jogo = jogoDoBanco(item)
-                return (
-                    <ItemJogo key={gerarKey()} item={jogo} cor={mudaCor(item.loteria)} />
+                {arrayViewJogosSorteados ? arrayViewJogosSorteados.map((item) => {
+                    const jogo = jogoDoBanco(item)
+                    return (
+                        <ItemJogo key={gerarKey()} item={jogo} cor={mudaCor(item.loteria)} />
 
-                )
-            }) :
-                <ViewMsgErro />
-            }
-        </Layout>
+                    )
+                }) :
+                    <ViewMsgErro />
+                }
+
+
+
+
+            </Layout>
+            <BannerAd
+                unitId={TestIds.BANNER}
+                size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+
+                requestOptions={{
+                    requestNonPersonalizedAdsOnly: true,
+                    networkExtras: {
+                        collapsible: "bottom"
+                    }
+                }}
+
+            />
+
+        </>
 
     );
 }

@@ -3,25 +3,26 @@ import React, { useState } from 'react';
 import {
     StyleSheet, View
 } from 'react-native';
-import Cartela from '../components/Cartela';
-import ViewBotao from '../components/ViewBotao';
-import { COR_BRANCO, COR_MILIONARIA } from '../constants/Cores';
-import Layout from '../components/Layout';
-import ViewSelecionados from '../components/ViewSelecionados';
-import { COMPARAR, LIMPAR, PRENCHER, QTD_DEZENAS_MILIONARIA, URL_BASE } from '../constants/Constants';
-import ViewCarregando from '../components/ViewCarregando';
-import LayoutResposta from '../components/LayoutResposta';
-import ViewText from '../components/ViewText';
+import Cartela from '../../components/Cartela';
+import ViewBotao from '../../components/ViewBotao';
+import { COR_BRANCO, COR_MILIONARIA } from '../../constants/Cores';
+import Layout from '../../components/Layout';
+import ViewSelecionados from '../../components/ViewSelecionados';
+import { COMPARAR, LIMPAR, PRENCHER, QTD_DEZENAS_MILIONARIA, URL_BASE } from '../../constants/Constants';
+import ViewCarregando from '../../components/ViewCarregando';
+import LayoutResposta from '../../components/LayoutResposta';
+import ViewText from '../../components/ViewText';
 import { useIsFocused } from '@react-navigation/native';
-import { axiosBusca, jogoSorteados, preencher, salvarNumeroNaLista } from '../utils/ultil';
-import ViewMsgErro from '../components/ViewMsgErro';
-import { STYLES } from '../Style';
-import { ViewBotoes } from '../components/ViewBotoes';
-import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_MILIONARIA } from '../rotas/Rotas';
-import { Premio } from '../model/Premio';
-import ViewPremio from '../components/ViewPremio';
-import { JogoSorteado } from '../model/jogoSorteado';
-import BuscaView from '../components/BuscaView';
+import { axiosBusca, jogoSorteados, preencher, salvarNumeroNaLista } from '../../utils/ultil';
+import ViewMsgErro from '../../components/ViewMsgErro';
+import { STYLES } from '../../Style';
+import { ViewBotoes } from '../../components/ViewBotoes';
+import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_MILIONARIA } from '../../rotas/Rotas';
+import { Premio } from '../../model/Premio';
+import ViewPremio from '../../components/ViewPremio';
+import { JogoSorteado } from '../../model/jogoSorteado';
+import BuscaView from '../../components/BuscaView';
+import RodapeBanner from '../../components/RodapeBanner';
 
 export default function MaisMilionaria({ navigation }) {
 
@@ -220,77 +221,81 @@ export default function MaisMilionaria({ navigation }) {
     }
 
     return (
-        <Layout cor={cor}>
-            {/* <StatusBar backgroundColor={corStatus} animated={true} /> */}
-            {carregando ? <ViewCarregando /> : null}
-            {erroServer ? <ViewMsgErro /> : null}
-            <BuscaView onPress={() => abrirBuscador()} />
-            <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_MILIONARIA} qtdNum={qtdNum} />
-            <View style={{ alignItems: 'center' }}>
-                <ViewText fontSize={25} value={"Trevos"} cor='#FFF' fontWeight={"bold"} />
-            </View>
+        <>
 
-            <Cartela dezenas={6}
-                tervo={true}
-                numerosSelecionados={numerosSelecionadosTrevos}
-                salvarNumeroNaLista={salvarNumeroTrevo}
-                cor={COR_MILIONARIA}
+            <Layout cor={cor}>
+                {/* <StatusBar backgroundColor={corStatus} animated={true} /> */}
+                {carregando ? <ViewCarregando /> : null}
+                {erroServer ? <ViewMsgErro /> : null}
+                <BuscaView onPress={() => abrirBuscador()} />
+                <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_MILIONARIA} qtdNum={qtdNum} />
+                <View style={{ alignItems: 'center' }}>
+                    <ViewText fontSize={25} value={"Trevos"} cor='#FFF' fontWeight={"bold"} />
+                </View>
 
-            />
-            <View style={{ alignItems: 'center' }}>
-                <ViewText fontSize={25} value={"Dezenas"} cor='#FFF' fontWeight={"bold"} />
-            </View>
-            <Cartela
-                dezenas={QTD_DEZENAS_MILIONARIA}
-                numerosSelecionados={numerosSelecionados}
-                salvarNumeroNaLista={salvarNumero}
-                cor={COR_MILIONARIA} />
+                <Cartela dezenas={6}
+                    tervo={true}
+                    numerosSelecionados={numerosSelecionadosTrevos}
+                    salvarNumeroNaLista={salvarNumeroTrevo}
+                    cor={COR_MILIONARIA}
 
-            <ViewBotoes
-                numJogos={arrayJogos.length}
-                estatistica={() => estatistica()}
-                limpar={() => limpar()}
-                preencherJogo={() => preencherJogo()}
-                compararJogo={() => compararJogo()}
-                cor={cor}
-            />
+                />
+                <View style={{ alignItems: 'center' }}>
+                    <ViewText fontSize={25} value={"Dezenas"} cor='#FFF' fontWeight={"bold"} />
+                </View>
+                <Cartela
+                    dezenas={QTD_DEZENAS_MILIONARIA}
+                    numerosSelecionados={numerosSelecionados}
+                    salvarNumeroNaLista={salvarNumero}
+                    cor={COR_MILIONARIA} />
 
-            <LayoutResposta>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]} >
-                    <ViewText cor={COR_BRANCO} value={"Jogos com 6 pontos e 2 trevos: " + pontos6e2trevos} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor={COR_BRANCO} value={"Jogos com 6 pontos e 1 ou 0 trevo: " + pontos6e1trevo} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor={COR_BRANCO} value={"Jogos com 5 pontos e 2 trevos: " + pontos5e2trevos} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor={COR_BRANCO} value={"Jogos com 5 pontos e 1 ou 0 trevo: " + pontos5e1trevos} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor={COR_BRANCO} value={"Jogos com 4 pontos e 2 trevo: " + pontos4e2trevos} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor={COR_BRANCO} value={"Jogos com 4 pontos e 1 ou 0 trevo: " + pontos4e1trevos} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor={COR_BRANCO} value={"Jogos com 3 pontos e 2 trevos: " + pontos3e2trevos} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor={COR_BRANCO} value={"Jogos com 3 pontos e 1 trevo: " + pontos3e1trevos} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor={COR_BRANCO} value={"Jogos com 2 pontos e 2 trevos: " + pontos2e2trevos} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor={COR_BRANCO} value={"Jogos com 2 pontos e 1 trevo: " + pontos2e1trevos} />
-                </View>
-            </LayoutResposta>
+                <ViewBotoes
+                    numJogos={arrayJogos.length}
+                    estatistica={() => estatistica()}
+                    limpar={() => limpar()}
+                    preencherJogo={() => preencherJogo()}
+                    compararJogo={() => compararJogo()}
+                    cor={cor}
+                />
 
-            {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
+                <LayoutResposta>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]} >
+                        <ViewText cor={COR_BRANCO} value={"Jogos com 6 pontos e 2 trevos: " + pontos6e2trevos} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor={COR_BRANCO} value={"Jogos com 6 pontos e 1 ou 0 trevo: " + pontos6e1trevo} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor={COR_BRANCO} value={"Jogos com 5 pontos e 2 trevos: " + pontos5e2trevos} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor={COR_BRANCO} value={"Jogos com 5 pontos e 1 ou 0 trevo: " + pontos5e1trevos} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor={COR_BRANCO} value={"Jogos com 4 pontos e 2 trevo: " + pontos4e2trevos} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor={COR_BRANCO} value={"Jogos com 4 pontos e 1 ou 0 trevo: " + pontos4e1trevos} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor={COR_BRANCO} value={"Jogos com 3 pontos e 2 trevos: " + pontos3e2trevos} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor={COR_BRANCO} value={"Jogos com 3 pontos e 1 trevo: " + pontos3e1trevos} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor={COR_BRANCO} value={"Jogos com 2 pontos e 2 trevos: " + pontos2e2trevos} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor={COR_BRANCO} value={"Jogos com 2 pontos e 1 trevo: " + pontos2e1trevos} />
+                    </View>
+                </LayoutResposta>
 
-        </Layout>
+                {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
+
+            </Layout>
+            <RodapeBanner />
+        </>
 
 
     );

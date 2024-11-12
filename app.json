@@ -2,7 +2,7 @@
   "expo": {
     "name": "loteria",
     "slug": "loteria",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "icon": "./assets/icon.png",
@@ -20,7 +20,6 @@
         "foregroundImage": "assets/adaptive-icon.png",
         "backgroundColor": "#49B146"
       },
-      
       "versionCode": 12,
       "package": "com.anonymous.loteria"
     },
@@ -31,6 +30,14 @@
       "eas": {
         "projectId": "04fefcaa-5cbf-4a2f-8ebc-b27e80f16859"
       }
-    }
+    },
+    "plugins": [
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-7075046661098667~2923301600"
+        }
+      ]
+    ]
   }
 }

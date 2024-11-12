@@ -6,10 +6,10 @@ import { Alert, PermissionsAndroid } from 'react-native';
 import messaging, { firebase } from '@react-native-firebase/messaging';
 import { Notificacao } from './src/model/Notificacao';
 
+
 export default function App() {
 
   const requestUserPermission = async () => {
-
 
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -82,9 +82,6 @@ export default function App() {
 
     return unsubscribe
   })
-
-
-
 
 
 

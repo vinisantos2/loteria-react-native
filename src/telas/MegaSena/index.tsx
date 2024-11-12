@@ -5,25 +5,26 @@ import {
     View,
 } from 'react-native';
 
-import Layout from '../components/Layout';
-import ViewBotao from '../components/ViewBotao';
-import Cartela from '../components/Cartela';
-import { COMPARAR, LIMPAR, PRENCHER, URL_BASE } from '../constants/Constants';
-import ViewSelecionados from '../components/ViewSelecionados';
-import { COR_MEGA } from '../constants/Cores';
-import ViewCarregando from '../components/ViewCarregando';
-import LayoutResposta from '../components/LayoutResposta';
-import ViewText from '../components/ViewText';
+import Layout from '../../components/Layout';
+import ViewBotao from '../../components/ViewBotao';
+import Cartela from '../../components/Cartela';
+import { COMPARAR, LIMPAR, PRENCHER, URL_BASE } from '../../constants/Constants';
+import ViewSelecionados from '../../components/ViewSelecionados';
+import { COR_MEGA } from '../../constants/Cores';
+import ViewCarregando from '../../components/ViewCarregando';
+import LayoutResposta from '../../components/LayoutResposta';
+import ViewText from '../../components/ViewText';
 import { useIsFocused } from '@react-navigation/native';
-import { axiosBusca, conexao, estatistica, preencher, jogoSorteados, salvarNumeroNaLista } from '../utils/ultil';
-import { STYLES } from '../Style';
-import ViewMsgErro from '../components/ViewMsgErro';
-import { ViewBotoes } from '../components/ViewBotoes';
-import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_MEGA } from '../rotas/Rotas';
-import { Premio } from '../model/Premio';
-import ViewPremio from '../components/ViewPremio';
-import { JogoSorteado } from '../model/jogoSorteado';
-import BuscaView from '../components/BuscaView';
+import { axiosBusca, conexao, estatistica, preencher, jogoSorteados, salvarNumeroNaLista } from '../../utils/ultil';
+import { STYLES } from '../../Style';
+import ViewMsgErro from '../../components/ViewMsgErro';
+import { ViewBotoes } from '../../components/ViewBotoes';
+import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_MEGA } from '../../rotas/Rotas';
+import { Premio } from '../../model/Premio';
+import ViewPremio from '../../components/ViewPremio';
+import { JogoSorteado } from '../../model/jogoSorteado';
+import BuscaView from '../../components/BuscaView';
+import RodapeBanner from '../../components/RodapeBanner';
 
 export default function MegaSena({ navigation }) {
 
@@ -146,43 +147,46 @@ export default function MegaSena({ navigation }) {
     }
 
     return (
-        <Layout cor={cor} >
-            {/* <StatusBar backgroundColor={corStatus}  /> */}
-            {carregando ? <ViewCarregando /> : null}
-            {erroServer ? <ViewMsgErro /> : null}
-            <BuscaView onPress={() => abrirBuscador()} />
-            <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_MEGA} qtdNum={qtdNum} />
+        <>
 
-            <Cartela
-                dezenas={qtdDezenasMega}
-                numerosSelecionados={numerosSelecionados}
-                salvarNumeroNaLista={salvarNNaLista}
-                cor={cor} />
+            <Layout cor={cor} >
+                {/* <StatusBar backgroundColor={corStatus}  /> */}
+                {carregando ? <ViewCarregando /> : null}
+                {erroServer ? <ViewMsgErro /> : null}
+                <BuscaView onPress={() => abrirBuscador()} />
+                <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_MEGA} qtdNum={qtdNum} />
 
-            <ViewBotoes
-                cor={cor}
-                numJogos={arrayJogosSorteados.length}
-                estatistica={() => estatistica()}
-                limpar={() => limpar()}
-                preencherJogo={() => preencherNumeros()}
-                compararJogo={() => compararJogo()} />
+                <Cartela
+                    dezenas={qtdDezenasMega}
+                    numerosSelecionados={numerosSelecionados}
+                    salvarNumeroNaLista={salvarNNaLista}
+                    cor={cor} />
 
-            <LayoutResposta>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor='#FFF' value={"Jogos com 6 pontos: " + pontos6} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor='#FFF' value={"Jogos com 5 pontos: " + pontos5} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
-                </View>
-            </LayoutResposta>
+                <ViewBotoes
+                    cor={cor}
+                    numJogos={arrayJogosSorteados.length}
+                    estatistica={() => estatistica()}
+                    limpar={() => limpar()}
+                    preencherJogo={() => preencherNumeros()}
+                    compararJogo={() => compararJogo()} />
 
-            {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
+                <LayoutResposta>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor='#FFF' value={"Jogos com 6 pontos: " + pontos6} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor='#FFF' value={"Jogos com 5 pontos: " + pontos5} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
+                    </View>
+                </LayoutResposta>
 
-        </Layout>
+                {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
 
+            </Layout>
+            <RodapeBanner />
+        </>
 
     );
 }

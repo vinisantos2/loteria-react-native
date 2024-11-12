@@ -4,24 +4,25 @@ import {
     View,
 
 } from 'react-native';
-import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../utils/ultil';
-import Layout from '../components/Layout';
-import { COR_LOTOFACIL } from '../constants/Cores';
-import Cartela from '../components/Cartela';
-import { URL_BASE } from '../constants/Constants';
-import ViewSelecionados from '../components/ViewSelecionados';
-import ViewCarregando from '../components/ViewCarregando';
-import LayoutResposta from '../components/LayoutResposta';
-import ViewText from '../components/ViewText';
+import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../../utils/ultil';
+import Layout from '../../components/Layout';
+import { COR_LOTOFACIL } from '../../constants/Cores';
+import Cartela from '../../components/Cartela';
+import { URL_BASE } from '../../constants/Constants';
+import ViewSelecionados from '../../components/ViewSelecionados';
+import ViewCarregando from '../../components/ViewCarregando';
+import LayoutResposta from '../../components/LayoutResposta';
+import ViewText from '../../components/ViewText';
 import { useIsFocused } from '@react-navigation/native';
-import { STYLES } from '../Style';
-import ViewMsgErro from '../components/ViewMsgErro';
-import { ViewBotoes } from '../components/ViewBotoes';
-import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_LOTOFACIL } from '../rotas/Rotas';
-import ViewPremio from '../components/ViewPremio';
-import BuscaView from '../components/BuscaView';
-import { JogoSorteado } from '../model/jogoSorteado';
-import Carregando from '../components/Carregando';
+import { STYLES } from '../../Style';
+import ViewMsgErro from '../../components/ViewMsgErro';
+import { ViewBotoes } from '../../components/ViewBotoes';
+import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_LOTOFACIL } from '../../rotas/Rotas';
+import ViewPremio from '../../components/ViewPremio';
+import BuscaView from '../../components/BuscaView';
+import { JogoSorteado } from '../../model/jogoSorteado';
+import Carregando from '../../components/Carregando';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 export default function Lotofacil({ navigation }) {
     const [pontos15, setPontos15] = useState(0)
@@ -163,51 +164,65 @@ export default function Lotofacil({ navigation }) {
     }
 
     return (
-        <Layout cor={cor}>
-            {/* <StatusBarView cor={corStatus} /> */}
+        <>
 
-            {carregandoPag ? <ViewCarregando /> : null}
-            {erroServer ? <ViewMsgErro /> : null}
-            {carregando ? <Carregando /> : null}
+            <Layout cor={cor}>
+                {/* <StatusBarView cor={corStatus} /> */}
 
-            <BuscaView onPress={() => abrirBuscador()} />
-            <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_LOTOFACIL} qtdNum={qtdNum} />
-            <Cartela
-                dezenas={qtdDezenasLotofacil}
-                numerosSelecionados={numerosSelecionados}
-                salvarNumeroNaLista={salvarNumero}
-                cor={cor} />
-            {carregando ? <Carregando /> : null}
-            <ViewBotoes
-                numJogos={arrayJogos.length}
-                limpar={() => limpar()}
-                estatistica={() => estatistica()}
-                preencherJogo={() => preencherJogo()}
-                compararJogo={() => compararJogo()}
-                cor={cor}
+                {carregandoPag ? <ViewCarregando /> : null}
+                {erroServer ? <ViewMsgErro /> : null}
+                {carregando ? <Carregando /> : null}
+
+                <BuscaView onPress={() => abrirBuscador()} />
+                <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_LOTOFACIL} qtdNum={qtdNum} />
+                <Cartela
+                    dezenas={qtdDezenasLotofacil}
+                    numerosSelecionados={numerosSelecionados}
+                    salvarNumeroNaLista={salvarNumero}
+                    cor={cor} />
+                {carregando ? <Carregando /> : null}
+                <ViewBotoes
+                    numJogos={arrayJogos.length}
+                    limpar={() => limpar()}
+                    estatistica={() => estatistica()}
+                    preencherJogo={() => preencherJogo()}
+                    compararJogo={() => compararJogo()}
+                    cor={cor}
+                />
+
+                <LayoutResposta>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor="#FFF" value={"Jogos com 15 pontos: " + pontos15} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor="#FFF" value={"Jogos com 14 pontos: " + pontos14} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor="#FFF" value={"Jogos com 13 pontos: " + pontos13} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor="#FFF" value={"Jogos com 12 pontos: " + pontos12} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText cor="#FFF" value={"Jogos com 11 pontos: " + pontos11} />
+                    </View>
+                </LayoutResposta>
+
+                {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
+
+            </Layout>
+            <BannerAd
+                unitId={TestIds.BANNER}
+                size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                requestOptions={{
+                    requestNonPersonalizedAdsOnly: true,
+                    networkExtras: {
+                        collapsible: "bottom"
+                    }
+                }}
+
             />
-
-            <LayoutResposta>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor="#FFF" value={"Jogos com 15 pontos: " + pontos15} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor="#FFF" value={"Jogos com 14 pontos: " + pontos14} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor="#FFF" value={"Jogos com 13 pontos: " + pontos13} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor="#FFF" value={"Jogos com 12 pontos: " + pontos12} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText cor="#FFF" value={"Jogos com 11 pontos: " + pontos11} />
-                </View>
-            </LayoutResposta>
-
-            {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
-
-        </Layout>
+        </>
 
     );
 }

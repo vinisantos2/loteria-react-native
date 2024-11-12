@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import Cartela from '../components/Cartela';
-import ViewBotao from '../components/ViewBotao';
-import { COR_TIME } from '../constants/Cores';
-import Layout from '../components/Layout';
-import ViewSelecionados from '../components/ViewSelecionados';
-import { COMPARAR, LIMPAR, PRENCHER, QTD_DEZENAS_TIME, URL_BASE } from '../constants/Constants';
-import ViewCarregando from '../components/ViewCarregando';
-import LayoutResposta from '../components/LayoutResposta';
-import ViewText from '../components/ViewText';
+import Cartela from '../../components/Cartela';
+import { COR_TIME } from '../../constants/Cores';
+import Layout from '../../components/Layout';
+import ViewSelecionados from '../../components/ViewSelecionados';
+import { QTD_DEZENAS_TIME, URL_BASE } from '../../constants/Constants';
+import ViewCarregando from '../../components/ViewCarregando';
+import LayoutResposta from '../../components/LayoutResposta';
+import ViewText from '../../components/ViewText';
 import { useIsFocused } from '@react-navigation/native';
-import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../utils/ultil';
-import { STYLES } from '../Style';
-import ViewMsgErro from '../components/ViewMsgErro';
-import { ViewBotoes } from '../components/ViewBotoes';
-import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_TIME } from '../rotas/Rotas';
-import { Premio } from '../model/Premio';
-import ViewPremio from '../components/ViewPremio';
-import { JogoSorteado } from '../model/jogoSorteado';
-import BuscaView from '../components/BuscaView';
+import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../../utils/ultil';
+import { STYLES } from '../../Style';
+import ViewMsgErro from '../../components/ViewMsgErro';
+import { ViewBotoes } from '../../components/ViewBotoes';
+import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_TIME } from '../../rotas/Rotas';
+import ViewPremio from '../../components/ViewPremio';
+import { JogoSorteado } from '../../model/jogoSorteado';
+import BuscaView from '../../components/BuscaView';
+import RodapeBanner from '../../components/RodapeBanner';
 
 export default function TimeMania({ navigation }) {
 
@@ -152,48 +151,51 @@ export default function TimeMania({ navigation }) {
     }
 
     return (
-        <Layout cor={cor}>
-            {/* <StatusBar backgroundColor={corStatus} animated={true} /> */}
-            {carregando ? <ViewCarregando /> : null}
-            {erroServer ? <ViewMsgErro /> : null}
-            <BuscaView onPress={() => abrirBuscador()} />
-            <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_TIME} qtdNum={qtdNum} />
-            <Cartela dezenas={QTD_DEZENAS_TIME}
-                numerosSelecionados={numerosSelecionados}
-                salvarNumeroNaLista={salvarNumero}
-                cor={COR_TIME} />
+        <>
 
-            <ViewBotoes
-                cor={cor}
-                numJogos={arrayJogos.length}
-                estatistica={() => estatistica()}
-                limpar={() => limpar()}
-                preencherJogo={() => preencherJogo()}
-                compararJogo={() => compararJogo()} />
+            <Layout cor={cor}>
+                {/* <StatusBar backgroundColor={corStatus} animated={true} /> */}
+                {carregando ? <ViewCarregando /> : null}
+                {erroServer ? <ViewMsgErro /> : null}
+                <BuscaView onPress={() => abrirBuscador()} />
+                <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_TIME} qtdNum={qtdNum} />
+                <Cartela dezenas={QTD_DEZENAS_TIME}
+                    numerosSelecionados={numerosSelecionados}
+                    salvarNumeroNaLista={salvarNumero}
+                    cor={COR_TIME} />
+
+                <ViewBotoes
+                    cor={cor}
+                    numJogos={arrayJogos.length}
+                    estatistica={() => estatistica()}
+                    limpar={() => limpar()}
+                    preencherJogo={() => preencherJogo()}
+                    compararJogo={() => compararJogo()} />
 
 
 
-            <LayoutResposta>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 7 pontos: " + pontos7} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 6 pontos: " + pontos6} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 5 pontos: " + pontos5} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 3 pontos: " + pontos3} />
-                </View>
-            </LayoutResposta>
-            {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
+                <LayoutResposta>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 7 pontos: " + pontos7} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 6 pontos: " + pontos6} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 5 pontos: " + pontos5} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 3 pontos: " + pontos3} />
+                    </View>
+                </LayoutResposta>
+                {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
 
-        </Layout>
-
+            </Layout>
+            <RodapeBanner />
+        </>
 
     );
 }

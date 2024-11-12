@@ -1,15 +1,16 @@
 import { StyleSheet, View } from "react-native";
-import ViewText from "../components/ViewText";
-import ItemEstatistica from "../itemsView/ItemEstatistica";
+import ViewText from "../../components/ViewText";
+import ItemEstatistica from "../../itemsView/ItemEstatistica";
 import React, { useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import { converterString, estatistica, gerarKey } from "../utils/ultil";
-import { Dropdown } from "../components/Dropdown";
-import Layout from "../components/Layout";
-import { COR_LEGENDA } from "../constants/Cores";
-import { Estatistica } from "../model/Estatistica";
-import { JogoSorteado } from '../model/jogoSorteado';
-import LegendaView from "../components/LegendaView";
+import { converterString, estatistica, gerarKey } from "../../utils/ultil";
+import { Dropdown } from "../../components/Dropdown";
+import Layout from "../../components/Layout";
+import { COR_LEGENDA } from "../../constants/Cores";
+import { Estatistica } from "../../model/Estatistica";
+import { JogoSorteado } from '../../model/jogoSorteado';
+import LegendaView from "../../components/LegendaView";
+import RodapeBanner from "../../components/RodapeBanner";
 export default function TelaEstatistica({ route }) {
 
     const { nomeJogo } = route.params ? route.params : "";
@@ -82,40 +83,44 @@ export default function TelaEstatistica({ route }) {
 
 
     return (
-        <Layout>
+        <>
 
-            <View style={styles.content}>
-                <LegendaView cor={cor} nomeJogo={nomeJogo} />
-                <View>
-                    <Dropdown click={(e) => filtro(e)} placeHolder={"Selecione quantidade de jogos"} array={arrayFiltro} />
-                </View>
+            <Layout>
 
-                <View style={styles.viewLegenda}>
-                    <View style={styles.legenda}>
-                        <ViewText cor="#000" fontSize={20} value={"Dezenas"} />
+                <View style={styles.content}>
+                    <LegendaView cor={cor} nomeJogo={nomeJogo} />
+                    <View>
+                        <Dropdown click={(e) => filtro(e)} placeHolder={"Selecione quantidade de jogos"} array={arrayFiltro} />
                     </View>
 
-                    <View style={styles.legenda}>
-                        <ViewText cor="#000" fontSize={20} value={"Vezes"} />
-                    </View>
-                    <View style={styles.legenda}>
-                        <ViewText cor="#000" fontSize={20} value={"%"} />
-                    </View>
-                    {/* <View style={styles.legenda}>
+                    <View style={styles.viewLegenda}>
+                        <View style={styles.legenda}>
+                            <ViewText cor="#000" fontSize={20} value={"Dezenas"} />
+                        </View>
+
+                        <View style={styles.legenda}>
+                            <ViewText cor="#000" fontSize={20} value={"Vezes"} />
+                        </View>
+                        <View style={styles.legenda}>
+                            <ViewText cor="#000" fontSize={20} value={"%"} />
+                        </View>
+                        {/* <View style={styles.legenda}>
                         <ViewText fontSize={20} value={total} />
                     </View> */}
+                    </View>
+
+
+                    {arrayViewEstatistica.length > 1 ? arrayViewEstatistica.map(item => {
+                        return (
+                            <ItemEstatistica key={gerarKey()} obj={item} total={total} />
+                        )
+                    }) : null}
+
                 </View>
 
-
-                {arrayViewEstatistica.length > 1 ? arrayViewEstatistica.map(item => {
-                    return (
-                        <ItemEstatistica key={gerarKey()} obj={item} total={total} />
-                    )
-                }) : null}
-
-            </View>
-
-        </Layout>
+            </Layout>
+            <RodapeBanner />
+        </>
     )
 }
 
