@@ -15,7 +15,7 @@ javaScript
 
 <img src="imagensApp/lotofacil.jpeg" alt="Tela lotofacil" style=" width: 500px; height: 800px;  align-items: center; justify-content: center;">
 
-## tela lotomania:
+## tela lotomania: nada
 
 <img src="imagensApp/lotomania.jpeg" alt="Tela lotomania" style=" width: 500px; height: 800px;  align-items: center; justify-content: center;">
 
