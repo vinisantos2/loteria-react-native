@@ -2,10 +2,12 @@ import { StyleSheet, View } from "react-native";
 import ViewText from "./ViewText";
 import { gerarKey } from "../utils/ultil";
 import { JogoSorteado } from "../model/jogoSorteado";
+import DezenasSelecionados from "../itemsView/DezenasSelecionados";
 
-export default function ViewPremio({ array, cor }) {
+export default function ViewPremio({ array, cor, arrayDezenas, arrayTrevosSelecionados = undefined }) {
     const arrayPremiacao: Array<JogoSorteado> = array
-
+    const arraySelecionadas: string = arrayDezenas
+    const arrayTrevos: string = arrayTrevosSelecionados
     arrayPremiacao.sort(compare)
 
     arrayPremiacao.reverse()
@@ -42,6 +44,28 @@ export default function ViewPremio({ array, cor }) {
                             </View>
                         </View>
 
+                        {item.trevos.length>0 ?
+                            <View style={{ alignItems: "center" }}>
+                                <ViewText value="Trevos" />
+                                <DezenasSelecionados arrarComparar={arrayTrevos} numerosSelecionados={item.trevos} cor={cor} />
+                            </View>
+                            : null}
+
+                        <View style={{ alignItems: "center" }}>
+                            <ViewText value="Dezenas" />
+                            <DezenasSelecionados arrarComparar={arraySelecionadas} numerosSelecionados={item.dezenas} cor={cor} />
+                        </View>
+
+                        { }
+
+                        {item.dezenas2 ?
+                            <View style={{ alignItems: "center" }}>
+                                <ViewText value="Dezenas 2" />
+                                <DezenasSelecionados arrarComparar={arraySelecionadas} numerosSelecionados={item.dezenas2} cor={cor} />
+                            </View>
+                            : null}
+
+
 
                     </View>
 
@@ -55,13 +79,14 @@ export default function ViewPremio({ array, cor }) {
 const styles = StyleSheet.create({
 
     content: {
-        alignItems: "center"
+        width: "100%",
+
     },
     legenda: {
         padding: 15
     },
     viewItem: {
-        flexDirection: "row",
+        flexDirection: "column",
         alignItems: "center",
         flexWrap: "wrap",
         backgroundColor: "#123",

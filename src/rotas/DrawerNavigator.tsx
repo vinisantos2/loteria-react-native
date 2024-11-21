@@ -3,14 +3,16 @@ import Lotofacil from "../telas/Lotofacil";
 import Lotomania from "../telas/Lotomania";
 import MegaSena from "../telas/MegaSena";
 import Quina from "../telas/Quina";
-import { ROTA_RESULTADOS, ROTA_LOTOMANIA, ROTA_MEGA, ROTA_QUINA, ROTA_LOTOFACIL, ROTA_TIME, ROTA_MILIONARIA, ROTA_DUPLA, ROTA_ESTATISTICA, ROTA_BUSCA, ROTA_DETALHES } from "./Rotas";
-import { COR_RESULTADOS, COR_DUPLA, COR_LOTOFACIL, COR_LOTOMAIA, COR_MEGA, COR_MILIONARIA, COR_PRETO, COR_QUINA, COR_TIME } from "../constants/Cores";
+import { ROTA_RESULTADOS, ROTA_LOTOMANIA, ROTA_MEGA, ROTA_QUINA, ROTA_LOTOFACIL, ROTA_TIME, ROTA_MILIONARIA, ROTA_DUPLA, ROTA_ESTATISTICA, ROTA_BUSCA, ROTA_DETALHES, ROTA_DIA } from "./Rotas";
+import { COR_RESULTADOS, COR_DUPLA, COR_LOTOFACIL, COR_LOTOMAIA, COR_MEGA, COR_MILIONARIA, COR_PRETO, COR_QUINA, COR_TIME, COR_DIA } from "../constants/Cores";
 import Resultados from "../telas/Resultados";
 import TimeMania from "../telas/TimeMania";
 import MaisMilionaria from "../telas/Milionaria";
 import DuplaSena from "../telas/DuplaSena";
 import { headerTitleStyle, styloDrwer, textDrawer } from "./DrawerItemStyle";
 import { HeaderStyleDrawer } from "./HeaderStyle";
+import DiaDeSorte from "../telas/DiaDeSorte";
+import TelaBusca from "../telas/TelaBusca";
 
 const Drawer = createDrawerNavigator();
 
@@ -37,11 +39,23 @@ export function DrawerNav() {
                 headerStyle: { backgroundColor: COR_RESULTADOS, },
 
             }} name={ROTA_RESULTADOS} component={Resultados} />
+          
+          {/* Tela busca Jogo */}
+            <Drawer.Screen options={{
+                drawerItemStyle: styloDrwer(COR_RESULTADOS),
+                headerStyle: { backgroundColor: COR_RESULTADOS, },
+
+            }} name={ROTA_BUSCA} component={TelaBusca} />
             {/* dupla sena */}
             <Drawer.Screen options={{
                 drawerItemStyle: styloDrwer(COR_DUPLA),
                 headerStyle: { backgroundColor: COR_DUPLA },
             }} name={ROTA_DUPLA} component={DuplaSena} />
+            {/* dia de sorte */}
+            <Drawer.Screen options={{
+                drawerItemStyle: styloDrwer(COR_DIA),
+                headerStyle: { backgroundColor: COR_DIA },
+            }} name={ROTA_DIA} component={DiaDeSorte} />
 
             <Drawer.Screen options={{
                 drawerItemStyle: styloDrwer(COR_LOTOFACIL),

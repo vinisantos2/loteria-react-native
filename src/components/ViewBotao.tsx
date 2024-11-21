@@ -8,7 +8,7 @@ export default function ViewBotao({ onPress, value }) {
 
     return (
         <TouchableOpacity style={styles.botao} onPress={onPress}>
-            <ViewText fontWeight={"bold"} cor={COR_BRANCO}  value={value} fontSize={25} />
+            <ViewText fontWeight={"bold"} cor={COR_BRANCO} value={value} fontSize={17} />
         </TouchableOpacity>
     )
 
@@ -16,14 +16,11 @@ export default function ViewBotao({ onPress, value }) {
 
 const styles = StyleSheet.create({
     botao: {
-        margin: 5,
-        width: "80%",
         backgroundColor: COR_BOTAO,
-        borderRadius: 15,
-        padding: 10,
+        padding: 12,
         justifyContent: 'center',
         alignItems: 'center',
-
+        borderWidth: 1
     },
 
 

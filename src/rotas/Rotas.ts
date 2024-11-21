@@ -1,6 +1,7 @@
 export const  ROTA_LOTOFACIL = "Lotofácil"
 export const  ROTA_MEGA = "Mega sena"
 export const  ROTA_DUPLA = "Dupla sena"
+export const  ROTA_DIA= "Dia de sorte"
 export const  ROTA_QUINA = "Quina"
 export const  ROTA_LOTOMANIA = "Lotomania"
 export const  ROTA_RESULTADOS = "Resultados"

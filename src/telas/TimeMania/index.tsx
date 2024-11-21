@@ -18,6 +18,8 @@ import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
 import BuscaView from '../../components/BuscaView';
 import RodapeBanner from '../../components/RodapeBanner';
+import Carregando from '../../components/Carregando';
+import ViewEsconderIcone from '../Views/ViewEsconderCartela';
 
 export default function TimeMania({ navigation }) {
 
@@ -26,7 +28,9 @@ export default function TimeMania({ navigation }) {
     const [pontos5, setPontos5] = useState(0)
     const [pontos6, setPontos6] = useState(0)
     const [pontos7, setPontos7] = useState(0)
-    const [carregando, setCarregando] = useState(false)
+    const [carregando, setCarregando] = useState(true)
+    const [carregandoPag, setCarregandoPag] = useState(false)
+    const [viewCartela, setViewCartela] = useState(true)
     const [erroServer, setErroServer] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
     const [arrayJogos, setArrayJogos] = useState([])
@@ -71,6 +75,7 @@ export default function TimeMania({ navigation }) {
         setPontos5(0)
         setPontos4(0)
         setPontos3(0)
+        setViewCartela(true)
 
     }
 
@@ -81,6 +86,7 @@ export default function TimeMania({ navigation }) {
 
     async function compararJogo() {
         setCarregando(true)
+        setViewCartela(false)
         const arrayPremiacao = new Array<JogoSorteado>
         let contador = 0
         let pontos7 = 0
@@ -146,31 +152,36 @@ export default function TimeMania({ navigation }) {
         await navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, nomeJogo, cor, dezenas })
         setCarregando(false)
     }
-    async function abrirBuscador() {
-        await navigation.navigate(ROTA_BUSCA, { arrayJogosSorteados: arrayJogos, nomeJogo, cor })
-    }
+
 
     return (
         <>
 
             <Layout cor={cor}>
                 {/* <StatusBar backgroundColor={corStatus} animated={true} /> */}
-                {carregando ? <ViewCarregando /> : null}
+
+                {carregandoPag ? <ViewCarregando /> : null}
                 {erroServer ? <ViewMsgErro /> : null}
-                <BuscaView onPress={() => abrirBuscador()} />
-                <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_TIME} qtdNum={qtdNum} />
-                <Cartela dezenas={QTD_DEZENAS_TIME}
-                    numerosSelecionados={numerosSelecionados}
-                    salvarNumeroNaLista={salvarNumero}
-                    cor={COR_TIME} />
+                {carregando ? <Carregando /> : null}
+
 
                 <ViewBotoes
-                    cor={cor}
                     numJogos={arrayJogos.length}
-                    estatistica={() => estatistica()}
                     limpar={() => limpar()}
+                    estatistica={() => estatistica()}
                     preencherJogo={() => preencherJogo()}
-                    compararJogo={() => compararJogo()} />
+                    compararJogo={() => compararJogo()}
+                    cor={cor}
+                />
+                <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_TIME} qtdNum={qtdNum} />
+                {viewCartela ? <Cartela
+                    dezenas={QTD_DEZENAS_TIME}
+                    numerosSelecionados={numerosSelecionados}
+                    salvarNumeroNaLista={salvarNumero}
+                    cor={cor} /> : null}
+
+                <ViewEsconderIcone setViewCartela={setViewCartela} viewCartela={viewCartela} />
+
 
 
 
@@ -191,7 +202,7 @@ export default function TimeMania({ navigation }) {
                         <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 3 pontos: " + pontos3} />
                     </View>
                 </LayoutResposta>
-                {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
+                {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}
 
             </Layout>
             <RodapeBanner />

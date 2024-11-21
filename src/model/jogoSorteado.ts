@@ -39,4 +39,22 @@ export function jogoDoBanco(item) {
     jogo.localGanhadores = item["resultado"]["ganhadores"]
     return jogo
 }
+export function jogoDoBanco2(item) {
+    const jogo = new JogoSorteado
+    jogo.loteria = item['nome']
+    jogo.concurso = item["numero_concurso"]
+    jogo.acumulou = item["acumulou"]
+    jogo.valorProximoConcurso = formatarReal(item["valor_estimado_proximo_concurso"])
+    jogo.dezenas = item["dezenas"]
+    jogo.dezenas2 = item["dezenas_2"]
+    jogo.loteca = item["resultado_equipes_esportivas"]
+    jogo.data = item["data_concurso"]
+    jogo.dataProximoConcurso = item["data_proximo_concurso"]
+    jogo.trevos = item["trevos_sorteados"]
+    jogo.timeCoracao =item["time_coracao"]
+    jogo.mesSorte = item["mes_da_sorte"]
+    jogo.premiacoes = item["premiacao"]
+    jogo.localGanhadores = item["ganhadores"]
+    return jogo
+}
 

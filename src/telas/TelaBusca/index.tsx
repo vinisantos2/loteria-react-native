@@ -1,72 +1,135 @@
-import { Alert, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import LegendaView from "../../components/LegendaView";
-import { useEffect, useState } from "react";
-import { JogoSorteado } from "../../model/jogoSorteado";
-import ViewText from "../../components/ViewText";
-import DezenasSelecionados from "../../itemsView/DezenasSelecionados";
+import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { jogoDoBanco, jogoDoBanco2, JogoSorteado } from "../../model/jogoSorteado";
+import { ViewLegenda } from "../../components/ViewLegendaJogo";
+import { ViewSorteados } from "../../components/ViewSorteados";
 import ItemPremiacao from "../../itemsView/ItemPremiacao";
-import Layout from "../../components/Layout";
+import ItemLocalGanhadores from "../../itemsView/ItemLocalGanhadores";
 import RodapeBanner from "../../components/RodapeBanner";
-export default function TelaBusca({ route }) {
-    const { nomeJogo } = route.params ? route.params : "";
-    const { arrayJogosSorteados } = route.params ? route.params : "";
-    const { cor } = route.params ? route.params : "";
-    const [numConcurso, setNumConcurso] = useState("")
-    const [jogo, setJogo] = useState(new JogoSorteado)
+import { DIA, DUPLA, LOTECA, LOTOFACIL, LOTOMANIA, MEGA, MILIONARIA, QUINA, SUPER, TIME } from "../../constants/Nomes";
+import { Dropdown } from "../../components/Dropdown";
+import axios from "axios";
+import { axiosBusca, gerarKey, mudaCor } from "../../utils/ultil";
+import ViewText from "../../components/ViewText";
+import { STYLES } from "../../Style";
+import { useState } from "react";
+import ViewEsconderIcone from "../Views/ViewEsconderCartela";
+import ViewInfoProximoConcurso from "../../components/ViewInfoProximoConcurso";
 
-    function buscarConcurso() {
-        const array: Array<JogoSorteado> = arrayJogosSorteados
-        let achou: boolean = false
-        array.map((item) => {
-            if (item.concurso == numConcurso) {
-                setJogo(item)
-                achou = true
-            }
-        })
-        if (!achou) {
-            Alert.alert("Não encontrado", " concurso nº " + numConcurso + " não encontrado ")
-        }
+export default function TelaBusca({ route }) {
+    const [numConcurso, setNumConcurso] = useState("")
+    const [loteria, setLoteria] = useState("")
+    const [arrayJogos, setArrayJogos] = useState<Array<object>>([])
+    const [jogo, setJogo] = useState<JogoSorteado>(undefined)
+    const [viewResultado, setViewResultado] = useState(false)
+    console.log(arrayJogos)
+    const arrayFiltro =
+        [
+            { label: DUPLA, value: 'duplasena' },
+            { label: DIA, value: 'diadesorte' },
+            { label: LOTECA, value: 'LOTECA' },
+            { label: LOTOFACIL, value: 'LOTOFACIL' },
+            { label: LOTOMANIA, value: 'LOTOMANIA' },
+            { label: MILIONARIA, value: 'maismilionaria' },
+            { label: MEGA, value: 'megasena' },
+            { label: QUINA, value: 'QUINA' },
+            { label: SUPER, value: 'supersete' },
+            { label: TIME, value: 'timemania' },
+
+        ]
+
+    async function filtro(e: string) {
+        if (e === undefined) return
+        let concurso = "ultimos5"
+        const url = "https://apiloterias.com.br/app/v2/resultado?loteria=" + e + "&token=GiNtwyxspInrON9&concurso=" + concurso
+        setLoteria(e)
+        const array = await axiosBusca(url)
+        setArrayJogos(array)
+        setNumConcurso("")
+
+    }
+    async function buscarJogo() {
+        const url = "https://apiloterias.com.br/app/v2/resultado?loteria=" + loteria + "&token=GiNtwyxspInrON9&concurso=" + numConcurso
+        const array = await axiosBusca(url)
+        const jogo = jogoDoBanco2(array)
+        setJogo(jogo)
+        setArrayJogos([])
+        setNumConcurso("")
     }
 
+    function viewJogo() {
+        if (jogo === undefined) return null
+        return (
+            <View key={gerarKey()}>
+                <ViewLegenda
+                    jogo={jogo.loteria === "MAIS MILIONÁRIA" ? "MILIONÁRIA" : jogo.loteria}
+                    numeroConcurso={jogo.concurso}
+                    cor={mudaCor(jogo.loteria)}
+                    data={jogo.data} />
+                <ViewSorteados
+                    arrayDezenas={jogo.dezenas}
+                    arrayDezenas2={jogo.dezenas2}
+                    cor={mudaCor(jogo.loteria)}
+                    mesSorte={jogo.mesSorte}
+                    time={jogo.timeCoracao}
+                    trevos={jogo.trevos}
+                    arrayLoteca={jogo.loteca}
+                />
+            </View>
+        )
+    }
     return (
         <>
-            <Layout>
-                <View style={styles.content}>
-                    <LegendaView cor={cor} nomeJogo={nomeJogo} />
-                    <View style={styles.viewBusca}>
-                        <View style={styles.viewInput}>
-                            <TextInput keyboardType="number-pad" value={numConcurso} onChangeText={setNumConcurso} style={{ fontSize: 25 }} placeholder="Buscar por concurso" />
-                        </View>
-                        <TouchableOpacity style={[styles.botao, { backgroundColor: cor, }]} onPress={() => buscarConcurso()} >
-                            <ViewText value="Buscar" />
-                        </TouchableOpacity>
-                    </View>
+            <View>
+                <Dropdown click={(e) => filtro(e)}
+                    placeHolder={"Buscar por jogo"}
+                    array={arrayFiltro.sort()} />
+            </View>
 
-                    <View style={{ alignItems: "center", width: "100%" }}>
-                        <View style={[styles.viewItem,]}>
-                            <View style={styles.viewLegenda}>
-                                <View style={styles.viewItemLegenda}>
-                                    <ViewText value={"Concurso: "} />
-                                    <ViewText value={jogo.concurso} />
-                                </View>
-                                <View style={styles.viewItemLegenda}>
-                                    <ViewText value={"Data: "} />
-                                    <ViewText value={jogo.data} />
-                                </View>
+            {loteria.length > 0 ?
+
+                <View style={styles.viewBusca}>
+                    <View style={styles.viewInput} >
+                        <TextInput keyboardType="number-pad"
+                            value={numConcurso} onChangeText={setNumConcurso}
+                            style={styles.input}
+                            placeholder="Buscar por concurso" />
+                    </View>
+                    <TouchableOpacity onPress={buscarJogo}
+                        style={styles.botao}>
+                        <ViewText value="Buscar" />
+                    </TouchableOpacity>
+                </View> :
+                null}
+
+            <ScrollView style={{ marginTop: 5 }}>
+
+                {arrayJogos.length > 0 ?
+                    arrayJogos.map(item => {
+                        const jogoSorteado = jogoDoBanco2(item)
+                        const cor = mudaCor(jogoSorteado.loteria)
+                        return (
+                            <View key={gerarKey()}>
+                                <ViewLegenda
+                                    jogo={jogoSorteado.loteria === "MAIS MILIONÁRIA" ? "MILIONÁRIA" : jogoSorteado.loteria}
+                                    numeroConcurso={jogoSorteado.concurso}
+                                    cor={cor}
+                                    data={jogoSorteado.data} />
+                                <ViewSorteados
+                                    arrayDezenas={jogoSorteado.dezenas}
+                                    arrayDezenas2={jogoSorteado.dezenas2}
+                                    cor={cor}
+                                    mesSorte={jogoSorteado.mesSorte}
+                                    time={jogoSorteado.timeCoracao}
+                                    trevos={jogoSorteado.trevos}
+                                    arrayLoteca={jogoSorteado.loteca}
+                                />
                             </View>
-                        </View>
+                        )
+                    }) : viewJogo()
 
-                        <DezenasSelecionados cor={cor} numerosSelecionados={jogo.dezenas} />
-                        {jogo.dezenas2 ? <DezenasSelecionados cor={cor} numerosSelecionados={jogo.dezenas2} /> : null}
+                }
 
-                        <View style={{ width: "100%" }}>
-                            <ItemPremiacao array={jogo.premiacoes ? jogo.premiacoes : []} limite={10} doBanco={false} />
-                        </View>
-
-                    </View>
-                </View>
-
-            </Layout>
+            </ScrollView>
             <RodapeBanner />
         </>
     )
@@ -76,7 +139,6 @@ const styles = StyleSheet.create({
     content: {
         alignItems: "center",
         width: "100%",
-
     },
     botao: {
         flexDirection: "row",
@@ -86,11 +148,18 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         borderRadius: 15,
         marginTop: 10,
-    },
-    viewBusca: {
-        flexDirection: "row"
+        backgroundColor: "blue"
     },
 
+    input: {
+        padding: 5,
+        fontSize: 20,
+        backgroundColor: "#FFF"
+    },
+    viewBusca: {
+        flexDirection: "row",
+        justifyContent: "center"
+    },
 
     viewInput: {
         borderColor: 'black',

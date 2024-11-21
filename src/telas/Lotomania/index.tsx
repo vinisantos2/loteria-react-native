@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
-import { Alert, StyleSheet, View } from 'react-native';
-
+import { Alert, TouchableOpacity, View } from 'react-native';
 import Layout from '../../components/Layout';
 import Cartela from '../../components/Cartela';
 import { URL_BASE } from '../../constants/Constants';
@@ -16,11 +15,13 @@ import { STYLES } from '../../Style';
 import ViewMsgErro from '../../components/ViewMsgErro';
 import { ViewBotoes } from '../../components/ViewBotoes';
 import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_LOTOMANIA } from '../../rotas/Rotas';
-import { Premio } from '../../model/Premio';
 import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
-import BuscaView from '../../components/BuscaView';
 import RodapeBanner from '../../components/RodapeBanner';
+import Carregando from '../../components/Carregando';
+import { Ionicons } from "@expo/vector-icons";
+import ViewEsconderIcone from '../Views/ViewEsconderCartela';
+
 
 export default function Lotomania({ navigation }) {
     const [pontos00, setPontos00] = useState(0)
@@ -32,6 +33,8 @@ export default function Lotomania({ navigation }) {
     const [pontos20, setPontos20] = useState(0)
     const [carregando, setCarregando] = useState(false)
     const [erroServer, setErroServer] = useState(false)
+    const [carregandoPag, setCarregandoPag] = useState(false)
+    const [viewCartela, setViewCartela] = useState(true)
     const [arrayPremiacao, setArrayPremiacao] = useState(Array<JogoSorteado>)
     const [qtdNum, setQtdNum] = useState(0)
 
@@ -65,12 +68,7 @@ export default function Lotomania({ navigation }) {
         setCarregando(false)
     }
 
-    function salvarNNaLista(numero) {
 
-        setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
-        setQtdNum(numerosSelecionados.length)
-
-    }
 
     function limpar() {
         setArray([])
@@ -83,12 +81,7 @@ export default function Lotomania({ navigation }) {
         setPontos16(0)
         setPontos15(0)
         setArrayPremiacao([])
-    }
-
-    async function abrirBuscador() {
-
-        await navigation.navigate(ROTA_BUSCA, { arrayJogosSorteados: arrayJogos, nomeJogo, cor, dezenas })
-
+        setViewCartela(true)
     }
 
     function preencherJogo() {
@@ -97,6 +90,7 @@ export default function Lotomania({ navigation }) {
     }
 
     async function compararJogo() {
+        setViewCartela(false)
         if (numerosSelecionados.length < 50) {
             Alert.alert("Alerta", "Favor preencher as 50 dezaens")
             return
@@ -174,6 +168,11 @@ export default function Lotomania({ navigation }) {
 
     }
 
+    function salvarNumero(numero) {
+        setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
+        setQtdNum(numerosSelecionados.length)
+    }
+
     function estatistica() {
         const dezenas = qtdDezenasLotomania
         navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, nomeJogo, cor, dezenas })
@@ -181,18 +180,29 @@ export default function Lotomania({ navigation }) {
 
     return (
         <>
-
             <Layout cor={cor}>
-                {/* <StatusBar backgroundColor={corStatus} /> */}
-                {carregando ? <ViewCarregando /> : null}
+                {carregandoPag ? <ViewCarregando /> : null}
                 {erroServer ? <ViewMsgErro /> : null}
-                <BuscaView onPress={() => abrirBuscador()} />
+                {carregando ? <Carregando /> : null}
+
+                <ViewBotoes
+                    numJogos={arrayJogos.length}
+                    limpar={() => limpar()}
+                    estatistica={() => estatistica()}
+                    preencherJogo={() => preencherJogo()}
+                    compararJogo={() => compararJogo()}
+                    cor={cor}
+                />
+
                 <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_LOTOMAIA} qtdNum={qtdNum} />
 
-                <Cartela dezenas={qtdDezenasLotomania}
+                {viewCartela ? <Cartela
+                    dezenas={qtdDezenasLotomania}
                     numerosSelecionados={numerosSelecionados}
-                    salvarNumeroNaLista={salvarNNaLista}
-                    cor={cor} />
+                    salvarNumeroNaLista={salvarNumero}
+                    cor={cor} /> : null}
+
+                <ViewEsconderIcone setViewCartela={setViewCartela} viewCartela={viewCartela} />
 
 
                 <ViewBotoes numJogos={arrayJogos.length}
@@ -202,6 +212,7 @@ export default function Lotomania({ navigation }) {
                     compararJogo={() => compararJogo()}
                     cor={cor}
                 />
+
 
 
 
@@ -230,7 +241,7 @@ export default function Lotomania({ navigation }) {
                     </View>
                 </LayoutResposta>
 
-                {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
+                {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}
             </Layout>
             <RodapeBanner />
         </>

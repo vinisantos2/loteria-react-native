@@ -2,28 +2,28 @@ import { StatusBar, StyleSheet, View } from "react-native";
 
 import Layout from "../../components/Layout";
 import {
-    COR_DE_FUNDO,
-    COR_DIA, COR_DUPLA,
-    COR_FEDERAL, COR_LOTECA,
-    COR_LOTOFACIL, COR_LOTOMAIA,
-    COR_MEGA, COR_MILIONARIA, COR_QUINA,
     COR_RESULTADOS,
-    COR_SUPER_SETE, COR_TIME
+
 } from "../../constants/Cores";
 
 import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads'
 
 import React, { useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import { axiosBusca, gerarKey } from "../../utils/ultil";
-import { URL_BASE, URL_BASE_ULTIMOS } from "../../constants/Constants";
+import { axiosBusca, gerarKey, mudaCor } from "../../utils/ultil";
+import {  URL_BASE_ULTIMOS } from "../../constants/Constants";
 import ItemJogo from "../../itemsView/ItemJogo"
-import { DIA, DUPLA, FEDERAL, LOTECA, LOTOFACIL, LOTOMANIA, MEGA, MILIONARIA, QUINA, SUPER, TIME } from "../../constants/Nomes";
+import {
+    DIA, DUPLA, FEDERAL, LOTECA, LOTOFACIL,
+    LOTOMANIA, MEGA, MILIONARIA, QUINA,
+    SUPER, TIME
+} from "../../constants/Nomes";
 import ViewCarregando from "../../components/ViewCarregando";
 import ViewMsgErro from "../../components/ViewMsgErro";
 import StatusBarView from "../../components/StatusBarView";
 import { jogoDoBanco, JogoSorteado } from "../../model/jogoSorteado";
 import { Dropdown } from "../../components/Dropdown";
+import RodapeBanner from "../../components/RodapeBanner";
 
 export default function Resultados({ }) {
 
@@ -38,6 +38,7 @@ export default function Resultados({ }) {
     const arrayFiltro =
         [
             { label: DUPLA, value: DUPLA },
+            { label: DIA, value: DIA },
             { label: LOTECA, value: LOTECA },
             { label: LOTOFACIL, value: LOTOFACIL },
             { label: LOTOMANIA, value: LOTOMANIA },
@@ -88,38 +89,7 @@ export default function Resultados({ }) {
         setCarregando(false)
     }
 
-    function mudaCor(jogo) {
 
-        switch (jogo) {
-            case MEGA:
-                return COR_MEGA
-            case QUINA:
-                return COR_QUINA
-            case LOTOFACIL:
-                return COR_LOTOFACIL
-            case LOTOMANIA:
-                return COR_LOTOMAIA
-            case LOTOMANIA:
-                return COR_LOTOMAIA
-            case DUPLA:
-                return COR_DUPLA
-            case TIME:
-                return COR_TIME
-            case MILIONARIA:
-                return COR_MILIONARIA
-            case LOTECA:
-                return COR_LOTECA
-            case FEDERAL:
-                return COR_FEDERAL
-            case SUPER:
-                return COR_SUPER_SETE
-            case DIA:
-                return COR_DIA
-            default:
-                return COR_DE_FUNDO
-
-        }
-    }
 
     async function filtro(e) {
 
@@ -167,21 +137,8 @@ export default function Resultados({ }) {
                 }
 
 
-
-
             </Layout>
-            <BannerAd
-                unitId={TestIds.BANNER}
-                size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-
-                requestOptions={{
-                    requestNonPersonalizedAdsOnly: true,
-                    networkExtras: {
-                        collapsible: "bottom"
-                    }
-                }}
-
-            />
+            <RodapeBanner />
 
         </>
 

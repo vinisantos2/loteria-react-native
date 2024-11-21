@@ -2,9 +2,7 @@ import { StyleSheet, View, Text } from "react-native"
 import DezenasSelecionados from "../itemsView/DezenasSelecionados"
 import ViewText from "./ViewText"
 import { gerarKey } from "../utils/ultil"
-import { COR_BRANCO } from "../constants/Cores"
 import ViewLoteca from "./ViewLoteca"
-
 
 export function ViewSorteados({ trevos, cor, time, mesSorte,
     arrayDezenas, arrayDezenas2, arrayLoteca }) {
@@ -14,12 +12,12 @@ export function ViewSorteados({ trevos, cor, time, mesSorte,
             {arrayDezenas.length > 1 ? <ViewText cor="#000" fontWeight={"bold"} value={"Dezenas"} fontSize={30} /> : null}
             {
                 arrayDezenas.length > 1 ?
-                    <DezenasSelecionados key={gerarKey()} numerosSelecionados={arrayDezenas} cor={cor} />
+                    <DezenasSelecionados  key={gerarKey()} numerosSelecionados={arrayDezenas} cor={cor} />
                     : <ViewLoteca key={gerarKey()} arrayLoteca={arrayLoteca} />
             }
             {
                 arrayDezenas2 ?
-                    <DezenasSelecionados key={gerarKey()} numerosSelecionados={arrayDezenas2} cor={cor} />
+                    <DezenasSelecionados  key={gerarKey()} numerosSelecionados={arrayDezenas2} cor={cor} />
                     : null
             }
             {

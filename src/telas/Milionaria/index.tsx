@@ -4,11 +4,10 @@ import {
     StyleSheet, View
 } from 'react-native';
 import Cartela from '../../components/Cartela';
-import ViewBotao from '../../components/ViewBotao';
 import { COR_BRANCO, COR_MILIONARIA } from '../../constants/Cores';
 import Layout from '../../components/Layout';
 import ViewSelecionados from '../../components/ViewSelecionados';
-import { COMPARAR, LIMPAR, PRENCHER, QTD_DEZENAS_MILIONARIA, URL_BASE } from '../../constants/Constants';
+import { QTD_DEZENAS_MILIONARIA, URL_BASE } from '../../constants/Constants';
 import ViewCarregando from '../../components/ViewCarregando';
 import LayoutResposta from '../../components/LayoutResposta';
 import ViewText from '../../components/ViewText';
@@ -23,6 +22,8 @@ import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
 import BuscaView from '../../components/BuscaView';
 import RodapeBanner from '../../components/RodapeBanner';
+import ViewEsconderIcone from '../Views/ViewEsconderCartela';
+import Carregando from '../../components/Carregando';
 
 export default function MaisMilionaria({ navigation }) {
 
@@ -38,6 +39,8 @@ export default function MaisMilionaria({ navigation }) {
     const [pontos2e1trevos, setPontos2e1trevos] = useState(0)
 
     const [carregando, setCarregando] = useState(false)
+    const [carregandoPag, setCarregandoPag] = useState(false)
+    const [viewCartela, setViewCartela] = useState(true)
     const [erroServer, setErroServer] = useState(false)
     const [arrayPremiacao, setArrayPremiacao] = useState(Array<JogoSorteado>)
     const [qtdNum, setQtdNum] = useState(0)
@@ -48,6 +51,8 @@ export default function MaisMilionaria({ navigation }) {
     const url = "maismilionaria"
     const focused = useIsFocused();
     const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
+    const [numerosSelecionados, setArray] = useState([])
+    const [numerosSelecionadosTrevos, setArrayTrevos] = useState([])
     const cor = COR_MILIONARIA
     const nomeJogo = ROTA_MILIONARIA
     React.useEffect(() => {
@@ -73,8 +78,7 @@ export default function MaisMilionaria({ navigation }) {
         setCarregando(false)
     }
 
-    const [numerosSelecionados, setArray] = useState([])
-    const [numerosSelecionadosTrevos, setArrayTrevos] = useState([])
+  
 
     function salvarNumero(numero) {
         setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
@@ -100,21 +104,19 @@ export default function MaisMilionaria({ navigation }) {
         setPontos2e2trevos(0)
         setPontos2e1trevos(0)
         setArrayPremiacao([])
+        setViewCartela(true)
     }
 
     function preencherJogo() {
         setArray(preencher(numerosSelecionados, dezenas, QTD_DEZENAS_MILIONARIA))
+      
         setQtdNum(numerosSelecionados.length)
     }
 
-    async function abrirBuscador() {
-
-        await navigation.navigate(ROTA_BUSCA, { arrayJogosSorteados: arrayJogos, nomeJogo, cor })
-
-    }
 
 
     async function compararJogo() {
+        setViewCartela(false)
         let contador = 0
         let trevos = 0
         const arrayPremiacao = new Array<JogoSorteado>
@@ -224,16 +226,26 @@ export default function MaisMilionaria({ navigation }) {
         <>
 
             <Layout cor={cor}>
-                {/* <StatusBar backgroundColor={corStatus} animated={true} /> */}
-                {carregando ? <ViewCarregando /> : null}
+
+                {carregandoPag ? <ViewCarregando /> : null}
                 {erroServer ? <ViewMsgErro /> : null}
-                <BuscaView onPress={() => abrirBuscador()} />
+                {carregando ? <Carregando /> : null}
+                <ViewBotoes
+                    numJogos={arrayJogos.length}
+                    limpar={() => limpar()}
+                    estatistica={() => estatistica()}
+                    preencherJogo={() => preencherJogo()}
+                    compararJogo={() => compararJogo()}
+                    cor={cor}
+                />
+
                 <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_MILIONARIA} qtdNum={qtdNum} />
                 <View style={{ alignItems: 'center' }}>
                     <ViewText fontSize={25} value={"Trevos"} cor='#FFF' fontWeight={"bold"} />
                 </View>
 
-                <Cartela dezenas={6}
+                <Cartela
+                    dezenas={6}
                     tervo={true}
                     numerosSelecionados={numerosSelecionadosTrevos}
                     salvarNumeroNaLista={salvarNumeroTrevo}
@@ -243,20 +255,14 @@ export default function MaisMilionaria({ navigation }) {
                 <View style={{ alignItems: 'center' }}>
                     <ViewText fontSize={25} value={"Dezenas"} cor='#FFF' fontWeight={"bold"} />
                 </View>
-                <Cartela
+                {viewCartela ? <Cartela
                     dezenas={QTD_DEZENAS_MILIONARIA}
                     numerosSelecionados={numerosSelecionados}
                     salvarNumeroNaLista={salvarNumero}
-                    cor={COR_MILIONARIA} />
+                    cor={cor} /> : null}
 
-                <ViewBotoes
-                    numJogos={arrayJogos.length}
-                    estatistica={() => estatistica()}
-                    limpar={() => limpar()}
-                    preencherJogo={() => preencherJogo()}
-                    compararJogo={() => compararJogo()}
-                    cor={cor}
-                />
+                <ViewEsconderIcone setViewCartela={setViewCartela} viewCartela={viewCartela} />
+
 
                 <LayoutResposta>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]} >
@@ -291,7 +297,7 @@ export default function MaisMilionaria({ navigation }) {
                     </View>
                 </LayoutResposta>
 
-                {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
+                {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} arrayTrevosSelecionados={numerosSelecionadosTrevos} array={arrayPremiacao} cor={cor} /> : null}
 
             </Layout>
             <RodapeBanner />

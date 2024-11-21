@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react';
 
 import {
+    Button,
+    TouchableOpacity,
     View,
 
 } from 'react-native';
@@ -17,12 +19,12 @@ import { useIsFocused } from '@react-navigation/native';
 import { STYLES } from '../../Style';
 import ViewMsgErro from '../../components/ViewMsgErro';
 import { ViewBotoes } from '../../components/ViewBotoes';
-import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_LOTOFACIL } from '../../rotas/Rotas';
+import {  ROTA_ESTATISTICA, ROTA_LOTOFACIL } from '../../rotas/Rotas';
 import ViewPremio from '../../components/ViewPremio';
-import BuscaView from '../../components/BuscaView';
 import { JogoSorteado } from '../../model/jogoSorteado';
 import Carregando from '../../components/Carregando';
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+import RodapeBanner from '../../components/RodapeBanner';
+import ViewEsconderIcone from '../Views/ViewEsconderCartela';
 
 export default function Lotofacil({ navigation }) {
     const [pontos15, setPontos15] = useState(0)
@@ -34,6 +36,7 @@ export default function Lotofacil({ navigation }) {
     const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
     const [carregando, setCarregando] = useState(true)
     const [carregandoPag, setCarregandoPag] = useState(false)
+    const [viewCartela, setViewCartela] = useState(true)
     const [erroServer, setErroServer] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
     const url = "lotofacil"
@@ -42,18 +45,12 @@ export default function Lotofacil({ navigation }) {
     const [numerosSelecionados, setArray] = useState([])
     const focused = useIsFocused();
     const [arrayPremiacao, setArrayPremiacao] = useState(Array<JogoSorteado>)
-    const [corStatus, setCorStatus] = useState(COR_LOTOFACIL)
 
     React.useEffect(() => {
         buscarJogos()
         // mudaCorStatus()
-
     }, [focused])
 
-    function mudaCorStatus() {
-
-        setCorStatus(COR_LOTOFACIL)
-    }
 
     async function buscarJogos() {
         let array = arrayJogos
@@ -68,7 +65,6 @@ export default function Lotofacil({ navigation }) {
         setErroServer(conexao(array))
         setCarregando(false)
     }
-
 
     const qtdDezenasLotofacil = 25
     const limite = 18
@@ -85,6 +81,7 @@ export default function Lotofacil({ navigation }) {
     }
 
     async function compararJogo() {
+        setViewCartela(false)
         let c = true
         setCarregando(c)
         const arrayPremiacao = new Array<JogoSorteado>
@@ -150,6 +147,7 @@ export default function Lotofacil({ navigation }) {
         setPontos12(0)
         setPontos11(0)
         setArrayPremiacao([])
+        setViewCartela(true)
     }
 
     async function estatistica() {
@@ -159,9 +157,6 @@ export default function Lotofacil({ navigation }) {
 
     }
 
-    async function abrirBuscador() {
-        await navigation.navigate(ROTA_BUSCA, { arrayJogosSorteados: arrayJogos, nomeJogo, cor })
-    }
 
     return (
         <>
@@ -173,14 +168,7 @@ export default function Lotofacil({ navigation }) {
                 {erroServer ? <ViewMsgErro /> : null}
                 {carregando ? <Carregando /> : null}
 
-                <BuscaView onPress={() => abrirBuscador()} />
-                <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_LOTOFACIL} qtdNum={qtdNum} />
-                <Cartela
-                    dezenas={qtdDezenasLotofacil}
-                    numerosSelecionados={numerosSelecionados}
-                    salvarNumeroNaLista={salvarNumero}
-                    cor={cor} />
-                {carregando ? <Carregando /> : null}
+
                 <ViewBotoes
                     numJogos={arrayJogos.length}
                     limpar={() => limpar()}
@@ -189,6 +177,20 @@ export default function Lotofacil({ navigation }) {
                     compararJogo={() => compararJogo()}
                     cor={cor}
                 />
+                <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_LOTOFACIL} qtdNum={qtdNum} />
+                {viewCartela ? <Cartela
+                    dezenas={qtdDezenasLotofacil}
+                    numerosSelecionados={numerosSelecionados}
+                    salvarNumeroNaLista={salvarNumero}
+                    cor={cor} /> : null}
+
+                <ViewEsconderIcone valor={viewCartela? "Esconder cartela": "Mostrar cartela"} setViewCartela={setViewCartela} viewCartela={viewCartela} />
+
+
+
+
+                {carregando ? <Carregando /> : null}
+
 
                 <LayoutResposta>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
@@ -208,20 +210,10 @@ export default function Lotofacil({ navigation }) {
                     </View>
                 </LayoutResposta>
 
-                {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
+                {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}
 
             </Layout>
-            <BannerAd
-                unitId={TestIds.BANNER}
-                size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-                requestOptions={{
-                    requestNonPersonalizedAdsOnly: true,
-                    networkExtras: {
-                        collapsible: "bottom"
-                    }
-                }}
-
-            />
+            <RodapeBanner />
         </>
 
     );

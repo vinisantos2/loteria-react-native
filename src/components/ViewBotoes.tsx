@@ -13,10 +13,12 @@ export function ViewBotoes({ numJogos, compararJogo,
             <View style={[styles.item, { backgroundColor: cor }]}>
                 <ViewText cor="#FFF" fontWeight={"bold"} value={"Comparar com " + numJogos + " jogos já sorteados"} />
             </View>
-            <ViewBotao value={COMPARAR} onPress={compararJogo} />
-            <ViewBotao value={PRENCHER} onPress={preencherJogo} />
-            <ViewBotao value={LIMPAR} onPress={limpar} />
-            <ViewBotao value={"Estatistica"} onPress={estatistica} />
+            <View style={{ flexDirection: "row", width: "100%" }}>
+                <ViewBotao value={COMPARAR} onPress={compararJogo} />
+                <ViewBotao value={PRENCHER} onPress={preencherJogo} />
+                <ViewBotao value={LIMPAR} onPress={limpar} />
+                <ViewBotao value={"Estatistica"} onPress={estatistica} />
+            </View>
         </View>
     )
 }
@@ -25,22 +27,15 @@ const styles = StyleSheet.create({
     viewBotoes: {
         alignItems: 'center',
         backgroundColor: COR_FUNDO_CARTELA,
-        marginVertical: 5,
-        width: "95%",
         alignSelf: "center",
-        borderRadius: 15,
-        padding: 5
-
-
+        width: "100%"
     },
 
     item: {
         padding: 10,
         // borderTopRightRadius: 15,
         // borderTopLeftRadius: 15,
-        borderRadius: 15,
         width: "100%",
         alignItems: "center"
-
     }
 })

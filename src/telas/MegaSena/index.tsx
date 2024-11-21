@@ -25,6 +25,8 @@ import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
 import BuscaView from '../../components/BuscaView';
 import RodapeBanner from '../../components/RodapeBanner';
+import Carregando from '../../components/Carregando';
+import ViewEsconderIcone from '../Views/ViewEsconderCartela';
 
 export default function MegaSena({ navigation }) {
 
@@ -33,6 +35,8 @@ export default function MegaSena({ navigation }) {
     const [pontos4, setPontos4] = useState(0)
     const [carregando, setCarregando] = useState(false)
     const [erroServer, setErroServer] = useState(false)
+    const [carregandoPag, setCarregandoPag] = useState(false)
+    const [viewCartela, setViewCartela] = useState(true)
     const [qtdNum, setQtdNum] = useState(0)
     const [numerosSelecionados, setArray] = useState([])
     const [arrayJogos, setArrayJogos] = useState([])
@@ -66,10 +70,7 @@ export default function MegaSena({ navigation }) {
         setCarregando(false)
     }
 
-    function salvarNNaLista(numero) {
-        setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
-        setQtdNum(numerosSelecionados.length)
-    }
+  
 
     function limpar() {
         setArray([])
@@ -78,16 +79,23 @@ export default function MegaSena({ navigation }) {
         setPontos5(0)
         setPontos4(0)
         setArrayPremiacao([])
+        setViewCartela(true)
     }
 
 
-    function preencherNumeros() {
+    function salvarNumero(numero) {
+        setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
+        setQtdNum(numerosSelecionados.length)
+    }
+
+    function preencherJogo() {
         setArray(preencher(numerosSelecionados, dezenas, qtdDezenasMega))
         setQtdNum(numerosSelecionados.length)
     }
 
 
     async function compararJogo() {
+        setViewCartela(false)
         const arrayPremiacao = new Array<JogoSorteado>
         let contador = 0
         let pontos6 = 0
@@ -135,11 +143,7 @@ export default function MegaSena({ navigation }) {
 
     }
 
-    async function abrirBuscador() {
-
-        await navigation.navigate(ROTA_BUSCA, { arrayJogosSorteados: arrayJogos, nomeJogo, cor })
-
-    }
+   
 
     function estatistica() {
         const dezenas = qtdDezenasMega
@@ -149,44 +153,49 @@ export default function MegaSena({ navigation }) {
     return (
         <>
 
-            <Layout cor={cor} >
-                {/* <StatusBar backgroundColor={corStatus}  /> */}
-                {carregando ? <ViewCarregando /> : null}
-                {erroServer ? <ViewMsgErro /> : null}
-                <BuscaView onPress={() => abrirBuscador()} />
-                <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_MEGA} qtdNum={qtdNum} />
+        <Layout cor={cor}>
+            {carregandoPag ? <ViewCarregando /> : null}
+            {erroServer ? <ViewMsgErro /> : null}
+            {carregando ? <Carregando /> : null}
+            <ViewBotoes
+                numJogos={arrayJogos.length}
+                limpar={() => limpar()}
+                estatistica={() => estatistica()}
+                preencherJogo={() => preencherJogo()}
+                compararJogo={() => compararJogo()}
+                cor={cor}
+            />
 
-                <Cartela
-                    dezenas={qtdDezenasMega}
-                    numerosSelecionados={numerosSelecionados}
-                    salvarNumeroNaLista={salvarNNaLista}
-                    cor={cor} />
+            <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={cor} qtdNum={qtdNum} />
 
-                <ViewBotoes
-                    cor={cor}
-                    numJogos={arrayJogosSorteados.length}
-                    estatistica={() => estatistica()}
-                    limpar={() => limpar()}
-                    preencherJogo={() => preencherNumeros()}
-                    compararJogo={() => compararJogo()} />
+            {viewCartela ? <Cartela
+                dezenas={qtdDezenasMega}
+                numerosSelecionados={numerosSelecionados}
+                salvarNumeroNaLista={salvarNumero}
+                cor={cor} /> : null}
 
-                <LayoutResposta>
-                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor='#FFF' value={"Jogos com 6 pontos: " + pontos6} />
-                    </View>
-                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor='#FFF' value={"Jogos com 5 pontos: " + pontos5} />
-                    </View>
-                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
-                    </View>
-                </LayoutResposta>
+            <ViewEsconderIcone setViewCartela={setViewCartela} viewCartela={viewCartela} />
 
-                {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
 
-            </Layout>
-            <RodapeBanner />
-        </>
+
+            <LayoutResposta>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor='#FFF' value={"Jogos com 6 pontos: " + pontos6} />
+                </View>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor='#FFF' value={"Jogos com 5 pontos: " + pontos5} />
+                </View>
+                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                    <ViewText cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
+                </View>
+            </LayoutResposta>
+
+            {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}
+
+
+        </Layout>
+        <RodapeBanner />
+    </>
 
     );
 }

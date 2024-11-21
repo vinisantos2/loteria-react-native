@@ -1,6 +1,19 @@
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'
-
+import { DIA, DUPLA,
+     FEDERAL,
+     LOTECA, LOTOFACIL, 
+     LOTOMANIA, MEGA, MILIONARIA, QUINA,
+      SUPER, TIME } from "../constants/Nomes";
+import {
+    COR_DE_FUNDO,
+    COR_DIA, COR_DUPLA,
+    COR_FEDERAL, COR_LOTECA,
+    COR_LOTOFACIL, COR_LOTOMAIA,
+    COR_MEGA, COR_MILIONARIA, COR_QUINA,
+    COR_RESULTADOS,
+    COR_SUPER_SETE, COR_TIME
+} from "../constants/Cores";
 import { Alert } from 'react-native';
 import { Estatistica } from '../model/Estatistica';
 import { JogoSorteado } from '../model/jogoSorteado';
@@ -143,4 +156,36 @@ export function salvarNumeroNaLista(numero, array, limite) {
 
     return arrayTemp
 
+}
+
+export function mudaCor(jogo) {
+
+    switch (jogo) {
+        case MEGA:
+            return COR_MEGA
+        case QUINA:
+            return COR_QUINA
+        case LOTOFACIL:
+            return COR_LOTOFACIL
+        case LOTOMANIA:
+            return COR_LOTOMAIA
+        case LOTOMANIA:
+            return COR_LOTOMAIA
+        case DUPLA:
+            return COR_DUPLA
+        case TIME:
+            return COR_TIME
+        case MILIONARIA:
+            return COR_MILIONARIA
+        case LOTECA:
+            return COR_LOTECA
+        case FEDERAL:
+            return COR_FEDERAL
+        case SUPER:
+            return COR_SUPER_SETE
+        case DIA:
+            return COR_DIA
+        default:
+            return COR_DE_FUNDO
+    }
 }

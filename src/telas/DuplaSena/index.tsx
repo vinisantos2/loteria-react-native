@@ -22,6 +22,9 @@ import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
 import BuscaView from '../../components/BuscaView';
 import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+import ViewEsconderIcone from '../Views/ViewEsconderCartela';
+import Carregando from '../../components/Carregando';
+import RodapeBanner from '../../components/RodapeBanner';
 
 export default function DuplaSena({ navigation }) {
 
@@ -30,6 +33,8 @@ export default function DuplaSena({ navigation }) {
     const [pontos4, setPontos4] = useState(0)
     const [carregando, setCarregando] = useState(false)
     const [erroServer, setErroServer] = useState(false)
+    const [carregandoPag, setCarregandoPag] = useState(false)
+    const [viewCartela, setViewCartela] = useState(true)
     const [qtdNum, setQtdNum] = useState(0)
     const [numerosSelecionados, setArray] = useState([])
     const [arrayJogos, setArrayJogos] = useState([])
@@ -63,7 +68,7 @@ export default function DuplaSena({ navigation }) {
         setCarregando(false)
     }
 
-    function salvarNNaLista(numero) {
+    function salvarNumero(numero) {
         setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
         setQtdNum(numerosSelecionados.length)
     }
@@ -75,9 +80,10 @@ export default function DuplaSena({ navigation }) {
         setPontos5(0)
         setPontos6(0)
         setArrayPremiacao([])
+        setViewCartela(true)
     }
 
-    function preencherNumeros() {
+    function preencherJogo() {
         setArray(preencher(numerosSelecionados, dezenas, qtdDezenasDupla))
         setQtdNum(numerosSelecionados.length)
     }
@@ -114,6 +120,7 @@ export default function DuplaSena({ navigation }) {
     }
 
     async function compararJogo() {
+        setViewCartela(false)
         const arrayPremiacao = new Array<JogoSorteado>
         let contador1 = 0
         let contador2 = 0
@@ -164,12 +171,6 @@ export default function DuplaSena({ navigation }) {
 
     }
 
-    async function abrirBuscador() {
-
-        await navigation.navigate(ROTA_BUSCA, { arrayJogosSorteados: arrayJogos, nomeJogo, cor })
-
-    }
-
     function estatistica() {
         const dezenas = qtdDezenasDupla
         navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, nomeJogo, cor, dezenas })
@@ -179,25 +180,29 @@ export default function DuplaSena({ navigation }) {
         <>
 
             <Layout cor={cor}>
-                {/* <StatusBar backgroundColor={corStatus}  /> */}
-                {carregando ? <ViewCarregando /> : null}
+                {carregandoPag ? <ViewCarregando /> : null}
                 {erroServer ? <ViewMsgErro /> : null}
-                <BuscaView onPress={() => abrirBuscador()} />
-                <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={cor} qtdNum={qtdNum} />
-
-                <Cartela dezenas={qtdDezenasDupla}
-                    numerosSelecionados={numerosSelecionados}
-                    salvarNumeroNaLista={salvarNNaLista}
-                    cor={cor} />
-
+                {carregando ? <Carregando /> : null}
                 <ViewBotoes
                     numJogos={arrayJogos.length}
                     limpar={() => limpar()}
                     estatistica={() => estatistica()}
-                    preencherJogo={() => preencherNumeros()}
+                    preencherJogo={() => preencherJogo()}
                     compararJogo={() => compararJogo()}
                     cor={cor}
                 />
+
+                <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={cor} qtdNum={qtdNum} />
+
+                {viewCartela ? <Cartela
+                    dezenas={qtdDezenasDupla}
+                    numerosSelecionados={numerosSelecionados}
+                    salvarNumeroNaLista={salvarNumero}
+                    cor={cor} /> : null}
+
+                <ViewEsconderIcone valor={viewCartela ? "Esconder cartela" : "Mostrar cartela"} setViewCartela={setViewCartela} viewCartela={viewCartela} />
+
+
 
                 <LayoutResposta>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
@@ -211,21 +216,11 @@ export default function DuplaSena({ navigation }) {
                     </View>
                 </LayoutResposta>
 
-                {arrayPremiacao.length > 0 ? <ViewPremio array={arrayPremiacao} cor={cor} /> : null}
+                {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}
 
 
             </Layout>
-            <BannerAd
-                unitId={TestIds.BANNER}
-                size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-                requestOptions={{
-                    requestNonPersonalizedAdsOnly: true,
-                    networkExtras: {
-                        collapsible: "bottom"
-                    }
-                }}
-
-            />
+            <RodapeBanner />
         </>
 
     );
