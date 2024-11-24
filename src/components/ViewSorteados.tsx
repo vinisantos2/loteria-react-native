@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text } from "react-native"
 import DezenasSelecionados from "../itemsView/DezenasSelecionados"
-import ViewText from "./ViewText"
+import TextView from "./TextView"
 import { gerarKey } from "../utils/ultil"
 import ViewLoteca from "./ViewLoteca"
 
@@ -9,7 +9,7 @@ export function ViewSorteados({ trevos, cor, time, mesSorte,
 
     return (
         <View style={styles.content}>
-            {arrayDezenas.length > 1 ? <ViewText cor="#000" fontWeight={"bold"} value={"Dezenas"} fontSize={30} /> : null}
+            {arrayDezenas.length > 1 ? <TextView cor="#000" fontWeight={"bold"} value={"Dezenas"} fontSize={30} /> : null}
             {
                 arrayDezenas.length > 1 ?
                     <DezenasSelecionados  key={gerarKey()} numerosSelecionados={arrayDezenas} cor={cor} />
@@ -23,7 +23,7 @@ export function ViewSorteados({ trevos, cor, time, mesSorte,
             {
                 trevos ?
                     <View style={styles.viewItem} >
-                        <ViewText cor="#000" value={"Trevos: "} fontWeight={"bold"} />
+                        <TextView cor="#000" value={"Trevos: "} fontWeight={"bold"} />
                         <DezenasSelecionados numerosSelecionados={trevos} cor={cor} />
                     </View >
                     : null
@@ -31,9 +31,9 @@ export function ViewSorteados({ trevos, cor, time, mesSorte,
             {
                 time ?
                     <View style={styles.viewItem}>
-                        <ViewText cor="#000" value={"Time do coração"} fontWeight={"bold"} />
+                        <TextView cor="#000" value={"Time do coração"} fontWeight={"bold"} />
                         <View style={[styles.item, { backgroundColor: cor }]}>
-                            <ViewText  value={time} />
+                            <TextView  value={time} />
                         </View>
                     </View>
                     : null
@@ -41,9 +41,9 @@ export function ViewSorteados({ trevos, cor, time, mesSorte,
             {
                 mesSorte ?
                     <View style={styles.viewItem}>
-                        <ViewText cor="#000" value={"Mês da sorte: "} />
+                        <TextView cor="#000" value={"Mês da sorte: "} />
                         <View style={[styles.item, { backgroundColor: cor }]}>
-                            <ViewText value={mesSorte} />
+                            <TextView value={mesSorte} />
                         </View>
                     </View>
                     : null

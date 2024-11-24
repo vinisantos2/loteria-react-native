@@ -1,8 +1,7 @@
-import { StyleSheet, TextInput, Touchable, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
-import { ROTA_BUSCA } from "../rotas/Rotas";
-import ViewText from "./ViewText";
+import TextView from "./TextView";
 
 export default function BuscaView({ onPress }) {
 
@@ -10,7 +9,7 @@ export default function BuscaView({ onPress }) {
     return (
         <View style={style.content}>
             <TouchableOpacity style={style.viewInput} onPress={onPress}>
-                <ViewText cor="#000" value="Buscar por concurso" />
+                <TextView cor="#000" value="Buscar por concurso" />
                 <Ionicons name="search" size={30} />
             </TouchableOpacity>
         </View>

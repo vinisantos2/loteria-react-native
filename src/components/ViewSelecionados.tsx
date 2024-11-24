@@ -1,6 +1,6 @@
 
 import { StyleSheet, Text, View } from 'react-native';
-import ViewText from './ViewText';
+import TextView from './TextView';
 import { COR_BRANCO, COR_FUNDO_CARTELA } from '../constants/Cores';
 import DezenasSelecionados from '../itemsView/DezenasSelecionados';
 
@@ -9,8 +9,8 @@ export default function ViewSelecionados({ qtdNum, numerosSelecionados, cor = CO
 
     return (
         <View style={[styles.content, ]}>
-            <ViewText cor='#000' fontWeight={"bold"} fontSize={18} value={"Quantidade de numeros escolhidos: " + qtdNum} />
-            <ViewText cor='#000' fontWeight={"bold"} value={"numeros selecionados: "} />
+            <TextView cor='#000' fontWeight={"bold"} fontSize={18} value={"Quantidade de numeros escolhidos: " + qtdNum} />
+            <TextView cor='#000' fontWeight={"bold"} value={"numeros selecionados: "} />
             <DezenasSelecionados cor={"#000"} numerosSelecionados={numerosSelecionados} />
         </View>
     )

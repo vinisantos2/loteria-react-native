@@ -7,7 +7,7 @@ import ViewSelecionados from '../../components/ViewSelecionados';
 import { QTD_DEZENAS_TIME, URL_BASE } from '../../constants/Constants';
 import ViewCarregando from '../../components/ViewCarregando';
 import LayoutResposta from '../../components/LayoutResposta';
-import ViewText from '../../components/ViewText';
+import TextView from '../../components/TextView';
 import { useIsFocused } from '@react-navigation/native';
 import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../../utils/ultil';
 import { STYLES } from '../../Style';
@@ -187,19 +187,19 @@ export default function TimeMania({ navigation }) {
 
                 <LayoutResposta>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 7 pontos: " + pontos7} />
+                        <TextView fontWeight={'bold'} cor='#FFF' value={"Jogos com 7 pontos: " + pontos7} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 6 pontos: " + pontos6} />
+                        <TextView fontWeight={'bold'} cor='#FFF' value={"Jogos com 6 pontos: " + pontos6} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 5 pontos: " + pontos5} />
+                        <TextView fontWeight={'bold'} cor='#FFF' value={"Jogos com 5 pontos: " + pontos5} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
+                        <TextView fontWeight={'bold'} cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText fontWeight={'bold'} cor='#FFF' value={"Jogos com 3 pontos: " + pontos3} />
+                        <TextView fontWeight={'bold'} cor='#FFF' value={"Jogos com 3 pontos: " + pontos3} />
                     </View>
                 </LayoutResposta>
                 {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}

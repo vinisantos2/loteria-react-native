@@ -1,6 +1,6 @@
 
 import { ScrollView, StyleSheet, TouchableOpacity, View, } from 'react-native';
-import ViewText from '../components/ViewText';
+import TextView from '../components/TextView';
 import { COR_BRANCO } from '../constants/Cores';
 import ItemPremiacao from './ItemPremiacao';
 import { ViewLegenda } from '../components/ViewLegendaJogo';

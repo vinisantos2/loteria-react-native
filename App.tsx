@@ -24,29 +24,6 @@ export default function App() {
   React.useEffect(() => {
     PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
-    // // firebase.initializeApp(firebaseConfig)
-    // onMessage(cloudMessaging, (payload) => {
-    //   console.log('Message received. ', payload);
-    //   // ...
-    // });
-
-    // getToken(cloudMessaging, { vapidKey: 'VAPID_KEY' }).then((currentToken) => {
-    //   if (currentToken) {
-    //     // Send the token to your server and update the UI if necessary
-
-    //     console.log(currentToken);
-    //   } else {
-    //     // Show permission request UI
-    //     console.log('No registration token available. Request permission to generate one.');
-    //     // ...
-    //   }
-    // }).catch((err) => {
-    //   console.log('An error occurred while retrieving token. ', err);
-    //   // .
-    // });
-
-
-
     if (requestUserPermission()) {
       messaging().getToken().then(token => {
         console.log(token)

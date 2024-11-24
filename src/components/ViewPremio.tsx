@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import ViewText from "./ViewText";
+import TextView from "./TextView";
 import { gerarKey } from "../utils/ultil";
 import { JogoSorteado } from "../model/jogoSorteado";
 import DezenasSelecionados from "../itemsView/DezenasSelecionados";
@@ -24,35 +24,35 @@ export default function ViewPremio({ array, cor, arrayDezenas, arrayTrevosSeleci
         <View style={styles.content} >
 
             <View style={styles.legenda}>
-                <ViewText fontSize={35} value="Premiações" />
+                <TextView fontSize={35} value="Premiações" />
             </View>
             {arrayPremiacao.map(item => {
                 return (
                     <View key={gerarKey()} style={[styles.viewItem,]}>
                         <View style={styles.viewLegenda}>
                             <View style={styles.viewItemLegenda}>
-                                <ViewText value={"Concurso: "} />
-                                <ViewText value={item.concurso} />
+                                <TextView value={"Concurso: "} />
+                                <TextView value={item.concurso} />
                             </View>
                             <View style={styles.viewItemLegenda}>
-                                <ViewText value={"Data: "} />
-                                <ViewText value={item.data} />
+                                <TextView value={"Data: "} />
+                                <TextView value={item.data} />
                             </View>
                             <View style={styles.viewItemLegenda}>
-                                <ViewText value={"Pontos: "} />
-                                <ViewText value={item.pontos} />
+                                <TextView value={"Pontos: "} />
+                                <TextView value={item.pontos} />
                             </View>
                         </View>
 
                         {item.trevos.length>0 ?
                             <View style={{ alignItems: "center" }}>
-                                <ViewText value="Trevos" />
+                                <TextView value="Trevos" />
                                 <DezenasSelecionados arrarComparar={arrayTrevos} numerosSelecionados={item.trevos} cor={cor} />
                             </View>
                             : null}
 
                         <View style={{ alignItems: "center" }}>
-                            <ViewText value="Dezenas" />
+                            <TextView value="Dezenas" />
                             <DezenasSelecionados arrarComparar={arraySelecionadas} numerosSelecionados={item.dezenas} cor={cor} />
                         </View>
 
@@ -60,7 +60,7 @@ export default function ViewPremio({ array, cor, arrayDezenas, arrayTrevosSeleci
 
                         {item.dezenas2 ?
                             <View style={{ alignItems: "center" }}>
-                                <ViewText value="Dezenas 2" />
+                                <TextView value="Dezenas 2" />
                                 <DezenasSelecionados arrarComparar={arraySelecionadas} numerosSelecionados={item.dezenas2} cor={cor} />
                             </View>
                             : null}

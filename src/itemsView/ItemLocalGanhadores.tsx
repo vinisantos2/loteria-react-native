@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import ViewText from "../components/ViewText";
+import TextView from "../components/TextView";
 import Layout from "../components/Layout";
 import LocalGanhador from "../model/LocalGanhador";
 import { gerarKey } from "../utils/ultil";
@@ -12,22 +12,22 @@ export default function ItemLocalGanhadores({ array }) {
                 return (
                     <View style={styles.content} key={gerarKey()}>
                         <View style={styles.viewItems}>
-                            <ViewText cor="#000" value={"UF estado: "} />
-                            <ViewText cor="#000" value={item.uf} />
+                            <TextView cor="#000" value={"UF estado: "} />
+                            <TextView cor="#000" value={item.uf} />
                         </View>
 
                         <View style={styles.viewItems}>
-                            <ViewText cor="#000" value={"Municipio: "} />
-                            <ViewText cor="#000" value={item.municipio} />
+                            <TextView cor="#000" value={"Municipio: "} />
+                            <TextView cor="#000" value={item.municipio} />
                         </View>
                         <View style={styles.viewItems}>
-                            <ViewText cor="#000" value={"Posição: "} />
-                            <ViewText cor="#000" value={item.posicao.toString()} />
+                            <TextView cor="#000" value={"Posição: "} />
+                            <TextView cor="#000" value={item.posicao.toString()} />
 
                         </View>
                         <View style={styles.viewItems}>
-                            <ViewText cor="#000" value={"Ganhadores: "} />
-                            <ViewText cor="#000" value={item.ganhadores.toString()} />
+                            <TextView cor="#000" value={"Ganhadores: "} />
+                            <TextView cor="#000" value={item.ganhadores.toString()} />
                         </View>
                     </View>
 

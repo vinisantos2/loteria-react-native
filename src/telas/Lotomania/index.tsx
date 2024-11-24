@@ -8,7 +8,7 @@ import ViewSelecionados from '../../components/ViewSelecionados';
 import ViewCarregando from '../../components/ViewCarregando';
 import { COR_LOTOMAIA } from '../../constants/Cores';
 import LayoutResposta from '../../components/LayoutResposta';
-import ViewText from '../../components/ViewText';
+import TextView from '../../components/TextView';
 import { useIsFocused } from '@react-navigation/native';
 import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../../utils/ultil';
 import { STYLES } from '../../Style';
@@ -218,26 +218,26 @@ export default function Lotomania({ navigation }) {
 
                 <LayoutResposta>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor={"#FFF"} value={"Jogos com 20 pontos: " + pontos20} />
+                        <TextView cor={"#FFF"} value={"Jogos com 20 pontos: " + pontos20} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor={"#FFF"} value={"Jogos com 00 pontos: " + pontos00} />
+                        <TextView cor={"#FFF"} value={"Jogos com 00 pontos: " + pontos00} />
                     </View>
 
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor={"#FFF"} value={"Jogos com 19 pontos: " + pontos19} />
+                        <TextView cor={"#FFF"} value={"Jogos com 19 pontos: " + pontos19} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor={"#FFF"} value={"Jogos com 18 pontos: " + pontos18} />
+                        <TextView cor={"#FFF"} value={"Jogos com 18 pontos: " + pontos18} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor={"#FFF"} value={"Jogos com 17 pontos: " + pontos17} />
+                        <TextView cor={"#FFF"} value={"Jogos com 17 pontos: " + pontos17} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor={"#FFF"} value={"Jogos com 16 pontos: " + pontos16} />
+                        <TextView cor={"#FFF"} value={"Jogos com 16 pontos: " + pontos16} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor={"#FFF"} value={"Jogos com 15 pontos: " + pontos15} />
+                        <TextView cor={"#FFF"} value={"Jogos com 15 pontos: " + pontos15} />
                     </View>
                 </LayoutResposta>
 

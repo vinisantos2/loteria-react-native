@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 
-import ViewText from "./ViewText";
+import TextView from "./TextView";
 import { gerarKey } from "../utils/ultil";
 import { COR_LOTECA } from "../constants/Cores";
 const FONT = 20
@@ -21,20 +21,20 @@ export default function ViewLoteca({ arrayLoteca }) {
                 return (
                     <View key={gerarKey()} style={[styles.ViewItem]}>
                         <View style={styles.viewLegenda}>
-                            <ViewText fontWeight={"bold"} fontSize={20} value={"Jogo: " + jogo} />
+                            <TextView fontWeight={"bold"} fontSize={20} value={"Jogo: " + jogo} />
                         </View>
 
                         <View style={styles.viewJogo}>
                             <View style={[styles.itemViewTime, styles.medidaTime, time1v ? { backgroundColor: "green" } : {}]} >
-                                <ViewText fontSize={FONT} value={time1 + " "} />
+                                <TextView fontSize={FONT} value={time1 + " "} />
                             </View>
                             <View style={[styles.itemViewTime, styles.medidaResultado, empate ? { backgroundColor: "green" } : {}]} >
-                                <ViewText fontSize={FONT} value={gol1 + " "} />
-                                <ViewText fontSize={25} value={"X"} />
-                                <ViewText fontSize={FONT} value={" " + gol2 + " "} />
+                                <TextView fontSize={FONT} value={gol1 + " "} />
+                                <TextView fontSize={25} value={"X"} />
+                                <TextView fontSize={FONT} value={" " + gol2 + " "} />
                             </View>
                             <View style={[styles.itemViewTime, styles.medidaTime, time2v ? { backgroundColor: "green" } : {}]}>
-                                <ViewText fontSize={FONT} value={time2 + " "} />
+                                <TextView fontSize={FONT} value={time2 + " "} />
                             </View>
                         </View>
                     </View>

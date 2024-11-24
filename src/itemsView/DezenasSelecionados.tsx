@@ -2,7 +2,7 @@
 
 
 import { StyleSheet, Text, View } from 'react-native';
-import ViewText from '../components/ViewText';
+import TextView from '../components/TextView';
 import { COR_BRANCO, COR_FUNDO_CARTELA } from '../constants/Cores';
 import { gerarKey } from '../utils/ultil';
 
@@ -22,7 +22,7 @@ export default function DezenasSelecionados({ numerosSelecionados, cor = COR_FUN
 
                 return (
                     <View key={gerarKey()} style={[styles.item, { backgroundColor: corView }]}>
-                        <ViewText cor={COR_BRANCO} fontSize={20} value={item + " "} />
+                        <TextView cor={COR_BRANCO} fontSize={20} value={item + " "} />
                     </View>)
             }) : null
             }

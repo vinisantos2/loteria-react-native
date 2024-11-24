@@ -1,8 +1,6 @@
 import { StyleSheet, View } from "react-native";
-import ViewText from "./ViewText";
-import { COR_BRANCO } from "../constants/Cores";
+import TextView from "./TextView";
 import { JogoSorteado } from "../model/jogoSorteado";
-import { ViewLegenda } from "./ViewLegendaJogo";
 
 const FONT = 25
 
@@ -13,16 +11,16 @@ export default function ViewInfoProximoConcurso({ jogo, cor }) {
         <View style={[styles.view, { backgroundColor: cor }]}>
 
             <View style={{ flexDirection: "row" }}>
-                <ViewText fontSize={FONT} value={"Próximo concurso: "}></ViewText>
-                <ViewText fontSize={FONT} value={jogoSorteado.dataProximoConcurso }></ViewText>
+                <TextView fontSize={FONT} value={"Próximo concurso: "}></TextView>
+                <TextView fontSize={FONT} value={jogoSorteado.dataProximoConcurso }></TextView>
             </View>
             <View style={{ flexDirection: "row" }}>
-                <ViewText fontSize={FONT} value={"Acumulado: "}></ViewText>
-                <ViewText fontSize={FONT} value={jogoSorteado.acumulou ? "Sim" : "Não"}></ViewText>
+                <TextView fontSize={FONT} value={"Acumulado: "}></TextView>
+                <TextView fontSize={FONT} value={jogoSorteado.acumulou ? "Sim" : "Não"}></TextView>
             </View>
             <View style={{ flexDirection: "row" }}>
-                <ViewText fontSize={FONT} value={"Valor: "}></ViewText>
-                <ViewText fontSize={FONT} value={jogoSorteado.valorProximoConcurso}></ViewText>
+                <TextView fontSize={FONT} value={"Valor: "}></TextView>
+                <TextView fontSize={FONT} value={jogoSorteado.valorProximoConcurso}></TextView>
             </View>
         </View>
     )

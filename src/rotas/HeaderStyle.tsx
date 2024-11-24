@@ -1,6 +1,6 @@
 import { DrawerHeaderProps } from "@react-navigation/drawer"
 import { StyleSheet, TouchableOpacity, View } from "react-native"
-import ViewText from "../components/ViewText"
+import TextView from "../components/TextView"
 import { Ionicons } from "@expo/vector-icons";
 import { StackHeaderProps } from "@react-navigation/stack";
 import { COR_RESULTADOS } from "../constants/Cores";
@@ -18,7 +18,7 @@ export function HeaderStyleDrawer(props: DrawerHeaderProps) {
                 <Ionicons style={styles.icon} name="menu" size={35} color={"#fff"} />
             </TouchableOpacity>
             <View style={styles.legenda}>
-                <ViewText cor="#FFF" fontSize={20} fontWeight={"bold"} value={props.route.name} />
+                <TextView cor="#FFF" fontSize={20} fontWeight={"bold"} value={props.route.name} />
             </View>
 
         </View>
@@ -39,7 +39,7 @@ export function HeaderStyleStack(props: StackHeaderProps) {
             <TouchableOpacity style={{ flexDirection: "row" }} onPress={() => voltar()}>
                 <Ionicons style={styles.icon} name="arrow-back" size={35} color={"#fff"} />
                 <View style={styles.legenda}>
-                    <ViewText cor="#FFF" fontSize={20} fontWeight={"bold"} value={"Voltar"} />
+                    <TextView cor="#FFF" fontSize={20} fontWeight={"bold"} value={"Voltar"} />
                 </View>
             </TouchableOpacity>
 

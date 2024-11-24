@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -33,10 +33,3 @@ export const Dropdown = ({ click, placeHolder, array }) => {
 
 };
 
-
-const styles = StyleSheet.create({
-    viewSelect: {
-
-
-    }
-})

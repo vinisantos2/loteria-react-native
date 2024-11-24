@@ -6,27 +6,23 @@ Projeto em react-native que realiza a comparação de jogos de loterias com os a
 React-native 
 javaScript
 
-## tela home:
+## tela resultados:
 
-<img src="imagensApp/home.jpeg" alt="Tela home" style=" width: 500px; height: 800px;  align-items: center; justify-content: center;">
+<img src="imagensApp/resultados.png" alt="Tela home" style=" width: 500px; height: 800px;  align-items: center; justify-content: center;">
 
 
-## tela lotofácil:
+## tela menu de opções
 
-<img src="imagensApp/lotofacil.jpeg" alt="Tela lotofacil" style=" width: 500px; height: 800px;  align-items: center; justify-content: center;">
+<img src="imagensApp/tela_menu.png" alt="Tela lotofacil" style=" width: 500px; height: 800px;  align-items: center; justify-content: center;">
 
-## tela lotomania: nada
+## tela comparação mega sena
 
-<img src="imagensApp/lotomania.jpeg" alt="Tela lotomania" style=" width: 500px; height: 800px;  align-items: center; justify-content: center;">
+<img src="imagensApp/mega_comparacao.png" alt="Tela lotomania" style=" width: 500px; height: 800px;  align-items: center; justify-content: center;">
 
-## tela mega:
+## tela dezenas mais sorteados megasena:
 
-<img src="imagensApp/mega.jpeg" alt="Tela mega" style=" width: 500px; height: 800px;  align-items: center; justify-content: center;">
+<img src="imagensApp/deenas_mega.png" alt="Tela mega" style=" width: 500px; height: 800px;  align-items: center; justify-content: center;">
 
-## tela quina:
+## tela filtro resultados:
 
-<img src="imagensApp/quina.jpeg" alt="Tela quia" style=" width: 500px; height: 800px;  align-items: center; justify-content: center;">
-
-## tela alerta de limite de números escolhidos:
-
-<img src="imagensApp/alerta.jpeg" alt="Tela quia" style=" width: 500px; height: 800px;  align-items: center; justify-content: center;">
+<img src="imagensApp/filtro_resultados.png" alt="Tela quia" style=" width: 500px; height: 800px;  align-items: center; justify-content: center;">

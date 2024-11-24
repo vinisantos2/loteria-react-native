@@ -2,7 +2,7 @@
 
 
 import { StyleSheet, Text, View } from 'react-native';
-import ViewText from '../components/ViewText';
+import TextView from '../components/TextView';
 import { COR_BRANCO, COR_RESULTADOS, COR_FUNDO_CARTELA } from '../constants/Cores';
 import { formatarReal, gerarKey } from '../utils/ultil';
 import { premicaoDoBanco, Premio } from '../model/Premio';
@@ -18,10 +18,10 @@ export default function ItemPremiacao({ array, doBanco, limite }) {
                 const valor = doBanco ? premio.valorPremio : formatarReal(premio.valorPremio)
                 return (
                     <View key={gerarKey()} style={styles.viewItem}>
-                        <ViewText cor='#FFF' value={premio.faixa + "º Prêmio "} />
-                        <ViewText cor='#FFF' value={"Quantidade de acertos: " + premio.descricao} />
-                        <ViewText cor='#FFF' value={"Nº de ganhadores: " + premio.ganhadores} />
-                        <ViewText cor='#FFF' value={"Valor premio: " + valor} />
+                        <TextView cor='#FFF' value={premio.faixa + "º Prêmio "} />
+                        <TextView cor='#FFF' value={"Quantidade de acertos: " + premio.descricao} />
+                        <TextView cor='#FFF' value={"Nº de ganhadores: " + premio.ganhadores} />
+                        <TextView cor='#FFF' value={"Valor premio: " + valor} />
                     </View>
                 )
             })}

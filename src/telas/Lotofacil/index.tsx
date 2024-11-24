@@ -1,8 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
-    Button,
-    TouchableOpacity,
     View,
 
 } from 'react-native';
@@ -14,12 +12,12 @@ import { URL_BASE } from '../../constants/Constants';
 import ViewSelecionados from '../../components/ViewSelecionados';
 import ViewCarregando from '../../components/ViewCarregando';
 import LayoutResposta from '../../components/LayoutResposta';
-import ViewText from '../../components/ViewText';
+import TextView from '../../components/TextView';
 import { useIsFocused } from '@react-navigation/native';
 import { STYLES } from '../../Style';
 import ViewMsgErro from '../../components/ViewMsgErro';
 import { ViewBotoes } from '../../components/ViewBotoes';
-import {  ROTA_ESTATISTICA, ROTA_LOTOFACIL } from '../../rotas/Rotas';
+import { ROTA_ESTATISTICA, ROTA_LOTOFACIL } from '../../rotas/Rotas';
 import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
 import Carregando from '../../components/Carregando';
@@ -184,7 +182,7 @@ export default function Lotofacil({ navigation }) {
                     salvarNumeroNaLista={salvarNumero}
                     cor={cor} /> : null}
 
-                <ViewEsconderIcone valor={viewCartela? "Esconder cartela": "Mostrar cartela"} setViewCartela={setViewCartela} viewCartela={viewCartela} />
+                <ViewEsconderIcone valor={viewCartela ? "Esconder cartela" : "Mostrar cartela"} setViewCartela={setViewCartela} viewCartela={viewCartela} />
 
 
 
@@ -194,19 +192,19 @@ export default function Lotofacil({ navigation }) {
 
                 <LayoutResposta>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor="#FFF" value={"Jogos com 15 pontos: " + pontos15} />
+                        <TextView cor="#FFF" value={"Jogos com 15 pontos: " + pontos15} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor="#FFF" value={"Jogos com 14 pontos: " + pontos14} />
+                        <TextView cor="#FFF" value={"Jogos com 14 pontos: " + pontos14} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor="#FFF" value={"Jogos com 13 pontos: " + pontos13} />
+                        <TextView cor="#FFF" value={"Jogos com 13 pontos: " + pontos13} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor="#FFF" value={"Jogos com 12 pontos: " + pontos12} />
+                        <TextView cor="#FFF" value={"Jogos com 12 pontos: " + pontos12} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor="#FFF" value={"Jogos com 11 pontos: " + pontos11} />
+                        <TextView cor="#FFF" value={"Jogos com 11 pontos: " + pontos11} />
                     </View>
                 </LayoutResposta>
 

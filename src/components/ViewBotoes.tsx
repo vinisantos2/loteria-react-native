@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import ViewText from "./ViewText";
+import TextView from "./TextView";
 import ViewBotao from "./ViewBotao";
 import { STYLES } from "../Style";
 import { COMPARAR, LIMPAR, PRENCHER } from "../constants/Constants";
@@ -11,7 +11,7 @@ export function ViewBotoes({ numJogos, compararJogo,
     return (
         <View style={styles.viewBotoes}>
             <View style={[styles.item, { backgroundColor: cor }]}>
-                <ViewText cor="#FFF" fontWeight={"bold"} value={"Comparar com " + numJogos + " jogos já sorteados"} />
+                <TextView cor="#FFF" fontWeight={"bold"} value={"Comparar com " + numJogos + " jogos já sorteados"} />
             </View>
             <View style={{ flexDirection: "row", width: "100%" }}>
                 <ViewBotao value={COMPARAR} onPress={compararJogo} />

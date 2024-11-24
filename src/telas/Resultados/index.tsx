@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, View } from "react-native";
+import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
 
 import Layout from "../../components/Layout";
 import {
@@ -11,7 +11,7 @@ import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads'
 import React, { useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { axiosBusca, gerarKey, mudaCor } from "../../utils/ultil";
-import {  URL_BASE_ULTIMOS } from "../../constants/Constants";
+import { URL_BASE_ULTIMOS } from "../../constants/Constants";
 import ItemJogo from "../../itemsView/ItemJogo"
 import {
     DIA, DUPLA, FEDERAL, LOTECA, LOTOFACIL,
@@ -113,33 +113,35 @@ export default function Resultados({ }) {
 
     return (
         <>
-            <Layout>
+            <View style={{flex: 1}}>
                 <View>
                     <Dropdown click={(e) => filtro(e)} placeHolder={"Filtrar por jogo"} array={arrayFiltro.sort()} />
                 </View>
-                <StatusBarView cor={corStatus} />
-                {carregando ? <ViewCarregando /> : null}
-                {erroServer ? <ViewMsgErro /> : null}
-                {/* <Button
+                <ScrollView>
+
+
+                    <StatusBarView cor={corStatus} />
+                    {carregando ? <ViewCarregando /> : null}
+                    {erroServer ? <ViewMsgErro /> : null}
+                    {/* <Button
                 title="Go to Jane's loto"
                 onPress={() =>
                     navigation.navigate("L")
                 }
             /> */}
-                {arrayViewJogosSorteados ? arrayViewJogosSorteados.map((item) => {
-                    const jogo = jogoDoBanco(item)
-                    return (
-                        <ItemJogo key={gerarKey()} item={jogo} cor={mudaCor(item.loteria)} />
+                    {arrayViewJogosSorteados ? arrayViewJogosSorteados.map((item) => {
+                        const jogo = jogoDoBanco(item)
+                        return (
+                            <ItemJogo key={gerarKey()} item={jogo} cor={mudaCor(item.loteria)} />
 
-                    )
-                }) :
-                    <ViewMsgErro />
-                }
+                        )
+                    }) :
+                        <ViewMsgErro />
+                    }
 
-
-            </Layout>
+                </ScrollView>
+            </View>
             <RodapeBanner />
-
         </>
 
     );

@@ -11,7 +11,7 @@ import ViewSelecionados from '../../components/ViewSelecionados';
 import { QTD_DEZENAS_QUINA, URL_BASE } from '../../constants/Constants';
 import ViewCarregando from '../../components/ViewCarregando';
 import LayoutResposta from '../../components/LayoutResposta';
-import ViewText from '../../components/ViewText';
+import TextView from '../../components/TextView';
 import { useIsFocused } from '@react-navigation/native';
 import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../../utils/ultil';
 import { STYLES } from '../../Style';
@@ -191,16 +191,16 @@ export default function Quina({ navigation }) {
 
                 <LayoutResposta>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor='#FFF' value={"Jogos com 5 pontos: " + pontos5} />
+                        <TextView cor='#FFF' value={"Jogos com 5 pontos: " + pontos5} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
+                        <TextView cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor='#FFF' value={"Jogos com 3 pontos: " + pontos3} />
+                        <TextView cor='#FFF' value={"Jogos com 3 pontos: " + pontos3} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor='#FFF' value={"Jogos com 2 pontos: " + pontos2} />
+                        <TextView cor='#FFF' value={"Jogos com 2 pontos: " + pontos2} />
                     </View>
 
                 </LayoutResposta>

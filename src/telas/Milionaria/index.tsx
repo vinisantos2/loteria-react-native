@@ -10,7 +10,7 @@ import ViewSelecionados from '../../components/ViewSelecionados';
 import { QTD_DEZENAS_MILIONARIA, URL_BASE } from '../../constants/Constants';
 import ViewCarregando from '../../components/ViewCarregando';
 import LayoutResposta from '../../components/LayoutResposta';
-import ViewText from '../../components/ViewText';
+import TextView from '../../components/TextView';
 import { useIsFocused } from '@react-navigation/native';
 import { axiosBusca, jogoSorteados, preencher, salvarNumeroNaLista } from '../../utils/ultil';
 import ViewMsgErro from '../../components/ViewMsgErro';
@@ -241,7 +241,7 @@ export default function MaisMilionaria({ navigation }) {
 
                 <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={COR_MILIONARIA} qtdNum={qtdNum} />
                 <View style={{ alignItems: 'center' }}>
-                    <ViewText fontSize={25} value={"Trevos"} cor='#FFF' fontWeight={"bold"} />
+                    <TextView fontSize={25} value={"Trevos"} cor='#FFF' fontWeight={"bold"} />
                 </View>
 
                 <Cartela
@@ -253,7 +253,7 @@ export default function MaisMilionaria({ navigation }) {
 
                 />
                 <View style={{ alignItems: 'center' }}>
-                    <ViewText fontSize={25} value={"Dezenas"} cor='#FFF' fontWeight={"bold"} />
+                    <TextView fontSize={25} value={"Dezenas"} cor='#FFF' fontWeight={"bold"} />
                 </View>
                 {viewCartela ? <Cartela
                     dezenas={QTD_DEZENAS_MILIONARIA}
@@ -266,34 +266,34 @@ export default function MaisMilionaria({ navigation }) {
 
                 <LayoutResposta>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]} >
-                        <ViewText cor={COR_BRANCO} value={"Jogos com 6 pontos e 2 trevos: " + pontos6e2trevos} />
+                        <TextView cor={COR_BRANCO} value={"Jogos com 6 pontos e 2 trevos: " + pontos6e2trevos} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor={COR_BRANCO} value={"Jogos com 6 pontos e 1 ou 0 trevo: " + pontos6e1trevo} />
+                        <TextView cor={COR_BRANCO} value={"Jogos com 6 pontos e 1 ou 0 trevo: " + pontos6e1trevo} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor={COR_BRANCO} value={"Jogos com 5 pontos e 2 trevos: " + pontos5e2trevos} />
+                        <TextView cor={COR_BRANCO} value={"Jogos com 5 pontos e 2 trevos: " + pontos5e2trevos} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor={COR_BRANCO} value={"Jogos com 5 pontos e 1 ou 0 trevo: " + pontos5e1trevos} />
+                        <TextView cor={COR_BRANCO} value={"Jogos com 5 pontos e 1 ou 0 trevo: " + pontos5e1trevos} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor={COR_BRANCO} value={"Jogos com 4 pontos e 2 trevo: " + pontos4e2trevos} />
+                        <TextView cor={COR_BRANCO} value={"Jogos com 4 pontos e 2 trevo: " + pontos4e2trevos} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor={COR_BRANCO} value={"Jogos com 4 pontos e 1 ou 0 trevo: " + pontos4e1trevos} />
+                        <TextView cor={COR_BRANCO} value={"Jogos com 4 pontos e 1 ou 0 trevo: " + pontos4e1trevos} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor={COR_BRANCO} value={"Jogos com 3 pontos e 2 trevos: " + pontos3e2trevos} />
+                        <TextView cor={COR_BRANCO} value={"Jogos com 3 pontos e 2 trevos: " + pontos3e2trevos} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor={COR_BRANCO} value={"Jogos com 3 pontos e 1 trevo: " + pontos3e1trevos} />
+                        <TextView cor={COR_BRANCO} value={"Jogos com 3 pontos e 1 trevo: " + pontos3e1trevos} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor={COR_BRANCO} value={"Jogos com 2 pontos e 2 trevos: " + pontos2e2trevos} />
+                        <TextView cor={COR_BRANCO} value={"Jogos com 2 pontos e 2 trevos: " + pontos2e2trevos} />
                     </View>
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                        <ViewText cor={COR_BRANCO} value={"Jogos com 2 pontos e 1 trevo: " + pontos2e1trevos} />
+                        <TextView cor={COR_BRANCO} value={"Jogos com 2 pontos e 1 trevo: " + pontos2e1trevos} />
                     </View>
                 </LayoutResposta>
 

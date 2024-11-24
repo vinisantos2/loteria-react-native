@@ -15,12 +15,15 @@
       "supportsTablet": true
     },
     "android": {
+      "permissions": [
+        "com.google.android.gms.permission.AD_ID"
+      ],
       "googleServicesFile": "./google-services.json",
       "adaptativeIcon": {
         "foregroundImage": "assets/adaptive-icon.png",
         "backgroundColor": "#49B146"
       },
-      "versionCode": 19,
+      "versionCode": 21,
       "package": "com.anonymous.loteria"
     },
     "web": {

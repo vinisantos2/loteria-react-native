@@ -9,7 +9,7 @@ import { DIA, DUPLA, LOTECA, LOTOFACIL, LOTOMANIA, MEGA, MILIONARIA, QUINA, SUPE
 import { Dropdown } from "../../components/Dropdown";
 import axios from "axios";
 import { axiosBusca, gerarKey, mudaCor } from "../../utils/ultil";
-import ViewText from "../../components/ViewText";
+import TextView from "../../components/TextView";
 import { STYLES } from "../../Style";
 import { useState } from "react";
 import ViewEsconderIcone from "../Views/ViewEsconderCartela";
@@ -96,7 +96,7 @@ export default function TelaBusca({ route }) {
                     </View>
                     <TouchableOpacity onPress={buscarJogo}
                         style={styles.botao}>
-                        <ViewText value="Buscar" />
+                        <TextView value="Buscar" />
                     </TouchableOpacity>
                 </View> :
                 null}

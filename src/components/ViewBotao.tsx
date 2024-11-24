@@ -1,6 +1,6 @@
 
 import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
-import ViewText from './ViewText';
+import TextView from './TextView';
 import { COR_BOTAO, COR_BRANCO } from '../constants/Cores';
 
 
@@ -8,7 +8,7 @@ export default function ViewBotao({ onPress, value }) {
 
     return (
         <TouchableOpacity style={styles.botao} onPress={onPress}>
-            <ViewText fontWeight={"bold"} cor={COR_BRANCO} value={value} fontSize={17} />
+            <TextView fontWeight={"bold"} cor={COR_BRANCO} value={value} fontSize={17} />
         </TouchableOpacity>
     )
 

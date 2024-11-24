@@ -2,7 +2,7 @@
 
 
 import { StyleSheet, Text, View } from 'react-native';
-import ViewText from '../components/ViewText';
+import TextView from '../components/TextView';
 
 export default function ItemEstatistica({ obj, total }) {
 
@@ -11,17 +11,17 @@ export default function ItemEstatistica({ obj, total }) {
         <View style={styles.viewItens}>
 
             <View style={styles.item}>
-                <ViewText fontWeight={"bold"} cor='#FFF' fontSize={20} value={obj.dezena} />
+                <TextView fontWeight={"bold"} cor='#FFF' fontSize={20} value={obj.dezena} />
             </View>
             <View style={styles.item}>
-                <ViewText fontWeight={"bold"} cor='#FFF' fontSize={20} value={obj.contador} />
+                <TextView fontWeight={"bold"} cor='#FFF' fontSize={20} value={obj.contador} />
             </View>
             <View style={styles.item}>
-                <ViewText fontWeight={"bold"} cor='#FFF' fontSize={20} value={(obj.contador / total * 100).toFixed(2) + "%"} />
+                <TextView fontWeight={"bold"} cor='#FFF' fontSize={20} value={(obj.contador / total * 100).toFixed(2) + "%"} />
             </View>
 
-            <ViewText value={obj.contador} />
-            <ViewText value={" Porcentagem " + (obj.contador / total * 100).toPrecision(4) + "%"} />
+            <TextView value={obj.contador} />
+            <TextView value={" Porcentagem " + (obj.contador / total * 100).toPrecision(4) + "%"} />
         </View>
 
     )

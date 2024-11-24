@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import ViewText from "../../components/ViewText";
+import TextView from "../../components/TextView";
 import ItemEstatistica from "../../itemsView/ItemEstatistica";
 import React, { useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
@@ -95,14 +95,14 @@ export default function TelaEstatistica({ route }) {
 
                     <View style={styles.viewLegenda}>
                         <View style={styles.legenda}>
-                            <ViewText cor="#000" fontSize={20} value={"Dezenas"} />
+                            <TextView cor="#000" fontSize={20} value={"Dezenas"} />
                         </View>
 
                         <View style={styles.legenda}>
-                            <ViewText cor="#000" fontSize={20} value={"Vezes"} />
+                            <TextView cor="#000" fontSize={20} value={"Vezes"} />
                         </View>
                         <View style={styles.legenda}>
-                            <ViewText cor="#000" fontSize={20} value={"%"} />
+                            <TextView cor="#000" fontSize={20} value={"%"} />
                         </View>
                         {/* <View style={styles.legenda}>
                         <ViewText fontSize={20} value={total} />
