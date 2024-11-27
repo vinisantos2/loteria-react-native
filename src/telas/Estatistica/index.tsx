@@ -119,7 +119,7 @@ export default function TelaEstatistica({ route }) {
                 </View>
 
             </Layout>
-            <RodapeBanner />
+           
         </>
     )
 }

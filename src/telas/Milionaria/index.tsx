@@ -78,7 +78,7 @@ export default function MaisMilionaria({ navigation }) {
         setCarregando(false)
     }
 
-  
+
 
     function salvarNumero(numero) {
         setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
@@ -109,7 +109,7 @@ export default function MaisMilionaria({ navigation }) {
 
     function preencherJogo() {
         setArray(preencher(numerosSelecionados, dezenas, QTD_DEZENAS_MILIONARIA))
-      
+
         setQtdNum(numerosSelecionados.length)
     }
 
@@ -261,7 +261,7 @@ export default function MaisMilionaria({ navigation }) {
                     salvarNumeroNaLista={salvarNumero}
                     cor={cor} /> : null}
 
-                <ViewEsconderIcone setViewCartela={setViewCartela} viewCartela={viewCartela} />
+                <ViewEsconderIcone valor={viewCartela ? "Esconder cartela" : "Mostrar cartela"} setViewCartela={setViewCartela} viewCartela={viewCartela} />
 
 
                 <LayoutResposta>
@@ -300,7 +300,7 @@ export default function MaisMilionaria({ navigation }) {
                 {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} arrayTrevosSelecionados={numerosSelecionadosTrevos} array={arrayPremiacao} cor={cor} /> : null}
 
             </Layout>
-            <RodapeBanner />
+            
         </>
 
 

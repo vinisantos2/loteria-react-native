@@ -70,7 +70,7 @@ export default function MegaSena({ navigation }) {
         setCarregando(false)
     }
 
-  
+
 
     function limpar() {
         setArray([])
@@ -143,7 +143,7 @@ export default function MegaSena({ navigation }) {
 
     }
 
-   
+
 
     function estatistica() {
         const dezenas = qtdDezenasMega
@@ -153,49 +153,49 @@ export default function MegaSena({ navigation }) {
     return (
         <>
 
-        <Layout cor={cor}>
-            {carregandoPag ? <ViewCarregando /> : null}
-            {erroServer ? <ViewMsgErro /> : null}
-            {carregando ? <Carregando /> : null}
-            <ViewBotoes
-                numJogos={arrayJogos.length}
-                limpar={() => limpar()}
-                estatistica={() => estatistica()}
-                preencherJogo={() => preencherJogo()}
-                compararJogo={() => compararJogo()}
-                cor={cor}
-            />
+            <Layout cor={cor}>
+                {carregandoPag ? <ViewCarregando /> : null}
+                {erroServer ? <ViewMsgErro /> : null}
+                {carregando ? <Carregando /> : null}
+                <ViewBotoes
+                    numJogos={arrayJogos.length}
+                    limpar={() => limpar()}
+                    estatistica={() => estatistica()}
+                    preencherJogo={() => preencherJogo()}
+                    compararJogo={() => compararJogo()}
+                    cor={cor}
+                />
 
-            <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={cor} qtdNum={qtdNum} />
+                <ViewSelecionados numerosSelecionados={numerosSelecionados} cor={cor} qtdNum={qtdNum} />
 
-            {viewCartela ? <Cartela
-                dezenas={qtdDezenasMega}
-                numerosSelecionados={numerosSelecionados}
-                salvarNumeroNaLista={salvarNumero}
-                cor={cor} /> : null}
+                {viewCartela ? <Cartela
+                    dezenas={qtdDezenasMega}
+                    numerosSelecionados={numerosSelecionados}
+                    salvarNumeroNaLista={salvarNumero}
+                    cor={cor} /> : null}
 
-            <ViewEsconderIcone setViewCartela={setViewCartela} viewCartela={viewCartela} />
-
-
-
-            <LayoutResposta>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <TextView cor='#FFF' value={"Jogos com 6 pontos: " + pontos6} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <TextView cor='#FFF' value={"Jogos com 5 pontos: " + pontos5} />
-                </View>
-                <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
-                    <TextView cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
-                </View>
-            </LayoutResposta>
-
-            {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}
+                <ViewEsconderIcone valor={viewCartela ? "Esconder cartela" : "Mostrar cartela"} setViewCartela={setViewCartela} viewCartela={viewCartela} />
 
 
-        </Layout>
-        <RodapeBanner />
-    </>
+
+                <LayoutResposta>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <TextView cor='#FFF' value={"Jogos com 6 pontos: " + pontos6} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <TextView cor='#FFF' value={"Jogos com 5 pontos: " + pontos5} />
+                    </View>
+                    <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
+                        <TextView cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
+                    </View>
+                </LayoutResposta>
+
+                {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}
+
+
+            </Layout>
+           
+        </>
 
     );
 }

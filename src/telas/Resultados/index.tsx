@@ -141,7 +141,7 @@ export default function Resultados({ }) {
 
                 </ScrollView>
             </View>
-            <RodapeBanner />
+           
         </>
 
     );

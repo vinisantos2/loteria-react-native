@@ -202,7 +202,7 @@ export default function Lotomania({ navigation }) {
                     salvarNumeroNaLista={salvarNumero}
                     cor={cor} /> : null}
 
-                <ViewEsconderIcone setViewCartela={setViewCartela} viewCartela={viewCartela} />
+                <ViewEsconderIcone valor={viewCartela ? "Esconder cartela" : "Mostrar cartela"} setViewCartela={setViewCartela} viewCartela={viewCartela} />
 
 
                 <ViewBotoes numJogos={arrayJogos.length}
@@ -243,7 +243,7 @@ export default function Lotomania({ navigation }) {
 
                 {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}
             </Layout>
-            <RodapeBanner />
+
         </>
 
     );

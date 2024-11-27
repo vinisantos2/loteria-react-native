@@ -130,7 +130,7 @@ export default function TelaBusca({ route }) {
                 }
 
             </ScrollView>
-            <RodapeBanner />
+            
         </>
     )
 }

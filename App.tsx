@@ -5,6 +5,7 @@ import StackNavigator from './src/rotas/StackNavigator';
 import { Alert, PermissionsAndroid } from 'react-native';
 import messaging, { firebase } from '@react-native-firebase/messaging';
 import { Notificacao } from './src/model/Notificacao';
+import RodapeBanner from './src/components/RodapeBanner';
 
 
 export default function App() {
@@ -63,22 +64,26 @@ export default function App() {
 
 
   return (
-    <NavigationContainer
+    <>
+      <NavigationContainer
 
-      theme={{
-        dark: true,
-        colors: {
-          card: COR_DE_FUNDO,
-          border: "#FFFFFF00",
-          background: undefined,
-          notification: undefined,
-          text: undefined,
-          primary: undefined
+        theme={{
+          dark: true,
+          colors: {
+            card: COR_DE_FUNDO,
+            border: "#FFFFFF00",
+            background: undefined,
+            notification: undefined,
+            text: undefined,
+            primary: undefined
 
-        }
-      }}>
+          }
+        }}>
 
-      <StackNavigator />
-    </NavigationContainer>
+        <StackNavigator />
+      </NavigationContainer>
+      <RodapeBanner />
+    </>
+
   );
 }

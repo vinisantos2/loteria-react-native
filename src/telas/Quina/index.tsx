@@ -186,7 +186,7 @@ export default function Quina({ navigation }) {
                     salvarNumeroNaLista={salvarNumero}
                     cor={cor} /> : null}
 
-                <ViewEsconderIcone setViewCartela={setViewCartela} viewCartela={viewCartela} />
+                <ViewEsconderIcone valor={viewCartela ? "Esconder cartela" : "Mostrar cartela"} setViewCartela={setViewCartela} viewCartela={viewCartela} />
 
 
                 <LayoutResposta>
@@ -208,7 +208,6 @@ export default function Quina({ navigation }) {
                 {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}
 
             </Layout>
-            <RodapeBanner />
         </>
     );
 }

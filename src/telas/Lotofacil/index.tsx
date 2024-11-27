@@ -211,7 +211,7 @@ export default function Lotofacil({ navigation }) {
                 {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}
 
             </Layout>
-            <RodapeBanner />
+
         </>
 
     );

@@ -23,7 +23,7 @@ import ViewEsconderIcone from '../Views/ViewEsconderCartela';
 
 export default function DiaDeSorte({ navigation }) {
 
-  
+
     const [pontos4, setPontos4] = useState(0)
     const [pontos5, setPontos5] = useState(0)
     const [pontos6, setPontos6] = useState(0)
@@ -74,7 +74,7 @@ export default function DiaDeSorte({ navigation }) {
         setPontos6(0)
         setPontos5(0)
         setPontos4(0)
-        
+
         setViewCartela(true)
 
     }
@@ -93,7 +93,7 @@ export default function DiaDeSorte({ navigation }) {
         let pontos6 = 0
         let pontos5 = 0
         let pontos4 = 0
-       
+
 
         // primeiro for para ver os jogos que ja foram sorteados 
         for (let i = 0; i < arrayJogosSorteados.length; i++) {
@@ -128,7 +128,7 @@ export default function DiaDeSorte({ navigation }) {
                 obj.pontos = obj.premiacoes[3].descricao
                 arrayPremiacao.push(obj)
 
-            } 
+            }
             contador = 0
 
         }
@@ -137,7 +137,7 @@ export default function DiaDeSorte({ navigation }) {
         setPontos6(pontos6)
         setPontos5(pontos5)
         setPontos4(pontos4)
-       
+
         setArrayPremiacao(arrayPremiacao)
         setCarregando(false)
 
@@ -178,7 +178,7 @@ export default function DiaDeSorte({ navigation }) {
                     salvarNumeroNaLista={salvarNumero}
                     cor={cor} /> : null}
 
-                <ViewEsconderIcone setViewCartela={setViewCartela} viewCartela={viewCartela} />
+                <ViewEsconderIcone valor={viewCartela ? "Esconder cartela" : "Mostrar cartela"} setViewCartela={setViewCartela} viewCartela={viewCartela} />
 
 
 
@@ -196,7 +196,7 @@ export default function DiaDeSorte({ navigation }) {
                     <View style={[STYLES.itemPremiacao, { backgroundColor: cor }]}>
                         <TextView fontWeight={'bold'} cor='#FFF' value={"Jogos com 4 pontos: " + pontos4} />
                     </View>
-                  
+
                 </LayoutResposta>
                 {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}
 

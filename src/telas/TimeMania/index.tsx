@@ -180,7 +180,7 @@ export default function TimeMania({ navigation }) {
                     salvarNumeroNaLista={salvarNumero}
                     cor={cor} /> : null}
 
-                <ViewEsconderIcone setViewCartela={setViewCartela} viewCartela={viewCartela} />
+                <ViewEsconderIcone valor={viewCartela ? "Esconder cartela" : "Mostrar cartela"} setViewCartela={setViewCartela} viewCartela={viewCartela} />
 
 
 
@@ -205,7 +205,7 @@ export default function TimeMania({ navigation }) {
                 {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}
 
             </Layout>
-            <RodapeBanner />
+
         </>
 
     );

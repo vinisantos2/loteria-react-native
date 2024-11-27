@@ -220,7 +220,7 @@ export default function DuplaSena({ navigation }) {
 
 
             </Layout>
-            <RodapeBanner />
+         
         </>
 
     );
