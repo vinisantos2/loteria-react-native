@@ -1,7 +1,7 @@
 
 
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import TextView from '../components/TextView';
 import { COR_BRANCO, COR_FUNDO_CARTELA } from '../constants/Cores';
 import { gerarKey } from '../utils/ultil';

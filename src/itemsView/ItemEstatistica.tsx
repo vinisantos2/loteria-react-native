@@ -1,7 +1,7 @@
 
 
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import TextView from '../components/TextView';
 
 export default function ItemEstatistica({ obj, total }) {

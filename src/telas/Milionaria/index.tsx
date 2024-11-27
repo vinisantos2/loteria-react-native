@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import {
-    StyleSheet, View
+    View
 } from 'react-native';
 import Cartela from '../../components/Cartela';
 import { COR_BRANCO, COR_MILIONARIA } from '../../constants/Cores';
@@ -16,12 +16,9 @@ import { axiosBusca, jogoSorteados, preencher, salvarNumeroNaLista } from '../..
 import ViewMsgErro from '../../components/ViewMsgErro';
 import { STYLES } from '../../Style';
 import { ViewBotoes } from '../../components/ViewBotoes';
-import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_MILIONARIA } from '../../rotas/Rotas';
-import { Premio } from '../../model/Premio';
+import { ROTA_ESTATISTICA, ROTA_MILIONARIA } from '../../rotas/Rotas';
 import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
-import BuscaView from '../../components/BuscaView';
-import RodapeBanner from '../../components/RodapeBanner';
 import ViewEsconderIcone from '../Views/ViewEsconderCartela';
 import Carregando from '../../components/Carregando';
 
@@ -300,7 +297,7 @@ export default function MaisMilionaria({ navigation }) {
                 {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} arrayTrevosSelecionados={numerosSelecionadosTrevos} array={arrayPremiacao} cor={cor} /> : null}
 
             </Layout>
-            
+
         </>
 
 

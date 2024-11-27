@@ -8,7 +8,7 @@ import Layout from '../../components/Layout';
 import Cartela from '../../components/Cartela';
 import { QTD_DEZENAS_DUPLA, URL_BASE } from '../../constants/Constants';
 import ViewSelecionados from '../../components/ViewSelecionados';
-import { COR_DUPLA, COR_MEGA } from '../../constants/Cores';
+import { COR_DUPLA } from '../../constants/Cores';
 import ViewCarregando from '../../components/ViewCarregando';
 import LayoutResposta from '../../components/LayoutResposta';
 import TextView from '../../components/TextView';
@@ -16,15 +16,13 @@ import { useIsFocused } from '@react-navigation/native';
 import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../../utils/ultil';
 import { STYLES } from '../../Style';
 import { ViewBotoes } from '../../components/ViewBotoes';
-import { ROTA_BUSCA, ROTA_ESTATISTICA } from '../../rotas/Rotas';
+import {  ROTA_ESTATISTICA } from '../../rotas/Rotas';
 import ViewMsgErro from '../../components/ViewMsgErro';
 import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
-import BuscaView from '../../components/BuscaView';
 import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import ViewEsconderIcone from '../Views/ViewEsconderCartela';
 import Carregando from '../../components/Carregando';
-import RodapeBanner from '../../components/RodapeBanner';
 
 export default function DuplaSena({ navigation }) {
 

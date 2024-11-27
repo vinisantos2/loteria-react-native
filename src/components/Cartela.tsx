@@ -1,6 +1,6 @@
 
 import { StyleSheet, View } from 'react-native';
-import { COR_BOTAO, COR_BRANCO, COR_FUNDO_CARTELA } from '../constants/Cores';
+import { COR_BOTAO, COR_FUNDO_CARTELA } from '../constants/Cores';
 import Botao from './Botao';
 import { converterString } from '../utils/ultil';
 

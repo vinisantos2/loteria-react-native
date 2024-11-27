@@ -1,7 +1,7 @@
 
 import { StyleSheet, View, } from 'react-native';
 import TextView from './TextView';
-import { COR_BRANCO, COR_DIA, COR_FUNDO_CARTELA, COR_LEGENDA } from '../constants/Cores';
+import {COR_LEGENDA } from '../constants/Cores';
 
 
 export default function LegendaView({ nomeJogo, cor }) {

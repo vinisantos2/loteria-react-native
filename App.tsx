@@ -5,7 +5,6 @@ import StackNavigator from './src/rotas/StackNavigator';
 import { Alert, PermissionsAndroid } from 'react-native';
 import messaging, { firebase } from '@react-native-firebase/messaging';
 import { Notificacao } from './src/model/Notificacao';
-import RodapeBanner from './src/components/RodapeBanner';
 
 
 export default function App() {
@@ -82,7 +81,6 @@ export default function App() {
 
         <StackNavigator />
       </NavigationContainer>
-      <RodapeBanner />
     </>
 
   );

@@ -1,5 +1,5 @@
 
-import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import TextView from './TextView';
 import { COR_BOTAO, COR_BRANCO } from '../constants/Cores';
 

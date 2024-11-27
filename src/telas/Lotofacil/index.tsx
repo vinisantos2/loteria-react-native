@@ -21,7 +21,6 @@ import { ROTA_ESTATISTICA, ROTA_LOTOFACIL } from '../../rotas/Rotas';
 import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
 import Carregando from '../../components/Carregando';
-import RodapeBanner from '../../components/RodapeBanner';
 import ViewEsconderIcone from '../Views/ViewEsconderCartela';
 
 export default function Lotofacil({ navigation }) {

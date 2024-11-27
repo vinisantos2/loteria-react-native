@@ -1,6 +1,5 @@
 import { StyleSheet, View } from "react-native";
 import TextView from "../components/TextView";
-import Layout from "../components/Layout";
 import LocalGanhador from "../model/LocalGanhador";
 import { gerarKey } from "../utils/ultil";
 

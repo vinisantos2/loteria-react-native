@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Alert, TouchableOpacity, View } from 'react-native';
+import { Alert, View } from 'react-native';
 import Layout from '../../components/Layout';
 import Cartela from '../../components/Cartela';
 import { URL_BASE } from '../../constants/Constants';
@@ -14,12 +14,10 @@ import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } fr
 import { STYLES } from '../../Style';
 import ViewMsgErro from '../../components/ViewMsgErro';
 import { ViewBotoes } from '../../components/ViewBotoes';
-import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_LOTOMANIA } from '../../rotas/Rotas';
+import {  ROTA_ESTATISTICA, ROTA_LOTOMANIA } from '../../rotas/Rotas';
 import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
-import RodapeBanner from '../../components/RodapeBanner';
 import Carregando from '../../components/Carregando';
-import { Ionicons } from "@expo/vector-icons";
 import ViewEsconderIcone from '../Views/ViewEsconderCartela';
 
 

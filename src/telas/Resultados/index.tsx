@@ -1,12 +1,8 @@
-import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
-import Layout from "../../components/Layout";
 import {
     COR_RESULTADOS,
-
 } from "../../constants/Cores";
-
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads'
 
 import React, { useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
@@ -14,16 +10,14 @@ import { axiosBusca, gerarKey, mudaCor } from "../../utils/ultil";
 import { URL_BASE_ULTIMOS } from "../../constants/Constants";
 import ItemJogo from "../../itemsView/ItemJogo"
 import {
-    DIA, DUPLA, FEDERAL, LOTECA, LOTOFACIL,
+    DIA, DUPLA, LOTECA, LOTOFACIL,
     LOTOMANIA, MEGA, MILIONARIA, QUINA,
     SUPER, TIME
 } from "../../constants/Nomes";
 import ViewCarregando from "../../components/ViewCarregando";
 import ViewMsgErro from "../../components/ViewMsgErro";
-import StatusBarView from "../../components/StatusBarView";
 import { jogoDoBanco, JogoSorteado } from "../../model/jogoSorteado";
 import { Dropdown } from "../../components/Dropdown";
-import RodapeBanner from "../../components/RodapeBanner";
 
 export default function Resultados({ }) {
 
@@ -54,10 +48,6 @@ export default function Resultados({ }) {
         buscarDados()
         // mudaCorStatus()
     }, [isFocused])
-
-    function mudaCorStatus() {
-        setCorStatus(COR_RESULTADOS)
-    }
 
 
 
@@ -113,14 +103,12 @@ export default function Resultados({ }) {
 
     return (
         <>
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
                 <View>
                     <Dropdown click={(e) => filtro(e)} placeHolder={"Filtrar por jogo"} array={arrayFiltro.sort()} />
                 </View>
                 <ScrollView>
 
-
-                    <StatusBarView cor={corStatus} />
                     {carregando ? <ViewCarregando /> : null}
                     {erroServer ? <ViewMsgErro /> : null}
                     {/* <Button
@@ -141,7 +129,7 @@ export default function Resultados({ }) {
 
                 </ScrollView>
             </View>
-           
+
         </>
 
     );

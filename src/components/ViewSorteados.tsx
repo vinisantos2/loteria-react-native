@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from "react-native"
+import { StyleSheet, View } from "react-native"
 import DezenasSelecionados from "../itemsView/DezenasSelecionados"
 import TextView from "./TextView"
 import { gerarKey } from "../utils/ultil"

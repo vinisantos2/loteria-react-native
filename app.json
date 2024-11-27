@@ -15,9 +15,6 @@
       "supportsTablet": true
     },
     "android": {
-      "permissions": [
-        "com.google.android.gms.permission.AD_ID"
-      ],
       "googleServicesFile": "./google-services.json",
       "adaptativeIcon": {
         "foregroundImage": "assets/adaptive-icon.png",
@@ -33,14 +30,6 @@
       "eas": {
         "projectId": "04fefcaa-5cbf-4a2f-8ebc-b27e80f16859"
       }
-    },
-    "plugins": [
-      [
-        "react-native-google-mobile-ads",
-        {
-          "androidAppId": "ca-app-pub-7075046661098667~2923301600"
-        }
-      ]
-    ]
+    }
   }
 }

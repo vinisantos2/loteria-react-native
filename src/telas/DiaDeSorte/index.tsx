@@ -16,8 +16,6 @@ import { ViewBotoes } from '../../components/ViewBotoes';
 import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_TIME } from '../../rotas/Rotas';
 import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
-import BuscaView from '../../components/BuscaView';
-import RodapeBanner from '../../components/RodapeBanner';
 import Carregando from '../../components/Carregando';
 import ViewEsconderIcone from '../Views/ViewEsconderCartela';
 
@@ -201,7 +199,6 @@ export default function DiaDeSorte({ navigation }) {
                 {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}
 
             </Layout>
-            <RodapeBanner />
         </>
 
     );

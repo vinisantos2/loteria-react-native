@@ -10,7 +10,6 @@ import { COR_LEGENDA } from "../../constants/Cores";
 import { Estatistica } from "../../model/Estatistica";
 import { JogoSorteado } from '../../model/jogoSorteado';
 import LegendaView from "../../components/LegendaView";
-import RodapeBanner from "../../components/RodapeBanner";
 export default function TelaEstatistica({ route }) {
 
     const { nomeJogo } = route.params ? route.params : "";
