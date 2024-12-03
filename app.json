@@ -30,14 +30,23 @@
       "eas": {
         "projectId": "04fefcaa-5cbf-4a2f-8ebc-b27e80f16859"
       }
+<<<<<<< HEAD
     },
     "plugins": [
       [
-        "react-native-google-mobile-ads",
+        "expo-build-properties",
         {
-          "androidAppId": "ca-app-pub-7075046661098667~2923301600"
+          "android": {
+            "enableProguardInReleaseBuilds": true,
+            "enableShrinkResourceslnReleaseBuilds": true,
+            "useLegacyPackaging": true,
+            "extractNativeLibs": false
+          }
         }
       ]
     ]
+=======
+    }
+>>>>>>> c4d60ee7c54a3137e8ae9b36e82ad706d182ca80
   }
 }
