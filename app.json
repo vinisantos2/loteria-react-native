@@ -33,14 +33,9 @@
     },
     "plugins": [
       [
-        "expo-build-properties",
+        "react-native-google-mobile-ads",
         {
-          "android": {
-            "enableProguardInReleaseBuilds": true,
-            "enableShrinkResourceslnReleaseBuilds": true,
-            "useLegacyPackaging": true,
-            "extractNativeLibs": false
-          }
+          "androidAppId": "ca-app-pub-7075046661098667~2923301600"
         }
       ]
     ]
