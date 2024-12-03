@@ -15,9 +15,6 @@
       "supportsTablet": true
     },
     "android": {
-      "permissions": [
-        "com.google.android.gms.permission.AD_ID"
-      ],
       "googleServicesFile": "./google-services.json",
       "adaptativeIcon": {
         "foregroundImage": "assets/adaptive-icon.png",
@@ -36,9 +33,14 @@
     },
     "plugins": [
       [
-        "react-native-google-mobile-ads",
+        "expo-build-properties",
         {
-          "androidAppId": "ca-app-pub-7075046661098667~2923301600"
+          "android": {
+            "enableProguardInReleaseBuilds": true,
+            "enableShrinkResourceslnReleaseBuilds": true,
+            "useLegacyPackaging": true,
+            "extractNativeLibs": false
+          }
         }
       ]
     ]

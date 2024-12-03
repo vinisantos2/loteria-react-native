@@ -1,6 +1,6 @@
 
 import { StyleSheet, View, ActivityIndicator, Modal } from 'react-native';
-import { COR_BRANCO, COR_RESULTADOS } from '../constants/Cores';
+import {  COR_RESULTADOS } from '../constants/Cores';
 
 
 export default function ViewCarregando({  }) {

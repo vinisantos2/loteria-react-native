@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
 import {
-    StyleSheet, View
+    View
 } from 'react-native';
 import Cartela from '../../components/Cartela';
-import ViewBotao from '../../components/ViewBotao';
 import { COR_QUINA } from '../../constants/Cores';
 import Layout from '../../components/Layout';
 import ViewSelecionados from '../../components/ViewSelecionados';
@@ -18,15 +17,10 @@ import { STYLES } from '../../Style';
 import ViewMsgErro from '../../components/ViewMsgErro';
 import { ViewBotoes } from '../../components/ViewBotoes';
 import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_QUINA } from '../../rotas/Rotas';
-import { Premio } from '../../model/Premio';
 import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
-import BuscaView from '../../components/BuscaView';
-import RodapeBanner from '../../components/RodapeBanner';
 import Carregando from '../../components/Carregando';
 import ViewEsconderIcone from '../Views/ViewEsconderCartela';
-
-let jogos = []
 
 export default function Quina({ navigation }) {
 

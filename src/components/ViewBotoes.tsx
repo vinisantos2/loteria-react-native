@@ -1,9 +1,8 @@
 import { StyleSheet, View } from "react-native";
 import TextView from "./TextView";
 import ViewBotao from "./ViewBotao";
-import { STYLES } from "../Style";
 import { COMPARAR, LIMPAR, PRENCHER } from "../constants/Constants";
-import { COR_BRANCO, COR_FUNDO_CARTELA, COR_LEGENDA } from "../constants/Cores";
+import {  COR_FUNDO_CARTELA } from "../constants/Cores";
 
 export function ViewBotoes({ numJogos, compararJogo,
     preencherJogo, estatistica,

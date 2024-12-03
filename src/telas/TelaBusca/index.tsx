@@ -1,26 +1,19 @@
 import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import { jogoDoBanco, jogoDoBanco2, JogoSorteado } from "../../model/jogoSorteado";
+import {  jogoDoBanco2, JogoSorteado } from "../../model/jogoSorteado";
 import { ViewLegenda } from "../../components/ViewLegendaJogo";
 import { ViewSorteados } from "../../components/ViewSorteados";
-import ItemPremiacao from "../../itemsView/ItemPremiacao";
-import ItemLocalGanhadores from "../../itemsView/ItemLocalGanhadores";
-import RodapeBanner from "../../components/RodapeBanner";
+
 import { DIA, DUPLA, LOTECA, LOTOFACIL, LOTOMANIA, MEGA, MILIONARIA, QUINA, SUPER, TIME } from "../../constants/Nomes";
 import { Dropdown } from "../../components/Dropdown";
-import axios from "axios";
 import { axiosBusca, gerarKey, mudaCor } from "../../utils/ultil";
 import TextView from "../../components/TextView";
-import { STYLES } from "../../Style";
 import { useState } from "react";
-import ViewEsconderIcone from "../Views/ViewEsconderCartela";
-import ViewInfoProximoConcurso from "../../components/ViewInfoProximoConcurso";
 
 export default function TelaBusca({ route }) {
     const [numConcurso, setNumConcurso] = useState("")
     const [loteria, setLoteria] = useState("")
     const [arrayJogos, setArrayJogos] = useState<Array<object>>([])
     const [jogo, setJogo] = useState<JogoSorteado>(undefined)
-    const [viewResultado, setViewResultado] = useState(false)
     console.log(arrayJogos)
     const arrayFiltro =
         [

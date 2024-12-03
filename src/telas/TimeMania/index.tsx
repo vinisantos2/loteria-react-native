@@ -13,11 +13,9 @@ import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } fr
 import { STYLES } from '../../Style';
 import ViewMsgErro from '../../components/ViewMsgErro';
 import { ViewBotoes } from '../../components/ViewBotoes';
-import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_TIME } from '../../rotas/Rotas';
+import { ROTA_ESTATISTICA, ROTA_TIME } from '../../rotas/Rotas';
 import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
-import BuscaView from '../../components/BuscaView';
-import RodapeBanner from '../../components/RodapeBanner';
 import Carregando from '../../components/Carregando';
 import ViewEsconderIcone from '../Views/ViewEsconderCartela';
 

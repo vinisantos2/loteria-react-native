@@ -1,13 +1,11 @@
 
-import { ScrollView, StyleSheet, TouchableOpacity, View, } from 'react-native';
-import TextView from '../components/TextView';
+import { StyleSheet, View, } from 'react-native';
 import { COR_BRANCO } from '../constants/Cores';
 import ItemPremiacao from './ItemPremiacao';
 import { ViewLegenda } from '../components/ViewLegendaJogo';
 import { ViewSorteados } from '../components/ViewSorteados';
 import { JogoSorteado } from '../model/jogoSorteado';
 import ViewInfoProximoConcurso from '../components/ViewInfoProximoConcurso';
-import { Ionicons } from "@expo/vector-icons";
 import { ROTA_DETALHES } from '../rotas/Rotas';
 import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
 import ItemLocalGanhadores from './ItemLocalGanhadores';
@@ -17,13 +15,9 @@ import { mudaCor } from '../utils/ultil';
 
 export default function ItemJogo({ item, cor = "#001122" }) {
     const jogoSorteado: JogoSorteado = item
-    const arrayData = jogoSorteado.data.split('/')
-    const diaMes = arrayData[0] + "/" + arrayData[1]
     const navigation: NavigationProp<ParamListBase> = useNavigation()
     const [viewResultado, setViewResultado] = useState(false)
-    function nav(cor) {
-        navigation.navigate(ROTA_DETALHES, { jogoSorteado, cor })
-    }
+  
 
     return (
         <View style={[styles.content]}>

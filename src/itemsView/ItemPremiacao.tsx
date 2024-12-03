@@ -1,9 +1,9 @@
 
 
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import TextView from '../components/TextView';
-import { COR_BRANCO, COR_RESULTADOS, COR_FUNDO_CARTELA } from '../constants/Cores';
+import {  COR_RESULTADOS, COR_FUNDO_CARTELA } from '../constants/Cores';
 import { formatarReal, gerarKey } from '../utils/ultil';
 import { premicaoDoBanco, Premio } from '../model/Premio';
 

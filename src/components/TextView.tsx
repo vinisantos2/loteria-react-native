@@ -1,6 +1,5 @@
 
 import { Text } from 'react-native';
-import { COR_BRANCO, COR_PRETO } from '../constants/Cores';
 
 
 

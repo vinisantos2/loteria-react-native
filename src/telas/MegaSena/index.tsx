@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import {
-
-    StyleSheet,
     View,
 } from 'react-native';
 
@@ -15,16 +13,14 @@ import ViewCarregando from '../../components/ViewCarregando';
 import LayoutResposta from '../../components/LayoutResposta';
 import TextView from '../../components/TextView';
 import { useIsFocused } from '@react-navigation/native';
-import { axiosBusca, conexao, estatistica, preencher, jogoSorteados, salvarNumeroNaLista } from '../../utils/ultil';
+import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../../utils/ultil';
 import { STYLES } from '../../Style';
 import ViewMsgErro from '../../components/ViewMsgErro';
 import { ViewBotoes } from '../../components/ViewBotoes';
-import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_MEGA } from '../../rotas/Rotas';
+import { ROTA_ESTATISTICA, ROTA_MEGA } from '../../rotas/Rotas';
 import { Premio } from '../../model/Premio';
 import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
-import BuscaView from '../../components/BuscaView';
-import RodapeBanner from '../../components/RodapeBanner';
 import Carregando from '../../components/Carregando';
 import ViewEsconderIcone from '../Views/ViewEsconderCartela';
 
@@ -194,7 +190,7 @@ export default function MegaSena({ navigation }) {
 
 
             </Layout>
-           
+
         </>
 
     );
