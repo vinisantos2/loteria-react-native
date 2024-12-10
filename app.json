@@ -2,7 +2,7 @@
   "expo": {
     "name": "loteria",
     "slug": "loteria",
-    "version": "1.1.6",
+    "version": "1.1.8",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "icon": "./assets/icon.png",
@@ -15,12 +15,15 @@
       "supportsTablet": true
     },
     "android": {
+      "permissions": [
+        "com.google.android.gms.permission.AD_ID"
+      ],
       "googleServicesFile": "./google-services.json",
       "adaptativeIcon": {
         "foregroundImage": "assets/adaptive-icon.png",
         "backgroundColor": "#49B146"
       },
-      "versionCode": 21,
+      "versionCode": 27,
       "package": "com.anonymous.loteria"
     },
     "web": {
@@ -30,7 +33,6 @@
       "eas": {
         "projectId": "04fefcaa-5cbf-4a2f-8ebc-b27e80f16859"
       }
-<<<<<<< HEAD
     },
     "plugins": [
       [
@@ -43,10 +45,13 @@
             "extractNativeLibs": false
           }
         }
+      ],
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-3650692965421934~5780702106"
+        }
       ]
     ]
-=======
-    }
->>>>>>> c4d60ee7c54a3137e8ae9b36e82ad706d182ca80
   }
 }

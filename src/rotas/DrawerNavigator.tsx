@@ -13,6 +13,7 @@ import { headerTitleStyle, styloDrwer, textDrawer } from "./DrawerItemStyle";
 import { HeaderStyleDrawer } from "./HeaderStyle";
 import DiaDeSorte from "../telas/DiaDeSorte";
 import TelaBusca from "../telas/TelaBusca";
+import MenuComponent from "../components/Menu";
 
 const Drawer = createDrawerNavigator();
 
@@ -32,15 +33,17 @@ export function DrawerNav() {
                 headerTitleAlign: "center",
                 headerTitleStyle: headerTitleStyle(),
 
+
             }}
             initialRouteName={ROTA_RESULTADOS}>
             <Drawer.Screen options={{
                 drawerItemStyle: styloDrwer(COR_RESULTADOS),
                 headerStyle: { backgroundColor: COR_RESULTADOS, },
 
+
             }} name={ROTA_RESULTADOS} component={Resultados} />
-          
-          {/* Tela busca Jogo */}
+
+            {/* Tela busca Jogo */}
             <Drawer.Screen options={{
                 drawerItemStyle: styloDrwer(COR_RESULTADOS),
                 headerStyle: { backgroundColor: COR_RESULTADOS, },
