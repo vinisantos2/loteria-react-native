@@ -10,10 +10,11 @@ import TimeMania from "../telas/TimeMania";
 import MaisMilionaria from "../telas/Milionaria";
 import DuplaSena from "../telas/DuplaSena";
 import { headerTitleStyle, styloDrwer, textDrawer } from "./DrawerItemStyle";
-import { HeaderStyleDrawer } from "./HeaderStyle";
+
 import DiaDeSorte from "../telas/DiaDeSorte";
 import TelaBusca from "../telas/TelaBusca";
 import MenuComponent from "../components/Menu";
+import BottomNavigator from "./BottomNavigator";
 
 const Drawer = createDrawerNavigator();
 
@@ -28,10 +29,12 @@ export function DrawerNav() {
                 //     )
 
                 // },
-                header: HeaderStyleDrawer,
+
                 drawerLabelStyle: textDrawer(),
                 headerTitleAlign: "center",
                 headerTitleStyle: headerTitleStyle(),
+                headerRight: MenuComponent,
+                headerTintColor: "#FFF"
 
 
             }}

@@ -42,7 +42,7 @@ export default function Lotomania({ navigation }) {
     const cor = COR_LOTOMAIA
     const nomeJogo = ROTA_LOTOMANIA
     const url = "lotomania"
-    const limite = 60
+    const limite = 50
     const qtdDezenasLotomania = 100
     const dezenas = 50
     const focused = useIsFocused();

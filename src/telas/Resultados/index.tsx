@@ -1,10 +1,10 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Platform, ScrollView, StatusBar, StyleSheet, View } from "react-native";
 
 import {
     COR_RESULTADOS,
 } from "../../constants/Cores";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { axiosBusca, gerarKey, mudaCor } from "../../utils/ultil";
 import { URL_BASE_ULTIMOS } from "../../constants/Constants";
@@ -18,16 +18,19 @@ import ViewCarregando from "../../components/ViewCarregando";
 import ViewMsgErro from "../../components/ViewMsgErro";
 import { jogoDoBanco, JogoSorteado } from "../../model/jogoSorteado";
 import { Dropdown } from "../../components/Dropdown";
+import { AdEventType, InterstitialAd, TestIds } from "react-native-google-mobile-ads";
+
+
 
 export default function Resultados({ }) {
 
-    const url = "ultimos"
     const isFocused = useIsFocused()
     const [jogosSorteados, setJogosSorteados] = React.useState(Array<JogoSorteado>)
     const [arrayViewJogosSorteados, setArrayViewJogosSorteados] = React.useState(Array<JogoSorteado>)
     const [carregando, setCarregando] = React.useState(true)
     const [erroServer, setErroServer] = useState(false)
     const [corStatus, setCorStatus] = useState(COR_RESULTADOS)
+ 
 
     const arrayFiltro =
         [
@@ -44,11 +47,13 @@ export default function Resultados({ }) {
 
         ]
 
+
+
+
     React.useEffect(() => {
         buscarDados()
-        // mudaCorStatus()
-    }, [isFocused])
 
+    }, [isFocused])
 
 
     function compare(a, b) {
@@ -67,7 +72,6 @@ export default function Resultados({ }) {
         array.reverse()
         setJogosSorteados(array)
         setArrayViewJogosSorteados(array)
-
 
 
         if (array.length < 1) {
@@ -101,8 +105,11 @@ export default function Resultados({ }) {
     }
 
 
+ 
+
     return (
         <>
+
             <View style={{ flex: 1 }}>
                 <View>
                     <Dropdown click={(e) => filtro(e)} placeHolder={"Filtrar por jogo"} array={arrayFiltro.sort()} />

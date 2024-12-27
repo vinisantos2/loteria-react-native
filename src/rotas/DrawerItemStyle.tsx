@@ -6,7 +6,8 @@ export function styloDrwer(cor: string): StyleProp<ViewStyle> {
 }
 
 export function textDrawer(): StyleProp<TextStyle> {
-    return { textAlign: "center", fontSize: 23, fontWeight: "bold", color: "#FFF" }
+    return { textAlign: "center", fontSize: 23,
+         fontWeight: "bold", color: "#FFF", }
 }
 export function headerTitleStyle(): Animated.WithAnimatedValue<StyleProp<TextStyle>> {
     return { textAlign: "center", fontSize: 30, fontWeight: "bold", color: "#FFF" }

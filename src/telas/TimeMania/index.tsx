@@ -34,7 +34,7 @@ export default function TimeMania({ navigation }) {
     const [arrayJogos, setArrayJogos] = useState([])
     const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
     const [arrayPremiacao, setArrayPremiacao] = useState(Array<JogoSorteado>)
-    const limite = 8
+    const limite = 10
     const dezenas = 10
     const url = "timemania"
     const focused = useIsFocused();

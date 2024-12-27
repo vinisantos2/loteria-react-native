@@ -6,6 +6,7 @@ import { Alert, PermissionsAndroid } from 'react-native';
 import messaging, { firebase } from '@react-native-firebase/messaging';
 import { Notificacao } from './src/model/Notificacao';
 import RodapeBanner from './src/components/RodapeBanner';
+import MobileAds from 'react-native-google-mobile-ads';
 
 
 export default function App() {
@@ -25,6 +26,11 @@ export default function App() {
   React.useEffect(() => {
     PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
+    MobileAds()
+      .initialize()
+      .then(adapterStatuses => {
+        // Initialization complete!
+      });
     if (requestUserPermission()) {
       messaging().getToken().then(token => {
         console.log(token)
@@ -68,6 +74,7 @@ export default function App() {
       <NavigationContainer
 
         theme={{
+          
           dark: true,
           colors: {
             card: COR_DE_FUNDO,
@@ -82,7 +89,9 @@ export default function App() {
 
         <StackNavigator />
       </NavigationContainer>
+
       <RodapeBanner />
+
     </>
 
   );

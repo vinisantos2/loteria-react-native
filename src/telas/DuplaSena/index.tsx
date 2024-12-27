@@ -16,11 +16,10 @@ import { useIsFocused } from '@react-navigation/native';
 import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } from '../../utils/ultil';
 import { STYLES } from '../../Style';
 import { ViewBotoes } from '../../components/ViewBotoes';
-import {  ROTA_ESTATISTICA } from '../../rotas/Rotas';
+import { ROTA_ESTATISTICA } from '../../rotas/Rotas';
 import ViewMsgErro from '../../components/ViewMsgErro';
 import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import ViewEsconderIcone from '../Views/ViewEsconderCartela';
 import Carregando from '../../components/Carregando';
 
@@ -41,7 +40,7 @@ export default function DuplaSena({ navigation }) {
     const url = "duplasena"
     const cor = COR_DUPLA
     const nomeJogo = "Dupla sena"
-    const limite = 12
+    const limite = 15
     const dezenas = 6
     const focused = useIsFocused();
     const [arrayPremiacao, setArrayPremiacao] = useState(Array<JogoSorteado>)
@@ -153,9 +152,14 @@ export default function DuplaSena({ navigation }) {
 
             } else if (contador1 === 4 || contador2 === 4) {
                 ponto4++
-                const obj = arrayJogosSorteados[i]
-                obj.pontos = "4 acertos"
-                arrayPremiacao.push(obj)
+                if (numerosSelecionados.length >= 10) {
+
+                } else {
+                    const obj = arrayJogosSorteados[i]
+                    obj.pontos = "4 acertos"
+                    arrayPremiacao.push(obj)
+                }
+               
             }
             contador1 = 0
             contador2 = 0
@@ -218,7 +222,7 @@ export default function DuplaSena({ navigation }) {
 
 
             </Layout>
-         
+
         </>
 
     );

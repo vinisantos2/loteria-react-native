@@ -2,7 +2,7 @@
   "expo": {
     "name": "loteria",
     "slug": "loteria",
-    "version": "1.1.8",
+    "version": "1.1.9",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "icon": "./assets/icon.png",
@@ -23,7 +23,7 @@
         "foregroundImage": "assets/adaptive-icon.png",
         "backgroundColor": "#49B146"
       },
-      "versionCode": 27,
+      "versionCode": 30,
       "package": "com.anonymous.loteria"
     },
     "web": {
@@ -35,17 +35,6 @@
       }
     },
     "plugins": [
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "enableProguardInReleaseBuilds": true,
-            "enableShrinkResourceslnReleaseBuilds": true,
-            "useLegacyPackaging": true,
-            "extractNativeLibs": false
-          }
-        }
-      ],
       [
         "react-native-google-mobile-ads",
         {

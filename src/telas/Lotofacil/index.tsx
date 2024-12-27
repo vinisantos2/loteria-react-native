@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import {
+    Button,
     View,
 
 } from 'react-native';
@@ -40,13 +41,18 @@ export default function Lotofacil({ navigation }) {
     const cor = COR_LOTOFACIL
     const nomeJogo = ROTA_LOTOFACIL
     const [numerosSelecionados, setArray] = useState([])
-    const focused = useIsFocused();
+    const isFocused = useIsFocused();
     const [arrayPremiacao, setArrayPremiacao] = useState(Array<JogoSorteado>)
-
+    const qtdDezenasLotofacil = 25
+    const limite = 20
+    const dezenas = 15
     React.useEffect(() => {
         buscarJogos()
         // mudaCorStatus()
-    }, [focused])
+        if (!isFocused) {
+
+        }
+    }, [isFocused])
 
 
     async function buscarJogos() {
@@ -63,9 +69,7 @@ export default function Lotofacil({ navigation }) {
         setCarregando(false)
     }
 
-    const qtdDezenasLotofacil = 25
-    const limite = 18
-    const dezenas = 15
+
 
     function salvarNumero(numero) {
         setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
@@ -106,15 +110,24 @@ export default function Lotofacil({ navigation }) {
 
             } else if (contador === 14) {
                 pontos14++
-                const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[1].descricao
-                arrayPremiacao.push(obj)
+                if (numerosSelecionados.length >= 18) {
+
+                } else {
+                    const obj = arrayJogosSorteados[i]
+                    obj.pontos = obj.premiacoes[2].descricao
+                    arrayPremiacao.push(obj)
+                }
 
             } else if (contador === 13) {
                 pontos13++
-                const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[2].descricao
-                arrayPremiacao.push(obj)
+                if (numerosSelecionados.length >= 18) {
+
+                } else {
+                    const obj = arrayJogosSorteados[i]
+                    obj.pontos = obj.premiacoes[2].descricao
+                    arrayPremiacao.push(obj)
+                }
+
             } else if (contador === 12) {
                 pontos12++
             } else if (contador === 11) {
@@ -150,7 +163,7 @@ export default function Lotofacil({ navigation }) {
     async function estatistica() {
 
         const dezenas = qtdDezenasLotofacil
-        await navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, nomeJogo, cor, dezenas })
+        navigation.navigate(ROTA_ESTATISTICA, { arrayJogosSorteados: arrayJogosSorteados, nomeJogo, cor, dezenas })
 
     }
 
@@ -184,8 +197,6 @@ export default function Lotofacil({ navigation }) {
                 <ViewEsconderIcone valor={viewCartela ? "Esconder cartela" : "Mostrar cartela"} setViewCartela={setViewCartela} viewCartela={viewCartela} />
 
 
-
-
                 {carregando ? <Carregando /> : null}
 
 
@@ -210,6 +221,14 @@ export default function Lotofacil({ navigation }) {
                 {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}
 
             </Layout>
+            {/* 
+            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+                <Button title='estatistica' onPress={() => estatistica()} />
+                <Button title='Gerar jogo' onPress={() => estatistica()} />
+                <Button title='Informacoes' onPress={() => estatistica()} />
+            </View> */}
+
+
 
         </>
 

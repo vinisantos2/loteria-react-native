@@ -37,7 +37,7 @@ export default function Quina({ navigation }) {
 
     const [qtdNum, setQtdNum] = useState(0)
     const [arrayJogos, setArrayJogos] = useState([])
-    const limite = 8
+    const limite = 15
     const dezenas = 5
     const url = "quina"
     const cor = COR_QUINA
@@ -124,9 +124,15 @@ export default function Quina({ navigation }) {
                 arrayPremiacao.push(obj)
             } else if (contador === 3) {
                 pontos3++
-                const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[2].descricao
-                arrayPremiacao.push(obj)
+                if (numerosSelecionados.length >= 9) {
+
+                } else {
+                    const obj = arrayJogosSorteados[i]
+                    obj.pontos = obj.premiacoes[2].descricao
+                    arrayPremiacao.push(obj)
+                }
+
+          
             } else if (contador === 2) {
                 pontos2++
             }

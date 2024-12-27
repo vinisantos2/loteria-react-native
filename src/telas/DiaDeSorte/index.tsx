@@ -4,7 +4,7 @@ import Cartela from '../../components/Cartela';
 import { COR_TIME } from '../../constants/Cores';
 import Layout from '../../components/Layout';
 import ViewSelecionados from '../../components/ViewSelecionados';
-import { QTD_DEZENAS_DIA, QTD_DEZENAS_TIME, URL_BASE } from '../../constants/Constants';
+import { QTD_DEZENAS_DIA, URL_BASE } from '../../constants/Constants';
 import ViewCarregando from '../../components/ViewCarregando';
 import LayoutResposta from '../../components/LayoutResposta';
 import TextView from '../../components/TextView';
@@ -13,7 +13,7 @@ import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista } fr
 import { STYLES } from '../../Style';
 import ViewMsgErro from '../../components/ViewMsgErro';
 import { ViewBotoes } from '../../components/ViewBotoes';
-import { ROTA_BUSCA, ROTA_ESTATISTICA, ROTA_TIME } from '../../rotas/Rotas';
+import { ROTA_ESTATISTICA, ROTA_TIME } from '../../rotas/Rotas';
 import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
 import Carregando from '../../components/Carregando';
@@ -32,9 +32,11 @@ export default function DiaDeSorte({ navigation }) {
     const [erroServer, setErroServer] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
     const [arrayJogos, setArrayJogos] = useState([])
+    const [numerosSelecionados, setArray] = useState([])
     const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
     const [arrayPremiacao, setArrayPremiacao] = useState(Array<JogoSorteado>)
-    const limite = 7
+    const limite = 15
+    const dezenas = 7
     const dezenasDia = QTD_DEZENAS_DIA
     const url = "diadesorte"
     const focused = useIsFocused();
@@ -59,7 +61,7 @@ export default function DiaDeSorte({ navigation }) {
         setCarregando(false)
     }
 
-    const [numerosSelecionados, setArray] = useState([])
+
     function salvarNumero(numero) {
         setArray(salvarNumeroNaLista(numero, numerosSelecionados, limite))
         setQtdNum(numerosSelecionados.length)
@@ -78,7 +80,7 @@ export default function DiaDeSorte({ navigation }) {
     }
 
     function preencherJogo() {
-        setArray(preencher(numerosSelecionados, limite, dezenasDia))
+        setArray(preencher(numerosSelecionados, dezenas, QTD_DEZENAS_DIA))
         setQtdNum(numerosSelecionados.length)
     }
 
@@ -111,20 +113,31 @@ export default function DiaDeSorte({ navigation }) {
 
             } else if (contador === 6) {
                 pontos6++
-                const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[1].descricao
-                arrayPremiacao.push(obj)
+
+                if (numerosSelecionados.length >= 14) {
+
+                } else {
+                    const obj = arrayJogosSorteados[i]
+                    obj.pontos = obj.premiacoes[1].descricao
+                    arrayPremiacao.push(obj)
+                }
+
+              
             } else if (contador === 5) {
                 pontos5++
-                const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[2].descricao
-                arrayPremiacao.push(obj)
+
+
+                if (numerosSelecionados.length >= 10) {
+
+                } else {
+                    const obj = arrayJogosSorteados[i]
+                    obj.pontos = obj.premiacoes[2].descricao
+                    arrayPremiacao.push(obj)
+                }
+
 
             } else if (contador === 4) {
                 pontos4++
-                const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[3].descricao
-                arrayPremiacao.push(obj)
 
             }
             contador = 0

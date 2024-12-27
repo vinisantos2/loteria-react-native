@@ -4,9 +4,8 @@ import {
 } from 'react-native';
 
 import Layout from '../../components/Layout';
-import ViewBotao from '../../components/ViewBotao';
 import Cartela from '../../components/Cartela';
-import { COMPARAR, LIMPAR, PRENCHER, URL_BASE } from '../../constants/Constants';
+import { URL_BASE } from '../../constants/Constants';
 import ViewSelecionados from '../../components/ViewSelecionados';
 import { COR_MEGA } from '../../constants/Cores';
 import ViewCarregando from '../../components/ViewCarregando';
@@ -18,7 +17,6 @@ import { STYLES } from '../../Style';
 import ViewMsgErro from '../../components/ViewMsgErro';
 import { ViewBotoes } from '../../components/ViewBotoes';
 import { ROTA_ESTATISTICA, ROTA_MEGA } from '../../rotas/Rotas';
-import { Premio } from '../../model/Premio';
 import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
 import Carregando from '../../components/Carregando';
@@ -42,7 +40,7 @@ export default function MegaSena({ navigation }) {
     const url = "megasena"
     const cor = COR_MEGA
     const nomeJogo = ROTA_MEGA
-    const limite = 12
+    const limite = 20
     const dezenas = 6
     const focused = useIsFocused();
 
@@ -117,14 +115,25 @@ export default function MegaSena({ navigation }) {
 
             } else if (contador === 5) {
                 pontos5++
-                const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[1].descricao
-                arrayPremiacao.push(obj)
+
+                if (numerosSelecionados.length > 18) {
+
+                } else {
+                    const obj = arrayJogosSorteados[i]
+                    obj.pontos = obj.premiacoes[1].descricao
+                    arrayPremiacao.push(obj)
+                }
+
             } else if (contador === 4) {
                 pontos4++
-                const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[2].descricao
-                arrayPremiacao.push(obj)
+
+                if (numerosSelecionados.length >= 11) {
+
+                } else {
+                    const obj = arrayJogosSorteados[i]
+                    obj.pontos = obj.premiacoes[2].descricao
+                    arrayPremiacao.push(obj)
+                }
             }
             contador = 0
 
