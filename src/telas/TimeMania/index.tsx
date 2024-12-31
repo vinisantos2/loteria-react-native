@@ -27,7 +27,7 @@ export default function TimeMania({ navigation }) {
     const [pontos6, setPontos6] = useState(0)
     const [pontos7, setPontos7] = useState(0)
     const [carregando, setCarregando] = useState(true)
-    const [carregandoPag, setCarregandoPag] = useState(false)
+    const [carregandoPag, setCarregandoPag] = useState(true)
     const [viewCartela, setViewCartela] = useState(true)
     const [erroServer, setErroServer] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
@@ -57,6 +57,7 @@ export default function TimeMania({ navigation }) {
 
         setErroServer(conexao(array))
         setCarregando(false)
+        setCarregandoPag(false)
     }
 
     const [numerosSelecionados, setArray] = useState([])

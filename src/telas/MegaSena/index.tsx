@@ -21,6 +21,7 @@ import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
 import Carregando from '../../components/Carregando';
 import ViewEsconderIcone from '../Views/ViewEsconderCartela';
+import AllSCreenBanner from '../../components/AllScreenBanner';
 
 export default function MegaSena({ navigation }) {
 
@@ -29,7 +30,7 @@ export default function MegaSena({ navigation }) {
     const [pontos4, setPontos4] = useState(0)
     const [carregando, setCarregando] = useState(false)
     const [erroServer, setErroServer] = useState(false)
-    const [carregandoPag, setCarregandoPag] = useState(false)
+    const [carregandoPag, setCarregandoPag] = useState(true)
     const [viewCartela, setViewCartela] = useState(true)
     const [qtdNum, setQtdNum] = useState(0)
     const [numerosSelecionados, setArray] = useState([])
@@ -60,7 +61,7 @@ export default function MegaSena({ navigation }) {
         }
 
         setErroServer(conexao(array))
-
+        setCarregandoPag(false)
         setCarregando(false)
     }
 
@@ -199,6 +200,7 @@ export default function MegaSena({ navigation }) {
 
 
             </Layout>
+            <AllSCreenBanner />
 
         </>
 

@@ -36,7 +36,7 @@ export default function MaisMilionaria({ navigation }) {
     const [pontos2e1trevos, setPontos2e1trevos] = useState(0)
 
     const [carregando, setCarregando] = useState(false)
-    const [carregandoPag, setCarregandoPag] = useState(false)
+    const [carregandoPag, setCarregandoPag] = useState(true)
     const [viewCartela, setViewCartela] = useState(true)
     const [erroServer, setErroServer] = useState(false)
     const [arrayPremiacao, setArrayPremiacao] = useState(Array<JogoSorteado>)
@@ -73,6 +73,7 @@ export default function MaisMilionaria({ navigation }) {
             setErroServer(false)
         }
         setCarregando(false)
+        setCarregandoPag(false)
     }
 
 

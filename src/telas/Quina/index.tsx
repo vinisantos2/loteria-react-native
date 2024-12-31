@@ -21,6 +21,7 @@ import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
 import Carregando from '../../components/Carregando';
 import ViewEsconderIcone from '../Views/ViewEsconderCartela';
+import AllSCreenBanner from '../../components/AllScreenBanner';
 
 export default function Quina({ navigation }) {
 
@@ -29,7 +30,7 @@ export default function Quina({ navigation }) {
     const [pontos4, setPontos4] = useState(0)
     const [pontos5, setPontos5] = useState(0)
     const [carregando, setCarregando] = useState(true)
-    const [carregandoPag, setCarregandoPag] = useState(false)
+    const [carregandoPag, setCarregandoPag] = useState(true)
     const [viewCartela, setViewCartela] = useState(true)
     const [erroServer, setErroServer] = useState(false)
     const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
@@ -62,6 +63,7 @@ export default function Quina({ navigation }) {
 
         setErroServer(conexao(array))
         setCarregando(false)
+        setCarregandoPag(false)
     }
 
     const [numerosSelecionados, setArray] = useState([])
@@ -132,7 +134,7 @@ export default function Quina({ navigation }) {
                     arrayPremiacao.push(obj)
                 }
 
-          
+
             } else if (contador === 2) {
                 pontos2++
             }
@@ -208,6 +210,7 @@ export default function Quina({ navigation }) {
                 {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}
 
             </Layout>
+            <AllSCreenBanner />
         </>
     );
 }

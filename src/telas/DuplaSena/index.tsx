@@ -30,7 +30,7 @@ export default function DuplaSena({ navigation }) {
     const [pontos4, setPontos4] = useState(0)
     const [carregando, setCarregando] = useState(false)
     const [erroServer, setErroServer] = useState(false)
-    const [carregandoPag, setCarregandoPag] = useState(false)
+    const [carregandoPag, setCarregandoPag] = useState(true)
     const [viewCartela, setViewCartela] = useState(true)
     const [qtdNum, setQtdNum] = useState(0)
     const [numerosSelecionados, setArray] = useState([])
@@ -61,7 +61,7 @@ export default function DuplaSena({ navigation }) {
         }
 
         setErroServer(conexao(array))
-
+        setCarregandoPag(false)
         setCarregando(false)
     }
 

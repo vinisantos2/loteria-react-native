@@ -1,4 +1,4 @@
-import { Platform, StatusBar, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import TextView from "../../components/TextView";
 import ItemEstatistica from "../../itemsView/ItemEstatistica";
 import React, { useEffect, useState } from "react";
@@ -10,13 +10,9 @@ import { COR_LEGENDA } from "../../constants/Cores";
 import { Estatistica } from "../../model/Estatistica";
 import { JogoSorteado } from '../../model/jogoSorteado';
 import LegendaView from "../../components/LegendaView";
-import { AdEventType, InterstitialAd, TestIds } from "react-native-google-mobile-ads";
+import AllSCreenBanner from "../../components/AllScreenBanner";
 
-const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-3650692965421934/7534864377';
 
-const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
-    keywords: ['fashion', 'clothing'],
-});
 
 export default function TelaEstatistica({ route }) {
 
@@ -28,7 +24,6 @@ export default function TelaEstatistica({ route }) {
     const [total, setTotal] = useState(0)
     const focused = useIsFocused();
     const label = "Últimos "
-
 
     const [loaded, setLoaded] = useState(false);
     const arrayFiltro =
@@ -48,33 +43,6 @@ export default function TelaEstatistica({ route }) {
     React.useEffect(() => {
         buscarJogos()
 
-        const unsubscribeLoaded = interstitial.addAdEventListener(AdEventType.LOADED, () => {
-            setLoaded(true);
-        });
-
-        const unsubscribeOpened = interstitial.addAdEventListener(AdEventType.OPENED, () => {
-            if (Platform.OS === 'ios') {
-                // Prevent the close button from being unreachable by hiding the status bar on iOS
-                StatusBar.setHidden(true)
-            }
-        });
-
-        const unsubscribeClosed = interstitial.addAdEventListener(AdEventType.CLOSED, () => {
-            if (Platform.OS === 'ios') {
-                StatusBar.setHidden(false)
-            }
-        });
-
-        // Start loading the interstitial straight away
-        interstitial.load();
-
-
-        // Unsubscribe from events on unmount
-        return () => {
-            unsubscribeLoaded();
-            unsubscribeOpened();
-            unsubscribeClosed();
-        };
     }, [focused])
 
     function mostrarArray(arrayJogosSorteados: Array<JogoSorteado>, arrayEs: Array<Estatistica>, total) {
@@ -122,11 +90,6 @@ export default function TelaEstatistica({ route }) {
         mostrarArray(arrayFiltroJogos, arrayEs, arrayFiltroJogos.length)
     }
 
-    // No advert ready to show yet
-    if (loaded) {
-        interstitial.show();
-        setLoaded(false)
-    }
 
 
     return (
@@ -165,7 +128,6 @@ export default function TelaEstatistica({ route }) {
                     }) : null}
 
                 </View>
-
             </Layout>
 
         </>

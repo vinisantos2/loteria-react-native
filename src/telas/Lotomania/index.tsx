@@ -31,7 +31,7 @@ export default function Lotomania({ navigation }) {
     const [pontos20, setPontos20] = useState(0)
     const [carregando, setCarregando] = useState(false)
     const [erroServer, setErroServer] = useState(false)
-    const [carregandoPag, setCarregandoPag] = useState(false)
+    const [carregandoPag, setCarregandoPag] = useState(true)
     const [viewCartela, setViewCartela] = useState(true)
     const [arrayPremiacao, setArrayPremiacao] = useState(Array<JogoSorteado>)
     const [qtdNum, setQtdNum] = useState(0)
@@ -64,6 +64,7 @@ export default function Lotomania({ navigation }) {
         }
         setErroServer(conexao(array))
         setCarregando(false)
+        setCarregandoPag(false)
     }
 
 

@@ -23,6 +23,7 @@ import ViewPremio from '../../components/ViewPremio';
 import { JogoSorteado } from '../../model/jogoSorteado';
 import Carregando from '../../components/Carregando';
 import ViewEsconderIcone from '../Views/ViewEsconderCartela';
+import AllSCreenBanner from '../../components/AllScreenBanner';
 
 export default function Lotofacil({ navigation }) {
     const [pontos15, setPontos15] = useState(0)
@@ -33,7 +34,7 @@ export default function Lotofacil({ navigation }) {
     const [arrayJogos, setArrayJogos] = useState([])
     const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
     const [carregando, setCarregando] = useState(true)
-    const [carregandoPag, setCarregandoPag] = useState(false)
+    const [carregandoPag, setCarregandoPag] = useState(true)
     const [viewCartela, setViewCartela] = useState(true)
     const [erroServer, setErroServer] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
@@ -64,8 +65,8 @@ export default function Lotofacil({ navigation }) {
             setArrayJogosSorteado(arrayJogos)
             setArrayJogos(array)
         }
-
         setErroServer(conexao(array))
+        setCarregandoPag(false)
         setCarregando(false)
     }
 
@@ -114,7 +115,7 @@ export default function Lotofacil({ navigation }) {
 
                 } else {
                     const obj = arrayJogosSorteados[i]
-                    obj.pontos = obj.premiacoes[2].descricao
+                    obj.pontos = obj.premiacoes[1].descricao
                     arrayPremiacao.push(obj)
                 }
 
@@ -221,14 +222,8 @@ export default function Lotofacil({ navigation }) {
                 {arrayPremiacao.length > 0 ? <ViewPremio arrayDezenas={numerosSelecionados} array={arrayPremiacao} cor={cor} /> : null}
 
             </Layout>
-            {/* 
-            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-                <Button title='estatistica' onPress={() => estatistica()} />
-                <Button title='Gerar jogo' onPress={() => estatistica()} />
-                <Button title='Informacoes' onPress={() => estatistica()} />
-            </View> */}
 
-
+            <AllSCreenBanner />
 
         </>
 
