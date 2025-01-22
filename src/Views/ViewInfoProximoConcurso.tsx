@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import TextView from "./TextView";
+import TextView from "../components/TextView";
 import { JogoSorteado } from "../model/jogoSorteado";
 
 const FONT = 25
@@ -8,11 +8,11 @@ export default function ViewInfoProximoConcurso({ jogo, cor }) {
     const jogoSorteado: JogoSorteado = jogo
 
     return (
-        <View style={[styles.view, { backgroundColor: cor }]}>
+        <View style={[styles.view]}>
 
             <View style={{ flexDirection: "row" }}>
                 <TextView fontSize={FONT} value={"Próximo concurso: "}></TextView>
-                <TextView fontSize={FONT} value={jogoSorteado.dataProximoConcurso }></TextView>
+                <TextView fontSize={FONT} value={jogoSorteado.dataProximoConcurso}></TextView>
             </View>
             <View style={{ flexDirection: "row" }}>
                 <TextView fontSize={FONT} value={"Acumulado: "}></TextView>
@@ -29,6 +29,7 @@ export default function ViewInfoProximoConcurso({ jogo, cor }) {
 const styles = StyleSheet.create({
 
     view: {
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: "#123"
     },
 })

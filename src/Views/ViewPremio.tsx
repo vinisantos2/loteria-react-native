@@ -1,15 +1,15 @@
 import { StyleSheet, View } from "react-native";
-import TextView from "./TextView";
+
 import { gerarKey } from "../utils/ultil";
 import { JogoSorteado } from "../model/jogoSorteado";
 import DezenasSelecionados from "../itemsView/DezenasSelecionados";
+import TextView from "../components/TextView";
 
-export default function ViewPremio({ array, cor, arrayDezenas, arrayTrevosSelecionados = undefined }) {
+export default function ViewPremio({ array, cor, arrayDezenas, arrayTrevosSelecionados = [] }) {
     const arrayPremiacao: Array<JogoSorteado> = array
-    const arraySelecionadas: string = arrayDezenas
-    const arrayTrevos: string = arrayTrevosSelecionados
+    const arraySelecionadas: Array<string> = arrayDezenas
+    const arrayTrevos: Array<string> = arrayTrevosSelecionados
     arrayPremiacao.sort(compare)
-
     arrayPremiacao.reverse()
 
     function compare(a: JogoSorteado, b: JogoSorteado) {
@@ -44,16 +44,20 @@ export default function ViewPremio({ array, cor, arrayDezenas, arrayTrevosSeleci
                             </View>
                         </View>
 
-                        {item.trevos.length>0 ?
+                        {item.trevos.length > 0 ?
                             <View style={{ alignItems: "center" }}>
                                 <TextView value="Trevos" />
-                                <DezenasSelecionados arrarComparar={arrayTrevos} numerosSelecionados={item.trevos} cor={cor} />
+                                <DezenasSelecionados
+                                    arrayComparar={arrayTrevos}
+                                    numerosSelecionados={item.trevos} cor={cor} />
                             </View>
                             : null}
 
                         <View style={{ alignItems: "center" }}>
                             <TextView value="Dezenas" />
-                            <DezenasSelecionados arrarComparar={arraySelecionadas} numerosSelecionados={item.dezenas} cor={cor} />
+                            <DezenasSelecionados
+                                arrayComparar={arraySelecionadas}
+                                numerosSelecionados={item.dezenas} cor={cor} />
                         </View>
 
                         { }
@@ -61,11 +65,12 @@ export default function ViewPremio({ array, cor, arrayDezenas, arrayTrevosSeleci
                         {item.dezenas2 ?
                             <View style={{ alignItems: "center" }}>
                                 <TextView value="Dezenas 2" />
-                                <DezenasSelecionados arrarComparar={arraySelecionadas} numerosSelecionados={item.dezenas2} cor={cor} />
+                                <DezenasSelecionados
+                                    arrayComparar={arraySelecionadas}
+                                    numerosSelecionados={item.dezenas2}
+                                    cor={cor} />
                             </View>
                             : null}
-
-
 
                     </View>
 

@@ -1,14 +1,15 @@
 import { StyleSheet, View } from "react-native";
-
-import TextView from "./TextView";
 import { gerarKey } from "../utils/ultil";
 import { COR_LOTECA } from "../constants/Cores";
+import TextView from "../components/TextView";
 const FONT = 20
 
 export default function ViewLoteca({ arrayLoteca }) {
 
+    if (!arrayLoteca) return
     return (
         <View style={styles.content}>
+
             {arrayLoteca.map((item: Array<Object>,) => {
                 const jogo = item["jogo"]
                 const time1 = item["nome_time1"]

@@ -1,5 +1,5 @@
 import { COR_BRANCO } from "../constants/Cores";
-import TextView from "./TextView";
+import TextView from "../components/TextView";
 import { StyleSheet, View } from "react-native";
 
 
@@ -7,7 +7,7 @@ export function ViewLegenda({ jogo, numeroConcurso, cor, data }) {
     return (
         <View style={[styles.viewLegenda, { backgroundColor: cor }]} >
             <View>
-                <TextView  value={jogo} cor={COR_BRANCO} fontWeight={"bold"} fontSize={30}></TextView>
+                <TextView value={jogo} cor={COR_BRANCO} fontWeight={"bold"} fontSize={30}></TextView>
             </View>
 
             <View style={styles.item}>

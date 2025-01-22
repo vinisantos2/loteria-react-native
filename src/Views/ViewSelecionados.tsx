@@ -1,17 +1,18 @@
 
-import { StyleSheet, View } from 'react-native';
-import TextView from './TextView';
-import {  COR_FUNDO_CARTELA } from '../constants/Cores';
+import { Button, StyleSheet, View } from 'react-native';
+import { COR_FUNDO_CARTELA } from '../constants/Cores';
 import DezenasSelecionados from '../itemsView/DezenasSelecionados';
+import TextView from '../components/TextView';
 
 
-export default function ViewSelecionados({ qtdNum, numerosSelecionados, cor = COR_FUNDO_CARTELA }) {
+export default function ViewSelecionados({ qtdNum, numerosSelecionados, }) {
 
     return (
-        <View style={[styles.content, ]}>
+        <View style={[styles.content,]}>
             <TextView cor='#000' fontWeight={"bold"} fontSize={18} value={"Quantidade de numeros escolhidos: " + qtdNum} />
             <TextView cor='#000' fontWeight={"bold"} value={"numeros selecionados: "} />
             <DezenasSelecionados cor={"#000"} numerosSelecionados={numerosSelecionados} />
+            {/* <Button title='Salvar' onPress={salvar} /> */}
         </View>
     )
 

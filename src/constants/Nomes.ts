@@ -9,3 +9,13 @@ export const LOTECA = "LOTECA"
 export const FEDERAL = "FEDERAL"
 export const SUPER = "SUPER SETE"
 export const DIA = "DIA DE SORTE"
+
+
+export const DB_LOTOFACIL = "lotofacil"
+export const DB_MEGASENA = "megasena"
+export const DB_QUINA = "quina"
+export const DB_DUPLA = "duplasena"
+export const DB_DIA = "diadesorte"
+export const DB_LOTOMANIA = "lotomania"
+export const DB_MILIONARIA = "maismilionaria"
+export const DB_TIME = "timemania"

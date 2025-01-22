@@ -3,7 +3,7 @@
 
 import { StyleSheet, View } from 'react-native';
 import TextView from '../components/TextView';
-import {  COR_RESULTADOS, COR_FUNDO_CARTELA } from '../constants/Cores';
+import { COR_RESULTADOS, COR_FUNDO_CARTELA } from '../constants/Cores';
 import { formatarReal, gerarKey } from '../utils/ultil';
 import { premicaoDoBanco, Premio } from '../model/Premio';
 
@@ -32,10 +32,9 @@ export default function ItemPremiacao({ array, doBanco, limite }) {
 
 const styles = StyleSheet.create({
     viewItem: {
-        borderWidth: 1,
-        backgroundColor: COR_RESULTADOS,
         padding: 5,
-        alignItems: 'center'
+        alignItems: 'center',
+        borderWidth:2
     },
 
     item: {

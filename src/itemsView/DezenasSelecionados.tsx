@@ -5,27 +5,41 @@ import { StyleSheet, View } from 'react-native';
 import TextView from '../components/TextView';
 import { COR_BRANCO, COR_FUNDO_CARTELA } from '../constants/Cores';
 import { gerarKey } from '../utils/ultil';
+import React from 'react';
 
-export default function DezenasSelecionados({ numerosSelecionados, cor = COR_FUNDO_CARTELA, arrarComparar = undefined }) {
-    const array: Array<string> = arrarComparar
+export default function DezenasSelecionados({ numerosSelecionados, cor = COR_FUNDO_CARTELA, arrayComparar = [] }) {
+    const array: Array<string> = arrayComparar
     let corView = cor
+    let contador = 0
     return (
-        <View style={styles.viewItens}>
-            {numerosSelecionados ? numerosSelecionados.map((item) => {
-                if (array) {
-                    if (array.includes(item)) {
-                        corView = "green"
-                    } else {
-                        corView = cor
+        <View style={styles.content}>
+
+            <View style={styles.viewItens}>
+                {numerosSelecionados ? numerosSelecionados.map((item) => {
+                    if (array) {
+                        if (array.includes(item)) {
+                            contador++
+                            corView = "green"
+                        } else {
+                            corView = cor
+                        }
                     }
+
+                    return (
+                        <View key={gerarKey()} style={[styles.item, { backgroundColor: corView }]}>
+                            <TextView cor={COR_BRANCO} fontSize={20} value={item + " "} />
+                        </View>
+                    )
+                }) : null
                 }
 
-                return (
-                    <View key={gerarKey()} style={[styles.item, { backgroundColor: corView }]}>
-                        <TextView cor={COR_BRANCO} fontSize={20} value={item + " "} />
-                    </View>)
-            }) : null
-            }
+            </View>
+            {contador > 0 ?
+                <View style={styles.itemAcertos}>
+                    <TextView value={"Acertos: " + contador.toString() + "/" + arrayComparar.length} />
+                </View>
+                : null}
+
         </View>
 
     )
@@ -37,6 +51,13 @@ const styles = StyleSheet.create({
         width: "100%",
         alignItems: 'center',
         padding: 5
+
+    },
+
+    itemAcertos: {
+        backgroundColor: "#123",
+        padding: 10,
+        borderRadius: 15
 
     },
 

@@ -1,10 +1,7 @@
-import { Platform, ScrollView, StatusBar, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
-import {
-    COR_RESULTADOS,
-} from "../../constants/Cores";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { axiosBusca, gerarKey, mudaCor } from "../../utils/ultil";
 import { URL_BASE_ULTIMOS } from "../../constants/Constants";
@@ -14,11 +11,10 @@ import {
     LOTOMANIA, MEGA, MILIONARIA, QUINA,
     SUPER, TIME
 } from "../../constants/Nomes";
-import ViewCarregando from "../../components/ViewCarregando";
-import ViewMsgErro from "../../components/ViewMsgErro";
+import ViewCarregando from "../../Views/ViewCarregando";
 import { jogoDoBanco, JogoSorteado } from "../../model/jogoSorteado";
 import { Dropdown } from "../../components/Dropdown";
-import { AdEventType, InterstitialAd, TestIds } from "react-native-google-mobile-ads";
+import ViewMsgErro from "../../Views/ViewMsgErro";
 
 
 
@@ -29,8 +25,7 @@ export default function Resultados({ }) {
     const [arrayViewJogosSorteados, setArrayViewJogosSorteados] = React.useState(Array<JogoSorteado>)
     const [carregando, setCarregando] = React.useState(true)
     const [erroServer, setErroServer] = useState(false)
-    const [corStatus, setCorStatus] = useState(COR_RESULTADOS)
- 
+
 
     const arrayFiltro =
         [
@@ -44,35 +39,17 @@ export default function Resultados({ }) {
             { label: QUINA, value: QUINA },
             { label: SUPER, value: SUPER },
             { label: TIME, value: TIME },
-
         ]
-
-
-
 
     React.useEffect(() => {
         buscarDados()
-
     }, [isFocused])
-
-
-    function compare(a, b) {
-        const v1 = (a["resultado"]["valor_estimado_proximo_concurso"])
-        const v2 = (b["resultado"]["valor_estimado_proximo_concurso"])
-        if (v1 < v2) return -1;
-        if (v1 > v2) return 1;
-        return 0;
-    }
 
     async function buscarDados() {
 
-
         let array = await axiosBusca(URL_BASE_ULTIMOS)
-        array.sort(compare)
-        array.reverse()
         setJogosSorteados(array)
         setArrayViewJogosSorteados(array)
-
 
         if (array.length < 1) {
             setErroServer(true)
@@ -103,9 +80,6 @@ export default function Resultados({ }) {
         setArrayViewJogosSorteados(arrayFiltro)
 
     }
-
-
- 
 
     return (
         <>

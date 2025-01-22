@@ -1,29 +1,29 @@
 import { StyleSheet, View } from "react-native"
 import DezenasSelecionados from "../itemsView/DezenasSelecionados"
-import TextView from "./TextView"
 import { gerarKey } from "../utils/ultil"
 import ViewLoteca from "./ViewLoteca"
+import TextView from "../components/TextView"
 
 export function ViewSorteados({ trevos, cor, time, mesSorte,
     arrayDezenas, arrayDezenas2, arrayLoteca }) {
 
     return (
         <View style={styles.content}>
-            {arrayDezenas.length > 1 ? <TextView cor="#000" fontWeight={"bold"} value={"Dezenas"} fontSize={30} /> : null}
+            {arrayDezenas ? <TextView cor={"#FFF"} fontWeight={"bold"} value={"Dezenas"} fontSize={30} /> : null}
             {
-                arrayDezenas.length > 1 ?
-                    <DezenasSelecionados  key={gerarKey()} numerosSelecionados={arrayDezenas} cor={cor} />
+                arrayDezenas ?
+                    <DezenasSelecionados key={gerarKey()} numerosSelecionados={arrayDezenas} cor={cor} />
                     : <ViewLoteca key={gerarKey()} arrayLoteca={arrayLoteca} />
             }
             {
                 arrayDezenas2 ?
-                    <DezenasSelecionados  key={gerarKey()} numerosSelecionados={arrayDezenas2} cor={cor} />
+                    <DezenasSelecionados key={gerarKey()} numerosSelecionados={arrayDezenas2} cor={cor} />
                     : null
             }
             {
                 trevos ?
                     <View style={styles.viewItem} >
-                        <TextView cor="#000" value={"Trevos: "} fontWeight={"bold"} />
+                        <TextView value={"Trevos: "} fontWeight={"bold"} />
                         <DezenasSelecionados numerosSelecionados={trevos} cor={cor} />
                     </View >
                     : null
@@ -31,9 +31,9 @@ export function ViewSorteados({ trevos, cor, time, mesSorte,
             {
                 time ?
                     <View style={styles.viewItem}>
-                        <TextView cor="#000" value={"Time do coração"} fontWeight={"bold"} />
+                        <TextView value={"Time do coração"} fontWeight={"bold"} />
                         <View style={[styles.item, { backgroundColor: cor }]}>
-                            <TextView  value={time} />
+                            <TextView value={time} />
                         </View>
                     </View>
                     : null
@@ -41,7 +41,7 @@ export function ViewSorteados({ trevos, cor, time, mesSorte,
             {
                 mesSorte ?
                     <View style={styles.viewItem}>
-                        <TextView cor="#000" value={"Mês da sorte: "} />
+                        <TextView value={"Mês da sorte: "} />
                         <View style={[styles.item, { backgroundColor: cor }]}>
                             <TextView value={mesSorte} />
                         </View>
@@ -52,7 +52,6 @@ export function ViewSorteados({ trevos, cor, time, mesSorte,
         </View>
     )
 
-
 }
 
 const styles = StyleSheet.create({
@@ -60,6 +59,7 @@ const styles = StyleSheet.create({
         width: "100%",
         alignItems: "center",
         justifyContent: "center",
+
     },
     item: {
         borderWidth: 1,

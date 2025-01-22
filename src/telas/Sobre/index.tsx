@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet, View } from "react-native";
 import TextView from "../../components/TextView";
-import { TXT_MAIS, TXT_SOBRE_APP } from "../../constants/Constants";
+import { TXT_ARMAZENAMENTO, TXT_MAIS, TXT_SOBRE_APP } from "../../constants/Constants";
 
 export default function TelaSobre() {
     return (
@@ -10,6 +10,9 @@ export default function TelaSobre() {
             </View>
             <View style={styles.viewItems}>
                 <TextView cor="#000" textAlign={'justify'} value={TXT_MAIS} />
+            </View>
+            <View style={styles.viewItems}>
+                <TextView cor="#000" textAlign={'justify'} value={TXT_ARMAZENAMENTO} />
             </View>
             <View style={styles.viewItems}>
                 <TextView cor="#000" textAlign={'center'} value={"Desenvolvido por: "} />

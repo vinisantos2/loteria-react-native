@@ -11,25 +11,23 @@ export default function ItemLocalGanhadores({ array }) {
                 return (
                     <View style={styles.content} key={gerarKey()}>
                         <View style={styles.viewItems}>
-                            <TextView cor="#000" value={"UF estado: "} />
-                            <TextView cor="#000" value={item.uf} />
+                            <TextView value={"UF estado: "} />
+                            <TextView value={item.uf} />
                         </View>
 
                         <View style={styles.viewItems}>
-                            <TextView cor="#000" value={"Municipio: "} />
-                            <TextView cor="#000" value={item.municipio} />
+                            <TextView value={"Municipio: "} />
+                            <TextView value={item.municipio} />
                         </View>
                         <View style={styles.viewItems}>
-                            <TextView cor="#000" value={"Posição: "} />
-                            <TextView cor="#000" value={item.posicao.toString()} />
-
+                            <TextView value={"Posição: "} />
+                            <TextView value={item.posicao.toString()} />
                         </View>
                         <View style={styles.viewItems}>
-                            <TextView cor="#000" value={"Ganhadores: "} />
-                            <TextView cor="#000" value={item.ganhadores.toString()} />
+                            <TextView value={"Ganhadores: "} />
+                            <TextView value={item.ganhadores.toString()} />
                         </View>
                     </View>
-
                 )
             })}
         </View>

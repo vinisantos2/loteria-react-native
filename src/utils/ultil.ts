@@ -9,7 +9,7 @@ import {
     COR_DE_FUNDO,
     COR_DIA, COR_DUPLA,
     COR_FEDERAL, COR_LOTECA,
-    COR_LOTOFACIL, COR_LOTOMAIA,
+    COR_LOTOFACIL, COR_LOTOMANIA,
     COR_MEGA, COR_MILIONARIA, COR_QUINA,
     COR_RESULTADOS,
     COR_SUPER_SETE, COR_TIME
@@ -122,7 +122,6 @@ export function preencher(array, dezenas, qtdDezenas) {
         let num = converterString(Math.floor(Math.random() * qtdDezenas), false);
         if (!array.includes(num))
             array.push(num)
-
     }
 
     array.sort();
@@ -168,9 +167,9 @@ export function mudaCor(jogo) {
         case LOTOFACIL:
             return COR_LOTOFACIL
         case LOTOMANIA:
-            return COR_LOTOMAIA
+            return COR_LOTOMANIA
         case LOTOMANIA:
-            return COR_LOTOMAIA
+            return COR_LOTOMANIA
         case DUPLA:
             return COR_DUPLA
         case TIME:

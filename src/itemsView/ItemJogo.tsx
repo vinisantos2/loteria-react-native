@@ -1,42 +1,43 @@
 
 import { StyleSheet, View, } from 'react-native';
-import { COR_BRANCO } from '../constants/Cores';
 import ItemPremiacao from './ItemPremiacao';
-import { ViewLegenda } from '../components/ViewLegendaJogo';
-import { ViewSorteados } from '../components/ViewSorteados';
+import { ViewLegenda } from '../Views/ViewLegendaJogo';
+
 import { JogoSorteado } from '../model/jogoSorteado';
-import ViewInfoProximoConcurso from '../components/ViewInfoProximoConcurso';
-import { ROTA_DETALHES } from '../rotas/Rotas';
+import ViewInfoProximoConcurso from '../Views/ViewInfoProximoConcurso';
 import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
 import ItemLocalGanhadores from './ItemLocalGanhadores';
-import ViewEsconderIcone from '../telas/Views/ViewEsconderCartela';
+import ViewEsconderIcone from '../Views/ViewEsconderCartela';
 import { useState } from 'react';
 import { mudaCor } from '../utils/ultil';
+import { ViewSorteados } from '../Views/ViewSorteados';
 
 export default function ItemJogo({ item, cor = "#001122" }) {
     const jogoSorteado: JogoSorteado = item
     const navigation: NavigationProp<ParamListBase> = useNavigation()
     const [viewResultado, setViewResultado] = useState(false)
-  
+
 
     return (
-        <View style={[styles.content]}>
-            <ViewLegenda jogo={jogoSorteado.loteria === "MAIS MILIONÁRIA" ? "MILIONÁRIA" : jogoSorteado.loteria} numeroConcurso={jogoSorteado.concurso} cor={mudaCor(jogoSorteado.loteria)} data={jogoSorteado.data} />
+        <View style={[styles.content, { backgroundColor: cor }]}>
+            <ViewLegenda jogo={jogoSorteado.loteria === "MAIS MILIONÁRIA" ? "MILIONÁRIA" : jogoSorteado.loteria}
+                numeroConcurso={jogoSorteado.concurso}
+                cor={mudaCor(jogoSorteado.loteria)} data={jogoSorteado.data} />
 
             <ViewSorteados
                 arrayDezenas={jogoSorteado.dezenas}
                 arrayDezenas2={jogoSorteado.dezenas2}
-                cor={cor}
+                cor={"#123"}
                 mesSorte={jogoSorteado.mesSorte}
                 time={jogoSorteado.timeCoracao}
                 trevos={jogoSorteado.trevos}
                 arrayLoteca={jogoSorteado.loteca}
             />
-
-            <ItemPremiacao array={jogoSorteado.premiacoes} limite={viewResultado ? 10 : 0} doBanco={true} />
-            {viewResultado ? <ItemLocalGanhadores array={jogoSorteado.localGanhadores} /> : null}
-            <ViewEsconderIcone cor='#000' valor={viewResultado ? "Menos detahlhes" : "Mais dedathes"} viewCartela={viewResultado} setViewCartela={setViewResultado} />
             <ViewInfoProximoConcurso cor={cor} jogo={jogoSorteado} />
+            <ItemPremiacao  array={jogoSorteado.premiacoes} limite={viewResultado ? 10 : 0} doBanco={true} />
+
+            {viewResultado ? <ItemLocalGanhadores array={jogoSorteado.localGanhadores} /> : null}
+            <ViewEsconderIcone valor={viewResultado ? "Menos detahlhes" : "Mais dedathes"} viewCartela={viewResultado} setViewCartela={setViewResultado} />
 
         </View>
     )
@@ -45,8 +46,7 @@ export default function ItemJogo({ item, cor = "#001122" }) {
 
 const styles = StyleSheet.create({
     content: {
-        width: "100%",
-        backgroundColor: COR_BRANCO
+        
     },
 
     botao: {
@@ -55,9 +55,7 @@ const styles = StyleSheet.create({
         backgroundColor: "blue",
         justifyContent: 'center',
         borderRadius: 15,
-        marginVertical: 5,
         width: "50%"
-
     },
 
     view: {
