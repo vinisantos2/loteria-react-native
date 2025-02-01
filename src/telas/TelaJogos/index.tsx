@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Button, View } from "react-native";
 import Layout from "../../components/Layout";
-import { COR_LOTOFACIL } from "../../constants/Cores";
 import { useIsFocused } from "@react-navigation/native";
 import { axiosBusca, conexao, gerarKey, mudaCor } from "../../utils/ultil";
 import { jogoDoBanco2, JogoSorteado } from "../../model/jogoSorteado";
 import TextView from "../../components/TextView";
 import { deletar, getData } from "../../db/AsyncStorage";
 import { JogoSalvo } from "../../model/JogoSalvo";
-import ViewBusca from "../../Views/ViewBusca";
+import ViewBusca from "./Views/ViewBusca";
 import ViewJogo from "../../Views/ViewJogo";
 import ViewItemJOgosSalvo from "../../itemsView/ViewItemJogosSalvo";
-import ViewBotoesTelaJogos from "../../Views/View2BotoesT";
 import View2Botoes from "../../Views/View2BotoesT";
 import ViewCarregando from "../../Views/ViewCarregando";
 import ViewMsgErro from "../../Views/ViewMsgErro";
 import Carregando from "../../components/Carregando";
 import { ViewLegenda } from "../../Views/ViewLegendaJogo";
-const LIMITE = 30
-
+import ViewProximoJogo from "./Views/ViewProximoJogo";
+const LIMITE_DE_JOGOS_SALVO = 30
 export default function TelaJogos({ navigation, route }) {
     const { nomeJogo } = route.params ? route.params : "";
     const { dezenas } = route.params ? route.params : "";
@@ -28,10 +26,8 @@ export default function TelaJogos({ navigation, route }) {
     const { navComparar } = route.params ? route.params : "";
     const { dupla } = route.params ? route.params : false;
     const { milionaria } = route.params ? route.params : false;
-
     const isFocused = useIsFocused()
     const [jogo, setJogo] = useState<JogoSorteado>(undefined)
-    const [modalVisible, setModalVisible] = useState(false);
     const [carregandoPag, setCarregandoPag] = useState(true)
     const [carregando, setCarregando] = useState(true)
     const [erroServer, setErroServer] = useState(false)
@@ -43,9 +39,7 @@ export default function TelaJogos({ navigation, route }) {
         console.log(navComparar)
         buscarDados()
         buscarJogos()
-        setModalVisible(false)
     }, [isFocused])
-
 
     async function buscarJogos() {
         const array: Array<JogoSalvo> = await getData()
@@ -56,19 +50,18 @@ export default function TelaJogos({ navigation, route }) {
             }
         })
 
-        if (arrayJogos.length >= LIMITE) {
+        if (arrayJogos.length >= LIMITE_DE_JOGOS_SALVO) {
             setLimiteDeJogos(true)
             setTxtBtn2("Limite de jogos")
-        }else{
+        } else {
             setLimiteDeJogos(false)
             setTxtBtn2("Novo jogo")
         }
         setArrayJogosSalvos(arrayJogos)
-
     }
 
     async function buscarDados() {
-        const url = "https://apiloterias.com.br/app/v2/resultado?loteria=" + nomeJogo + "&token=GiNtwyxspInrON9&concurso=" + numConcurso
+        const url = "https://apiloterias.com.br/app/v2/resultado?loteria=" + nomeJogo + "&antecipado=true&token=GiNtwyxspInrON9&concurso=" + numConcurso
         const array = await axiosBusca(url)
         if (array) {
             const jogo = jogoDoBanco2(array)
@@ -102,10 +95,34 @@ export default function TelaJogos({ navigation, route }) {
 
     function editar(item) {
         const jogo = item
-        navigation.navigate("Cadastro", { jogo, nomeJogo, dezenas, limite, cor, minimo,milionaria })
+        navigation.navigate("Cadastro", { jogo, nomeJogo, dezenas, limite, cor, minimo, milionaria })
     }
     function novoJogo() {
         navigation.navigate("Cadastro", { nomeJogo, dezenas, limite, cor, minimo, milionaria })
+    }
+
+    async function filtro(proximo) {
+        console.log(jogo.concurso)
+        let numConcurso = parseInt(jogo.concurso)
+        if (proximo) {
+            numConcurso = numConcurso + 1
+        } else {
+            numConcurso = numConcurso - 1
+        }
+
+        console.log(numConcurso)
+
+        const url = "https://apiloterias.com.br/app/v2/resultado?loteria=" + nomeJogo + "&antecipado=true&token=GiNtwyxspInrON9&concurso=" + numConcurso
+        const array = await axiosBusca(url)
+        if (array) {
+            const jogo = jogoDoBanco2(array)
+            setJogo(jogo)
+        }
+        setErroServer(conexao(array))
+        setCarregandoPag(false)
+        setCarregando(false)
+        setNumConcurso("")
+
     }
 
     return (
@@ -120,7 +137,16 @@ export default function TelaJogos({ navigation, route }) {
                         setNumConcurso={setNumConcurso}
                         onPress={() => buscarDados()}
                     />
-
+                    <ViewProximoJogo
+                        onPressMais={() => {
+                            setCarregando(true)
+                            filtro(true)
+                        }}
+                        onPressMenos={() => {
+                            setCarregando(true)
+                            filtro(false)
+                        }}
+                    />
                     <ViewLegenda
                         jogo={jogo.loteria === "MAIS MILIONÁRIA" ? "MILIONÁRIA" : jogo.loteria}
                         numeroConcurso={jogo.concurso}

@@ -1,9 +1,9 @@
 import { StyleSheet, View } from "react-native";
 
-import { gerarKey } from "../utils/ultil";
-import { JogoSorteado } from "../model/jogoSorteado";
-import DezenasSelecionados from "../itemsView/DezenasSelecionados";
-import TextView from "../components/TextView";
+import { gerarKey } from "../../../utils/ultil";
+import { JogoSorteado } from "../../../model/jogoSorteado";
+import DezenasSelecionados from "../../../itemsView/DezenasSelecionados";
+import TextView from "../../../components/TextView";
 
 export default function ViewPremio({ array, cor, arrayDezenas, arrayTrevosSelecionados = [] }) {
     const arrayPremiacao: Array<JogoSorteado> = array

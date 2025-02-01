@@ -22,7 +22,7 @@ import { salvarData } from '../../db/AsyncStorage';
 import { JogoSalvo } from '../../model/JogoSalvo';
 import ViewMsgErro from '../../Views/ViewMsgErro';
 import ViewSelecionados from '../../Views/ViewSelecionados';
-import ViewPremio from '../../Views/ViewPremio';
+import ViewPremio from '../CadastroJogo/View/ViewPremio';
 import { Pontos } from '../../model/Pontos';
 import ViewNumDeJogos from './Views/ViewNumDeJogos';
 

@@ -36,7 +36,7 @@ yarn-error.*
 *.tsbuildinfo
 
 #firebase
-loteria-resultados-d5ffa-firebase-adminsdk-crpkj-eed5e28992.json
-google-services.json
-android/
-imagensApp/
+# loteria-resultados-d5ffa-firebase-adminsdk-crpkj-eed5e28992.json
+# google-services.json
+# android/
+# imagensApp/

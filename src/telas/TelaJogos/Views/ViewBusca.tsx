@@ -1,5 +1,5 @@
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import TextView from "../components/TextView";
+import TextView from "../../../components/TextView";
 
 export default function ViewBusca({ numConcurso, setNumConcurso, onPress }) {
 
