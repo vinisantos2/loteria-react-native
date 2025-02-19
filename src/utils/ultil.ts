@@ -1,22 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'
-import { DIA, DUPLA,
-     FEDERAL,
-     LOTECA, LOTOFACIL, 
-     LOTOMANIA, MEGA, MILIONARIA, QUINA,
-      SUPER, TIME } from "../constants/Nomes";
 import {
-    COR_DE_FUNDO,
-    COR_DIA, COR_DUPLA,
-    COR_FEDERAL, COR_LOTECA,
-    COR_LOTOFACIL, COR_LOTOMANIA,
-    COR_MEGA, COR_MILIONARIA, COR_QUINA,
-    COR_RESULTADOS,
-    COR_SUPER_SETE, COR_TIME
-} from "../constants/Cores";
+    DIA, DUPLA,
+    FEDERAL,
+    LOTECA, LOTOFACIL,
+    LOTOMANIA, MEGA, MILIONARIA, QUINA,
+    SUPER, TIME
+} from "../constants/Nomes";
+
 import { Alert } from 'react-native';
 import { Estatistica } from '../model/Estatistica';
 import { JogoSorteado } from '../model/jogoSorteado';
+import { CORES } from '../constants/Cores';
 
 export function gerarKey() {
     var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ!@#$%^&*()+?><:{}[]";
@@ -100,7 +95,6 @@ export async function jogoSorteados(array: Array<JogoSorteado>) {
 }
 
 
-
 export function converterString(n, trevo) {
     if (trevo) {
         return (n + 1).toString()
@@ -150,9 +144,7 @@ export function salvarNumeroNaLista(numero, array, limite) {
     }
 
     arrayTemp.push(numero)
-
     arrayTemp.sort()
-
     return arrayTemp
 
 }
@@ -161,30 +153,28 @@ export function mudaCor(jogo) {
 
     switch (jogo) {
         case MEGA:
-            return COR_MEGA
+            return CORES.JOGOS.MEGA
         case QUINA:
-            return COR_QUINA
+            return CORES.JOGOS.QUINA
         case LOTOFACIL:
-            return COR_LOTOFACIL
+            return CORES.JOGOS.LOTOFACIL
         case LOTOMANIA:
-            return COR_LOTOMANIA
-        case LOTOMANIA:
-            return COR_LOTOMANIA
+            return CORES.JOGOS.LOTOMANIA
         case DUPLA:
-            return COR_DUPLA
+            return CORES.JOGOS.DUPLA
         case TIME:
-            return COR_TIME
+            return CORES.JOGOS.TIME
         case MILIONARIA:
-            return COR_MILIONARIA
+            return CORES.JOGOS.MILIONARIA
         case LOTECA:
-            return COR_LOTECA
+            return CORES.JOGOS.LOTECA
         case FEDERAL:
-            return COR_FEDERAL
+            return CORES.JOGOS.FEDERAL
         case SUPER:
-            return COR_SUPER_SETE
+            return CORES.JOGOS.SUPER_SETE
         case DIA:
-            return COR_DIA
+            return CORES.JOGOS.DIA
         default:
-            return COR_DE_FUNDO
+            return CORES.GERAL.DE_FUNDO
     }
 }

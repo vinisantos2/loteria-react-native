@@ -3,7 +3,7 @@
 
 import { StyleSheet, View } from 'react-native';
 import TextView from '../components/TextView';
-import { COR_RESULTADOS, COR_FUNDO_CARTELA } from '../constants/Cores';
+import { CORES } from '../constants/Cores';
 import { formatarReal, gerarKey } from '../utils/ultil';
 import { premicaoDoBanco, Premio } from '../model/Premio';
 
@@ -34,13 +34,13 @@ const styles = StyleSheet.create({
     viewItem: {
         padding: 5,
         alignItems: 'center',
-        borderWidth:2
+        borderWidth: 2
     },
 
     item: {
         borderWidth: 1,
         borderRadius: 5,
-        backgroundColor: COR_FUNDO_CARTELA,
+        backgroundColor: CORES.GERAL.FUNDO_CARTELA,
         margin: 1,
         padding: 5,
         elevation: 5

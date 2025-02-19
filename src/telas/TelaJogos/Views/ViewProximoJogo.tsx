@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import style from "../../../../assets/style";
 import TextView from "../../../components/TextView";
-import { COR_BOTAO } from "../../../constants/Cores";
+import { CORES } from "../../../constants/Cores";
 const sizeIcon = 45
 const fontLegenda = 20
 const corIcone = "#FFF"
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     },
     viewBotao: {
         alignItems: "center",
-        backgroundColor: COR_BOTAO,
+        backgroundColor: CORES.GERAL.BOTAO,
         padding: 5,
         borderRadius: 15
 

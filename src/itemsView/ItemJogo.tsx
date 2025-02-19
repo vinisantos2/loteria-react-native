@@ -33,8 +33,8 @@ export default function ItemJogo({ item, cor = "#001122" }) {
                 trevos={jogoSorteado.trevos}
                 arrayLoteca={jogoSorteado.loteca}
             />
-            <ViewInfoProximoConcurso cor={cor} jogo={jogoSorteado} />
-            <ItemPremiacao  array={jogoSorteado.premiacoes} limite={viewResultado ? 10 : 0} doBanco={true} />
+            <ViewInfoProximoConcurso  jogo={jogoSorteado} />
+            <ItemPremiacao array={jogoSorteado.premiacoes} limite={viewResultado ? 10 : 0} doBanco={true} />
 
             {viewResultado ? <ItemLocalGanhadores array={jogoSorteado.localGanhadores} /> : null}
             <ViewEsconderIcone valor={viewResultado ? "Menos detahlhes" : "Mais dedathes"} viewCartela={viewResultado} setViewCartela={setViewResultado} />

@@ -3,11 +3,11 @@
 
 import { StyleSheet, View } from 'react-native';
 import TextView from '../components/TextView';
-import { COR_BRANCO, COR_FUNDO_CARTELA } from '../constants/Cores';
+import { CORES} from '../constants/Cores';
 import { gerarKey } from '../utils/ultil';
 import React from 'react';
 
-export default function DezenasSelecionados({ numerosSelecionados, cor = COR_FUNDO_CARTELA, arrayComparar = [] }) {
+export default function DezenasSelecionados({ numerosSelecionados, cor = CORES.GERAL.FUNDO_CARTELA, arrayComparar = [] }) {
     const array: Array<string> = arrayComparar
     let corView = cor
     let contador = 0
@@ -27,7 +27,7 @@ export default function DezenasSelecionados({ numerosSelecionados, cor = COR_FUN
 
                     return (
                         <View key={gerarKey()} style={[styles.item, { backgroundColor: corView }]}>
-                            <TextView cor={COR_BRANCO} fontSize={20} value={item + " "} />
+                            <TextView cor={CORES.GERAL.BRANCO} fontSize={20} value={item + " "} />
                         </View>
                     )
                 }) : null
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     item: {
         borderWidth: 1,
         borderRadius: 5,
-        backgroundColor: COR_FUNDO_CARTELA,
+        backgroundColor: CORES.GERAL.FUNDO_CARTELA,
         margin: 1,
         padding: 5,
         elevation: 5

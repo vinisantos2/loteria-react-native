@@ -1,6 +1,4 @@
-import { ScrollView, StyleSheet, View } from "react-native";
-
-
+import { ScrollView, View } from "react-native";
 import React, { useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { axiosBusca, gerarKey, mudaCor } from "../../utils/ultil";
@@ -15,7 +13,6 @@ import ViewCarregando from "../../Views/ViewCarregando";
 import { jogoDoBanco, JogoSorteado } from "../../model/jogoSorteado";
 import { Dropdown } from "../../components/Dropdown";
 import ViewMsgErro from "../../Views/ViewMsgErro";
-
 
 
 export default function Resultados({ }) {
@@ -83,8 +80,8 @@ export default function Resultados({ }) {
 
     return (
         <>
-
             <View style={{ flex: 1 }}>
+                {/* <VideoPlayer /> */}
                 <View>
                     <Dropdown click={(e) => filtro(e)} placeHolder={"Filtrar por jogo"} array={arrayFiltro.sort()} />
                 </View>
@@ -115,15 +112,4 @@ export default function Resultados({ }) {
 
     );
 }
-
-
-const style = StyleSheet.create({
-    viewBotoes: {
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        padding: 5,
-        flexWrap: 'wrap'
-    },
-
-})
 

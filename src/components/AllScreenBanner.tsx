@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { View, Platform, StatusBar, Button } from 'react-native';
+import { View, Platform, StatusBar } from 'react-native';
 import { InterstitialAd, AdEventType, TestIds } from 'react-native-google-mobile-ads';
 
 const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-3650692965421934/7534864377';
@@ -9,57 +9,51 @@ const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
     keywords: ['fashion', 'clothing'],
 });
 
-
-export default function AllSCreenBanner() {
-
+export default function AllScreenBanner() {
     const [loaded, setLoaded] = useState(false);
     const [mostrou, setMostrou] = useState(false);
-    const isFocused = useIsFocused()
+    const isFocused = useIsFocused();
 
     useEffect(() => {
-        interstical()
-    }, [isFocused])
+        let unsubscribeLoaded;
+        let unsubscribeOpened;
+        let unsubscribeClosed;
 
-    function interstical() {
-        const unsubscribeLoaded = interstitial.addAdEventListener(AdEventType.LOADED, () => {
-            setLoaded(true);
-        });
-        const unsubscribeOpened = interstitial.addAdEventListener(AdEventType.OPENED, () => {
-            if (Platform.OS === 'ios') {
-                // Prevent the close button from being unreachable by hiding the status bar on iOS
-                StatusBar.setHidden(true)
-            }
-        });
+        if (isFocused && !mostrou) {
+            unsubscribeLoaded = interstitial.addAdEventListener(AdEventType.LOADED, () => {
+                setLoaded(true);
+            });
 
-        const unsubscribeClosed = interstitial.addAdEventListener(AdEventType.CLOSED, () => {
-            if (Platform.OS === 'ios') {
-                StatusBar.setHidden(false)
-            }
-        });
+            unsubscribeOpened = interstitial.addAdEventListener(AdEventType.OPENED, () => {
+                if (Platform.OS === 'ios') {
+                    StatusBar.setHidden(true);
+                }
+            });
 
-        // Start loading the interstitial straight away
-        interstitial.load();
+            unsubscribeClosed = interstitial.addAdEventListener(AdEventType.CLOSED, () => {
+                if (Platform.OS === 'ios') {
+                    StatusBar.setHidden(false);
+                }
+                setMostrou(false); // Permite que o anúncio seja exibido novamente no futuro
+            });
 
-        // Unsubscribe from events on unmount
+            interstitial.load();
+        }
+
         return () => {
-            unsubscribeLoaded();
-            unsubscribeOpened();
-            unsubscribeClosed();
+            if (unsubscribeLoaded) unsubscribeLoaded();
+            if (unsubscribeOpened) unsubscribeOpened();
+            if (unsubscribeClosed) unsubscribeClosed();
         };
-    }
+    }, [isFocused]);
 
-    // No advert ready to show yet
-    if (loaded && !mostrou) {
-        interstitial.show();
-        setLoaded(false)
-        setMostrou(true)
-    }
+    useEffect(() => {
+        if (loaded && isFocused && !mostrou) {
+            interstitial.show();
+            setLoaded(false);
+            setMostrou(true);
+        }
+    }, [loaded, isFocused, mostrou]);
 
-    return (
-        <View>
-
-        </View>
-    )
-
-
+    return <View />;
 }

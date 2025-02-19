@@ -1,24 +1,25 @@
 import { StyleSheet, View } from "react-native";
-import { COR_DE_FUNDO, COR_MSG_ERRO } from "../constants/Cores";
+import { CORES } from "../constants/Cores";
 import { ERRO_CONEXAO } from "../constants/Constants";
-import Ionicons from '@expo/vector-icons/Ionicons';
+import Ionicons from "@expo/vector-icons/Ionicons";
 import TextView from "../components/TextView";
 
-export default function ViewMsgErro({ cor = COR_DE_FUNDO, ...outros }) {
+export default function ViewMsgErro({ cor = CORES.GERAL.MSG_ERRO, ...outros }) {
     return (
-        <View style={styles.content}>
+        <View style={[styles.content, { backgroundColor: cor }]} {...outros}>
+            <Ionicons name="warning" size={30} color="white" accessibilityLabel="Ícone de aviso" />
             <TextView value={ERRO_CONEXAO} />
-            <Ionicons name="warning" size={30} />
         </View>
-    )
-
+    );
 }
 
 const styles = StyleSheet.create({
     content: {
-        backgroundColor: COR_MSG_ERRO,
         width: "100%",
+        flexDirection: "row",
         justifyContent: "center",
-        flexDirection: "row"
-    }
-})
+        alignItems: "center",
+        padding: 10,
+        borderRadius: 5,
+    },
+});

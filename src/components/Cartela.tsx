@@ -1,6 +1,6 @@
 
 import { StyleSheet, View } from 'react-native';
-import { COR_BOTAO, COR_FUNDO_CARTELA } from '../constants/Cores';
+import { CORES } from '../constants/Cores';
 import Botao from './Botao';
 import { converterString } from '../utils/ultil';
 
@@ -12,7 +12,7 @@ export default function Cartela({ dezenas, numerosSelecionados, salvarNumeroNaLi
             {Array.from({ length: dezenas }).map((_, index) => (
                 <Botao
                     //verifica se o número ja esta no array
-                    corJogo={numerosSelecionados.includes(converterString(index, tervo)) ? cor : COR_BOTAO}
+                    corJogo={numerosSelecionados.includes(converterString(index, tervo)) ? cor : CORES.GERAL.BOTAO}
                     salvaNumero={() => salvarNumeroNaLista(converterString(index, tervo))}
                     key={index}
                     numero={converterString(index, tervo)} />
@@ -26,16 +26,22 @@ export default function Cartela({ dezenas, numerosSelecionados, salvarNumeroNaLi
 const styles = StyleSheet.create({
 
     cartela: {
-        width: '95%',
-        backgroundColor: COR_FUNDO_CARTELA,
-        alignSelf: 'center',
-        justifyContent: 'center',
-        padding: 10,
-        borderRadius: 15,
-        marginTop: 10,
-        display: 'flex',
-        flexWrap: 'wrap',
+        
         flexDirection: 'row',
+        flexWrap: 'wrap',
+        width: "90%",
+        padding: 12,
+        marginVertical: 10,
+        borderRadius: 20,
+        backgroundColor: CORES.GERAL.FUNDO_CARTELA,
+        alignItems: "center",
+        alignSelf: "center",
+        justifyContent: 'center',
+        elevation: 4, // Sombreamento no Android
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
     },
 
 })

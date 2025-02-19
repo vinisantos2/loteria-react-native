@@ -1,6 +1,5 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { ROTA_RESULTADOS, ROTA_LOTOMANIA, ROTA_MEGA, ROTA_QUINA, ROTA_LOTOFACIL, ROTA_TIME, ROTA_MILIONARIA, ROTA_DUPLA, ROTA_ESTATISTICA, ROTA_BUSCA, ROTA_DETALHES, ROTA_DIA, ROTA_LOTOFACIL_ESTATISTICA, ROTA_MEGA_ESTATISTICA, ROTA_DUPLA_ESTATISTICA, ROTA_DIA_ESTATISTICA, ROTA_LOTOMANIA_ESTATISTICA, ROTA_MILIONARIA_ESTATISTICA, ROTA_QUINA_ESTATISTICA, ROTA_TIME_ESTATISTICA } from "./Rotas";
-import { COR_RESULTADOS, COR_DUPLA, COR_LOTOFACIL, COR_LOTOMANIA, COR_MEGA, COR_MILIONARIA, COR_PRETO, COR_QUINA, COR_TIME, COR_DIA } from "../constants/Cores";
+import { ROTAS } from "./Rotas";
 import Resultados from "../telas/Resultados";
 import { headerTitleStyle, styloDrwer, textDrawer } from "./DrawerItemStyle";
 import MenuComponent from "../components/Menu";
@@ -14,10 +13,15 @@ import {
     QTD_MIN_DEZENAS_MILIONARIA, QTD_MIN_DEZENAS_QUINA, QTD_MIN_DEZENAS_TIME
 } from "../constants/Constants";
 import { DB_DIA, DB_DUPLA, DB_LOTOFACIL, DB_LOTOMANIA, DB_MEGASENA, DB_MILIONARIA, DB_QUINA, DB_TIME } from "../constants/Nomes";
-
+import { CORES } from "../constants/Cores";
 const Drawer = createDrawerNavigator();
 
 export function DrawerNav() {
+
+    const getScreenOptions = (color) => ({
+        drawerItemStyle: styloDrwer(color),
+        headerStyle: { backgroundColor: color },
+    });
 
     return (
         <Drawer.Navigator
@@ -36,125 +40,123 @@ export function DrawerNav() {
                 headerTintColor: "#FFF"
 
             }}
-            initialRouteName={ROTA_RESULTADOS}>
-            <Drawer.Screen options={{
-                drawerItemStyle: styloDrwer(COR_RESULTADOS),
-                headerStyle: { backgroundColor: COR_RESULTADOS, },
-            }} name={ROTA_RESULTADOS} component={Resultados} />
+            initialRouteName={ROTAS.RESULTADOS}>
+            <Drawer.Screen options={getScreenOptions(CORES.GERAL.RESULTADOS)}
+                name={ROTAS.RESULTADOS} component={Resultados} />
 
             {/* dupla sena */}
             <Drawer.Screen options={{
-                drawerItemStyle: styloDrwer(COR_DUPLA),
-                headerStyle: { backgroundColor: COR_DUPLA },
-            }} name={ROTA_DUPLA} component={TelaJogos}
+                drawerItemStyle: styloDrwer(CORES.JOGOS.DUPLA),
+                headerStyle: { backgroundColor: CORES.JOGOS.DUPLA },
+            }} name={ROTAS.DUPLA.PRINCIPAL} component={TelaJogos}
                 initialParams={{
                     nomeJogo: DB_DUPLA,
-                    cor: COR_DUPLA,
+                    cor: CORES.JOGOS.DUPLA,
                     dezenas: QTD_DEZENAS_DUPLA,
                     minimo: QTD_MIN_DEZENAS_DUPLA,
-                    navComparar: ROTA_DUPLA_ESTATISTICA,
+                    navComparar: ROTAS.DUPLA.ESTATISTICA,
                     dupla: true
                 }} />
             {/* dia de sorte */}
             <Drawer.Screen options={{
-                drawerItemStyle: styloDrwer(COR_DIA),
-                headerStyle: { backgroundColor: COR_DIA },
-            }} name={ROTA_DIA} component={TelaJogos}
+                drawerItemStyle: styloDrwer(CORES.JOGOS.DIA),
+                headerStyle: { backgroundColor: CORES.JOGOS.DIA },
+            }} name={ROTAS.DIA.PRINCIPAL} component={TelaJogos}
                 initialParams={{
                     nomeJogo: DB_DIA,
-                    cor: COR_DIA,
+                    cor: CORES.JOGOS.DIA,
                     dezenas: QTD_DEZENAS_DIA,
                     minimo: QTD_MIN_DEZENAS_DIA,
-                    navComparar: ROTA_DIA_ESTATISTICA
+                    navComparar: ROTAS.DIA.ESTATISTICA
                 }}
 
             />
             {/* Lotofacil */}
             <Drawer.Screen options={{
-                drawerItemStyle: styloDrwer(COR_LOTOFACIL),
+                drawerItemStyle: styloDrwer(CORES.JOGOS.LOTOFACIL),
                 headerStyle: {
-                    backgroundColor: COR_LOTOFACIL,
+                    backgroundColor: CORES.JOGOS.LOTOFACIL,
                 },
-            }} name={ROTA_LOTOFACIL} component={TelaJogos}
+            }} name={ROTAS.LOTOFACIL.PRINCIPAL} component={TelaJogos}
                 initialParams={{
                     nomeJogo: DB_LOTOFACIL,
-                    cor: COR_LOTOFACIL,
+                    cor: CORES.JOGOS.LOTOFACIL,
                     dezenas: QTD_DEZENAS_LOTOFACIL,
                     minimo: QTD_MIN_DEZENAS_LOTOFACIL,
-                    navComparar: ROTA_LOTOFACIL_ESTATISTICA
+                    navComparar: ROTAS.LOTOFACIL.ESTATISTICA
                 }} />
             {/* Lotomania */}
             <Drawer.Screen options={{
-                drawerItemStyle: styloDrwer(COR_LOTOMANIA),
-                headerStyle: { backgroundColor: COR_LOTOMANIA },
+                drawerItemStyle: styloDrwer(CORES.JOGOS.LOTOMANIA),
+                headerStyle: { backgroundColor: CORES.JOGOS.LOTOMANIA },
 
-            }} name={ROTA_LOTOMANIA}
+            }} name={ROTAS.LOTOMANIA.PRINCIPAL}
                 component={TelaJogos}
                 initialParams={{
                     nomeJogo: DB_LOTOMANIA,
-                    cor: COR_LOTOMANIA,
+                    cor: CORES.JOGOS.LOTOMANIA,
                     dezenas: QTD_DEZENAS_LOTOMANIA,
                     minimo: QTD_MIN_DEZENAS_LOTOMANIA,
-                    navComparar: ROTA_LOTOMANIA_ESTATISTICA
+                    navComparar: ROTAS.LOTOMANIA.ESTATISTICA
                 }} />
             {/* mais milionaria */}
             <Drawer.Screen options={{
-                drawerItemStyle: styloDrwer(COR_MILIONARIA),
-                headerStyle: { backgroundColor: COR_MILIONARIA },
+                drawerItemStyle: styloDrwer(CORES.JOGOS.MILIONARIA),
+                headerStyle: { backgroundColor: CORES.JOGOS.MILIONARIA },
 
-            }} name={ROTA_MILIONARIA} component={TelaJogos}
+            }} name={ROTAS.MILIONARIA.PRINCIPAL} component={TelaJogos}
                 initialParams={{
                     nomeJogo: DB_MILIONARIA,
-                    cor: COR_MILIONARIA,
+                    cor: CORES.JOGOS.MILIONARIA,
                     dezenas: QTD_DEZENAS_MILIONARIA,
                     minimo: QTD_MIN_DEZENAS_MILIONARIA,
-                    navComparar: ROTA_MILIONARIA_ESTATISTICA,
+                    navComparar: ROTAS.MILIONARIA.ESTATISTICA,
                     milionaria: true
                 }} />
             {/* mega sena */}
             <Drawer.Screen options={{
-                drawerItemStyle: styloDrwer(COR_MEGA),
-                headerStyle: { backgroundColor: COR_MEGA },
+                drawerItemStyle: styloDrwer(CORES.JOGOS.MEGA),
+                headerStyle: { backgroundColor: CORES.JOGOS.MEGA },
 
-            }} name={ROTA_MEGA} component={TelaJogos}
+            }} name={ROTAS.MEGA.PRINCIPAL} component={TelaJogos}
                 initialParams={{
                     nomeJogo: DB_MEGASENA,
-                    cor: COR_MEGA,
+                    cor: CORES.JOGOS.MEGA,
                     dezenas: QTD_DEZENAS_MEGA,
                     minimo: QTD_MIN_DEZENAS_MEGA,
-                    navComparar: ROTA_MEGA_ESTATISTICA
+                    navComparar: ROTAS.MEGA.ESTATISTICA
                 }} />
 
             {/* QUina */}
             <Drawer.Screen options={{
 
-                drawerItemStyle: styloDrwer(COR_QUINA),
-                headerStyle: { backgroundColor: COR_QUINA },
+                drawerItemStyle: styloDrwer(CORES.JOGOS.QUINA),
+                headerStyle: { backgroundColor: CORES.JOGOS.QUINA },
 
 
-            }} name={ROTA_QUINA}
+            }} name={ROTAS.QUINA.PRINCIPAL}
                 component={TelaJogos}
                 initialParams={{
                     nomeJogo: DB_QUINA,
-                    cor: COR_QUINA,
+                    cor: CORES.JOGOS.QUINA,
                     dezenas: QTD_DEZENAS_QUINA,
                     minimo: QTD_MIN_DEZENAS_QUINA,
-                    navComparar: ROTA_QUINA_ESTATISTICA
+                    navComparar: ROTAS.QUINA.ESTATISTICA
                 }} />
 
             {/* Time mania */}
             <Drawer.Screen options={{
-                drawerItemStyle: styloDrwer(COR_TIME),
-                headerStyle: { backgroundColor: COR_TIME },
+                drawerItemStyle: styloDrwer(CORES.JOGOS.TIME),
+                headerStyle: { backgroundColor: CORES.JOGOS.TIME },
 
-            }} name={ROTA_TIME}
+            }} name={ROTAS.TIME.PRINCIPAL}
                 component={TelaJogos}
                 initialParams={{
                     nomeJogo: DB_TIME,
-                    cor: COR_TIME,
+                    cor: CORES.JOGOS.TIME,
                     dezenas: QTD_DEZENAS_TIME,
                     minimo: QTD_MIN_DEZENAS_TIME,
-                    navComparar: ROTA_TIME_ESTATISTICA
+                    navComparar: ROTAS.TIME.ESTATISTICA
                 }} />
 
         </Drawer.Navigator>

@@ -1,7 +1,7 @@
 
 import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
 import TextView from './TextView';
-import { COR_BRANCO, COR_DIA, COR_FUNDO_CARTELA } from '../constants/Cores';
+import { CORES } from '../constants/Cores';
 
 
 export default function Botao({ numero, salvaNumero, corJogo }) {
@@ -10,7 +10,7 @@ export default function Botao({ numero, salvaNumero, corJogo }) {
         <TouchableOpacity
             onPress={salvaNumero}
             style={[styles.botao, { backgroundColor: corJogo }]}>
-            <TextView cor={COR_BRANCO} fontWeight={"bold"} value={numero} />
+            <TextView cor={CORES.GERAL.BRANCO} fontWeight={"bold"} value={numero} />
         </TouchableOpacity>
     )
 

@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Alert,
+    StyleSheet,
     View,
 } from 'react-native';
-import { axiosBusca, conexao, preencher, jogoSorteados, salvarNumeroNaLista, gerarKey } from '../../utils/ultil';
+import {
+    axiosBusca, conexao, preencher, jogoSorteados,
+    salvarNumeroNaLista, gerarKey
+} from '../../utils/ultil';
 import Layout from '../../components/Layout';
 import Cartela from '../../components/Cartela';
 import { URL_BASE } from '../../constants/Constants';
@@ -12,19 +16,17 @@ import LayoutResposta from '../../components/LayoutResposta';
 import TextView from '../../components/TextView';
 import { useIsFocused } from '@react-navigation/native';
 import { STYLES } from '../../Style';
-import { ViewBotoes } from './Views/ViewBotoes';
-import { ROTA_ESTATISTICA, ROTA_LOTOFACIL } from '../../rotas/Rotas';
+import { ROTAS } from '../../rotas/Rotas';
 import { JogoSorteado } from '../../model/jogoSorteado';
 import Carregando from '../../components/Carregando';
 import ViewEsconderIcone from '../../Views/ViewEsconderCartela';
-import AllSCreenBanner from '../../components/AllScreenBanner';
-import { salvarData } from '../../db/AsyncStorage';
-import { JogoSalvo } from '../../model/JogoSalvo';
 import ViewMsgErro from '../../Views/ViewMsgErro';
 import ViewSelecionados from '../../Views/ViewSelecionados';
 import ViewPremio from '../CadastroJogo/View/ViewPremio';
 import { Pontos } from '../../model/Pontos';
 import ViewNumDeJogos from './Views/ViewNumDeJogos';
+import ButtonView from '../../components/ButtonView';
+import AllScreenBanner from '../../components/AllScreenBanner';
 
 export default function CompararJogos({ navigation, route }) {
 
@@ -34,17 +36,16 @@ export default function CompararJogos({ navigation, route }) {
     const { limite } = route.params ? route.params : "";
     const { minimo } = route.params ? route.params : "";
     const { pontos } = route.params ? route.params : [];
-    const { trevos } = route.params ? route.params : [];
     const { dupla } = route.params ? route.params : false;
     const { milionaria } = route.params ? route.params : false;
     const [arrayPontos, setArrayPontos] = useState<Array<Pontos>>(pontos)
-    const [arrayTrevosPontos, setArrayTrevosPontos] = useState<Array<Pontos>>(trevos)
     const [arrayJogos, setArrayJogos] = useState([])
     const [arrayJogosSorteados, setArrayJogosSorteado] = useState(Array<JogoSorteado>)
     const [carregando, setCarregando] = useState(true)
     const [carregandoPag, setCarregandoPag] = useState(true)
     const [viewCartela, setViewCartela] = useState(true)
     const [erroServer, setErroServer] = useState(false)
+    const [mostrouAdAllScreen, setMostrouAddAllScreen] = useState(false)
     const [qtdNum, setQtdNum] = useState(0)
     const [numerosSelecionados, setArray] = useState([])
     const [numerosSelecionadosTrevos, setArrayTrevos] = useState([])
@@ -58,9 +59,19 @@ export default function CompararJogos({ navigation, route }) {
         if (!isFocused) {
         }
     }, [isFocused])
+
     React.useEffect(() => {
         setCarregando(false)
     }, [carregando])
+
+    useEffect(() => {
+        // Simula que o banner foi exibido e esconde na próxima renderização
+        const timer = setTimeout(() => {
+            setMostrouAddAllScreen(true);
+        }, 3000); // Simulação de 3 segundos para esconder o banner
+
+        return () => clearTimeout(timer); // Limpa o timeout quando o componente desmonta
+    }, []);
 
 
     async function buscarJogos() {
@@ -122,136 +133,77 @@ export default function CompararJogos({ navigation, route }) {
         setArrayJogosSorteado(arrayJogos)
     }
 
-    async function compararJogo() {
-        if (numerosSelecionados.length < minimo) {
-            Alert.alert("Alerta", "Favor preencher no mínimo " + minimo + " dezenas")
-            return
-        }
-        limparContador()
-        setViewCartela(false)
-        const arrayPontos2 = arrayPontos
-        const arrayPremiacao = new Array<JogoSorteado>
-        let contador = 0
-        let trevos = 0
-        // primeiro for para ver os jogos que ja foram sorteados 
-        for (let i = 0; i < arrayJogosSorteados.length; i++) {
-            // segundo for para percorrer as dezenas escolhidas pelo cliente
-            for (let j = 0; j < numerosSelecionados.length; j++) {
-                //verifica se a dezena escolhida pelo cliente existe no jogo ja sorteado
-                if (arrayJogosSorteados[i].dezenas.includes(numerosSelecionados[j])) {
-                    contador++
-                }
-            }
-
-
-            arrayPontos2.map(item => {
-                if (item.ponto === contador) {
-                    item.contador++
-                    if (item.mostrar) {
-                        const obj = arrayJogosSorteados[i]
-                        obj.pontos = item.ponto + " Acertos"
-                        arrayPremiacao.push(obj)
-                    }
-
-                }
-            })
-            contador = 0
-
-        }
-        console.log(arrayPontos2)
-        setArrayPontos(arrayPontos)
-        setArrayPremiacao(arrayPremiacao)
-    }
-
     function limparContador() {
         arrayPontos.map(item => {
             item.contador = 0
         })
     }
 
-
-
-    async function compararMilionaria() {
-        setViewCartela(false)
-        let contador = 0
-        let trevos = 0
-        limparContador()
-        const arrayPontos2 = arrayPontos
-
-        const arrayPremiacao = new Array<JogoSorteado>
-
-        // primeiro for para ver os jogos que ja foram sorteados 
-        for (let i = 0; i < arrayJogos.length; i++) {
-
-            // segundo for para percorrer as dezenas escolhidas pelo cliente
-            for (let j = 0; j < numerosSelecionados.length; j++) {
-                //verifica se a dezena escolhida pelo cliente existe no jogo ja sorteado
-                if (arrayJogosSorteados[i].dezenas.includes(numerosSelecionados[j])) {
-                    contador++
-                }
-            }
-            for (let j = 0; j < numerosSelecionadosTrevos.length; j++) {
-                //verifica se a dezena escolhida pelo cliente existe no jogo ja sorteado
-                if (arrayJogosSorteados[i].trevos.includes(numerosSelecionadosTrevos[j])) {
-                    trevos++
-                }
-            }
-            // verifica se a quantidade de pontos feito pelo cliente em cada jogo 
-
-            if (contador === 6 && trevos === 2) {
-                arrayPontos2[0].contador++
-                const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[0].descricao
-                arrayPremiacao.push(obj)
-            } else if (contador === 6 && trevos < 2) {
-                arrayPontos2[1].contador++
-                const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[1].descricao
-                arrayPremiacao.push(obj)
-            } else if (contador === 5 && trevos === 2) {
-                arrayPontos2[2].contador++
-                const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[2].descricao
-                arrayPremiacao.push(obj)
-            } else if (contador === 5 && trevos < 2) {
-                arrayPontos2[3].contador++
-                const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[3].descricao
-                arrayPremiacao.push(obj)
-
-            } else if (contador === 4 && trevos === 2) {
-                arrayPontos2[4].contador++
-                const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[4].descricao
-                arrayPremiacao.push(obj)
-            } else if (contador === 4 && trevos < 2) {
-                arrayPontos2[5].contador++
-                const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[5].descricao
-                arrayPremiacao.push(obj)
-            } else if (contador === 3 && trevos === 2) {
-                arrayPontos2[6].contador++
-                const obj = arrayJogosSorteados[i]
-                obj.pontos = obj.premiacoes[6].descricao
-                arrayPremiacao.push(obj)
-            } else if (contador === 3 && trevos === 1) {
-                arrayPontos2[7].contador++
-            } else if (contador === 2 && trevos === 2) {
-                arrayPontos2[8].contador++
-            } else if (contador === 2 && trevos === 1) {
-                arrayPontos2[9].contador++
-            }
-            contador = 0
-            trevos = 0
-
-            setArrayPontos(arrayPontos2)
-            setArrayPremiacao(arrayPremiacao)
-
+    function compararJogo() {
+        if (numerosSelecionados.length < minimo) {
+            Alert.alert("Alerta", `Favor preencher no mínimo ${minimo} dezenas`);
+            return;
         }
 
-        setArrayPremiacao(arrayPremiacao)
-        setCarregando(false)
+        limparContador();
+        setViewCartela(false);
 
+        const arrayPontos2 = arrayPontos.map(item => ({ ...item })); // Criando cópia profunda
+        const arrayPremiacao = [];
+
+        arrayJogosSorteados.forEach(jogo => {
+            const dezenasSorteadas = new Set(jogo.dezenas); // Transformando em Set para busca rápida
+            let contador = numerosSelecionados.filter(num => dezenasSorteadas.has(num)).length;
+
+            arrayPontos2.forEach(item => {
+                if (item.ponto === contador) {
+                    item.contador++;
+                    if (item.mostrar) {
+                        arrayPremiacao.push({ ...jogo, pontos: `${item.ponto} Acertos` });
+                    }
+                }
+            });
+        });
+
+        setArrayPontos(arrayPontos2);
+        setArrayPremiacao(arrayPremiacao);
+    }
+
+
+
+    function compararMilionaria() {
+        setViewCartela(false);
+        limparContador();
+
+        let arrayPontos2 = arrayPontos.map(item => ({ ...item })); // Cópia profunda do array de pontos
+        let arrayPremiacao = [];
+
+        arrayJogosSorteados.forEach(jogo => {
+            let contador = numerosSelecionados.filter(num => jogo.dezenas.includes(num)).length;
+            let trevos = numerosSelecionadosTrevos.filter(num => jogo.trevos.includes(num)).length;
+
+            let premiacaoIndex = -1;
+            if (contador === 6 && trevos === 2) premiacaoIndex = 0;
+            else if (contador === 6 && trevos < 2) premiacaoIndex = 1;
+            else if (contador === 5 && trevos === 2) premiacaoIndex = 2;
+            else if (contador === 5 && trevos < 2) premiacaoIndex = 3;
+            else if (contador === 4 && trevos === 2) premiacaoIndex = 4;
+            else if (contador === 4 && trevos < 2) premiacaoIndex = 5;
+            else if (contador === 3 && trevos === 2) premiacaoIndex = 6;
+            else if (contador === 3 && trevos === 1) premiacaoIndex = 7;
+            else if (contador === 2 && trevos === 2) premiacaoIndex = 8;
+            else if (contador === 2 && trevos === 1) premiacaoIndex = 9;
+
+            if (premiacaoIndex >= 0) {
+                arrayPontos2[premiacaoIndex].contador++;
+                let obj = { ...jogo, pontos: jogo.premiacoes[premiacaoIndex]?.descricao };
+                arrayPremiacao.push(obj);
+            }
+        });
+
+        setArrayPontos(arrayPontos2);
+        setArrayPremiacao(arrayPremiacao);
+        setCarregando(false);
     }
 
     function limpar() {
@@ -261,7 +213,7 @@ export default function CompararJogos({ navigation, route }) {
         setArrayPremiacao([])
         setViewCartela(true)
         setArrayPontos(pontos)
-        console.log(pontos)
+
     }
 
     function salvarNumeroTrevo(numero) {
@@ -271,24 +223,14 @@ export default function CompararJogos({ navigation, route }) {
     }
 
     async function estatistica() {
-        navigation.navigate(ROTA_ESTATISTICA, {
+        navigation.navigate(ROTAS.ESTATISTICA, {
             arrayJogosSorteados: arrayJogosSorteados,
             nomeJogo, cor, dezenas
         })
     }
 
-    function salvar() {
-
-        const jogoSalvo = new JogoSalvo
-        jogoSalvo.dezenas = numerosSelecionados
-        jogoSalvo.id = gerarKey()
-        jogoSalvo.nome = "Lotofacil"
-        salvarData(jogoSalvo, jogoSalvo.id)
-    }
-
     return (
         <>
-
             <Layout cor={cor}>
                 {/* <StatusBarView cor={corStatus} /> */}
 
@@ -296,11 +238,25 @@ export default function CompararJogos({ navigation, route }) {
                 {erroServer ? <ViewMsgErro /> : null}
                 {carregando ? <Carregando /> : null}
 
-                <ViewNumDeJogos numJogos={arrayJogos.length} cor={cor} />
+                <ViewNumDeJogos numJogos={arrayJogos.length} />
+                <View style={styles.content}>
+                    <ButtonView onPress={() => {
+                        setCarregando(true)
+                        milionaria ?
+                            compararMilionaria() :
+                            compararJogo()
+                    }} value={"Comparar"} />
+                    <ButtonView onPress={preencherJogo} value={"Preencher"} />
+                    <ButtonView onPress={limpar} value={"Limpar"} />
+
+                </View>
+
                 <ViewSelecionados
                     numerosSelecionados={numerosSelecionados}
                     qtdNum={qtdNum}
                 />
+
+
 
                 {milionaria ? <Cartela
                     dezenas={6}
@@ -319,16 +275,7 @@ export default function CompararJogos({ navigation, route }) {
 
                 <ViewEsconderIcone valor={viewCartela ? "Esconder cartela" : "Mostrar cartela"} setViewCartela={setViewCartela} viewCartela={viewCartela} />
 
-                <ViewBotoes
 
-                    limpar={() => limpar()}
-                    estatistica={() => estatistica()}
-                    preencherJogo={() => preencherJogo()}
-                    compararJogo={() => {
-                        setCarregando(true)
-                        pontos[0].trevo ? compararMilionaria() : compararJogo()
-                    }}
-                />
 
                 {carregando ? <Carregando /> : null}
 
@@ -353,9 +300,24 @@ export default function CompararJogos({ navigation, route }) {
 
             </Layout>
 
-            <AllSCreenBanner />
+            {!mostrouAdAllScreen ?
+                <AllScreenBanner />
+                : null
+
+            }
 
         </>
 
     );
 }
+
+const styles = StyleSheet.create({
+    content: {
+        flexDirection: "row",
+        borderRadius: 15,
+        marginVertical: 10,
+        justifyContent: "space-around"
+    },
+
+
+})

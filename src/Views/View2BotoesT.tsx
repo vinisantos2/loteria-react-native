@@ -1,6 +1,5 @@
 import { StyleSheet, View } from "react-native";
 import ButtonView from "../components/ButtonView";
-import { COR_FUNDO_CARTELA } from "../constants/Cores";
 
 
 export default function View2Botoes({ onPress1, onPress2, txt1, txt2, limite = false }) {

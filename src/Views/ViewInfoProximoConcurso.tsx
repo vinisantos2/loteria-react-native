@@ -4,7 +4,7 @@ import { JogoSorteado } from "../model/jogoSorteado";
 
 const FONT = 25
 
-export default function ViewInfoProximoConcurso({ jogo, cor }) {
+export default function ViewInfoProximoConcurso({ jogo }) {
     const jogoSorteado: JogoSorteado = jogo
 
     return (

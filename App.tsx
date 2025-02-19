@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { COR_DE_FUNDO } from './src/constants/Cores';
+import { CORES } from './src/constants/Cores';
 import StackNavigator from './src/rotas/StackNavigator';
 import { Alert, PermissionsAndroid } from 'react-native';
 import messaging, { firebase } from '@react-native-firebase/messaging';
@@ -77,7 +77,7 @@ export default function App() {
           
           dark: true,
           colors: {
-            card: COR_DE_FUNDO,
+            card: CORES.GERAL.DE_FUNDO,
             border: "#FFFFFF00",
             background: undefined,
             notification: undefined,

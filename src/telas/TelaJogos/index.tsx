@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Button, View } from "react-native";
+import { Alert, Button, StyleSheet, View } from "react-native";
 import Layout from "../../components/Layout";
 import { useIsFocused } from "@react-navigation/native";
 import { axiosBusca, conexao, gerarKey, mudaCor } from "../../utils/ultil";
@@ -10,13 +10,17 @@ import { JogoSalvo } from "../../model/JogoSalvo";
 import ViewBusca from "./Views/ViewBusca";
 import ViewJogo from "../../Views/ViewJogo";
 import ViewItemJOgosSalvo from "../../itemsView/ViewItemJogosSalvo";
-import View2Botoes from "../../Views/View2BotoesT";
 import ViewCarregando from "../../Views/ViewCarregando";
 import ViewMsgErro from "../../Views/ViewMsgErro";
 import Carregando from "../../components/Carregando";
 import { ViewLegenda } from "../../Views/ViewLegendaJogo";
 import ViewProximoJogo from "./Views/ViewProximoJogo";
+import AllScreenBanner from "../../components/AllScreenBanner";
+import { CORES } from "../../constants/Cores";
+import { ROTAS } from "../../rotas/Rotas";
+import ButtonView from "../../components/ButtonView";
 const LIMITE_DE_JOGOS_SALVO = 30
+
 export default function TelaJogos({ navigation, route }) {
     const { nomeJogo } = route.params ? route.params : "";
     const { dezenas } = route.params ? route.params : "";
@@ -28,6 +32,7 @@ export default function TelaJogos({ navigation, route }) {
     const { milionaria } = route.params ? route.params : false;
     const isFocused = useIsFocused()
     const [jogo, setJogo] = useState<JogoSorteado>(undefined)
+    const [mostrouAdAllScreen, setMostrouAddAllScreen] = useState(false)
     const [carregandoPag, setCarregandoPag] = useState(true)
     const [carregando, setCarregando] = useState(true)
     const [erroServer, setErroServer] = useState(false)
@@ -35,11 +40,21 @@ export default function TelaJogos({ navigation, route }) {
     const [txtBtn2, setTxtBtn2] = useState("Novo jogo")
     const [arrayJogosSalvos, setArrayJogosSalvos] = useState<Array<JogoSalvo>>([])
     const [limiteDeJogos, setLimiteDeJogos] = useState(false)
+
     useEffect(() => {
-        console.log(navComparar)
+
         buscarDados()
         buscarJogos()
     }, [isFocused])
+
+    useEffect(() => {
+        // Simula que o banner foi exibido e esconde na próxima renderização
+        const timer = setTimeout(() => {
+            setMostrouAddAllScreen(true);
+        }, 3000); // Simulação de 3 segundos para esconder o banner
+
+        return () => clearTimeout(timer); // Limpa o timeout quando o componente desmonta
+    }, []);
 
     async function buscarJogos() {
         const array: Array<JogoSalvo> = await getData()
@@ -70,7 +85,6 @@ export default function TelaJogos({ navigation, route }) {
         setErroServer(conexao(array))
         setCarregandoPag(false)
         setCarregando(false)
-
         setNumConcurso("")
     }
 
@@ -95,10 +109,16 @@ export default function TelaJogos({ navigation, route }) {
 
     function editar(item) {
         const jogo = item
-        navigation.navigate("Cadastro", { jogo, nomeJogo, dezenas, limite, cor, minimo, milionaria })
+        navigation.navigate(ROTAS.CADASTRO, { jogo, nomeJogo, dezenas, limite, cor, minimo, milionaria })
     }
     function novoJogo() {
-        navigation.navigate("Cadastro", { nomeJogo, dezenas, limite, cor, minimo, milionaria })
+        navigation.navigate(ROTAS.CADASTRO, { nomeJogo, dezenas, limite, cor, minimo, milionaria })
+    }
+
+    async function estatistica() {
+        navigation.navigate(ROTAS.ESTATISTICA, {
+            nomeJogo, cor, dezenas
+        })
     }
 
     async function filtro(proximo) {
@@ -125,6 +145,10 @@ export default function TelaJogos({ navigation, route }) {
 
     }
 
+    function navigateComparar() {
+        navigation.navigate(navComparar)
+    }
+
     return (
         <>
             {jogo ?
@@ -137,6 +161,12 @@ export default function TelaJogos({ navigation, route }) {
                         setNumConcurso={setNumConcurso}
                         onPress={() => buscarDados()}
                     />
+                    <View style={styles.content}>
+                        <ButtonView onPress={estatistica} value={"Estatística"} />
+                        <ButtonView disabled={limite} onPress={navigateComparar} value={"Comparar"} />
+                        <ButtonView disabled={limite} onPress={novoJogo} value={"Novo Jogo"} />
+                    </View>
+
                     <ViewProximoJogo
                         onPressMais={() => {
                             setCarregando(true)
@@ -153,15 +183,8 @@ export default function TelaJogos({ navigation, route }) {
                         cor={mudaCor(jogo.loteria)}
                         data={jogo.data} />
 
-                    <ViewJogo cor={"#123"} jogo={jogo} />
+                    <ViewJogo cor={CORES.GERAL.BOTAO} jogo={jogo} />
 
-                    <View2Botoes
-                        onPress1={() => navigation.navigate(navComparar)}
-                        txt1={"Estatísticas"}
-                        onPress2={novoJogo}
-                        txt2={txtBtn2}
-                        limite={limiteDeJogos}
-                    />
 
                     <View style={{ alignItems: "center" }}>
                         <TextView value="Jogos salvos" fontWeight={"bold"} fontSize={45} />
@@ -183,6 +206,12 @@ export default function TelaJogos({ navigation, route }) {
 
                 </Layout>
                 : null}
+            {!mostrouAdAllScreen ?
+                <AllScreenBanner />
+                : null
+
+            }
+
         </>
 
     )
@@ -190,3 +219,13 @@ export default function TelaJogos({ navigation, route }) {
 }
 
 
+const styles = StyleSheet.create({
+    content: {
+        flexDirection: "row",
+        borderRadius: 15,
+        marginVertical: 10,
+        justifyContent: "space-around"
+    },
+
+
+})

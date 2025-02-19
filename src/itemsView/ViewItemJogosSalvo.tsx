@@ -1,10 +1,8 @@
 import { StyleSheet, View } from "react-native";
 import DezenasSelecionados from "./DezenasSelecionados";
 import { Ionicons } from "@expo/vector-icons";
-import { JogoSalvo } from "../model/JogoSalvo";
-import { gerarKey } from "../utils/ultil";
 import { JogoSorteado } from "../model/jogoSorteado";
-import { COR_BRANCO, COR_FUNDO_CARTELA } from "../constants/Cores";
+import { CORES } from "../constants/Cores";
 
 export default function ViewItemJOgosSalvo({ item,
     jogoComparar, deletarItem,
@@ -41,7 +39,7 @@ const styles = StyleSheet.create({
     content: {
         alignItems: "center",
         marginVertical: 2,
-        backgroundColor: COR_FUNDO_CARTELA,
+        backgroundColor: CORES.GERAL.FUNDO_CARTELA,
         width: "95%",
         borderRadius: 15
     },
@@ -50,7 +48,7 @@ const styles = StyleSheet.create({
     },
 
     icone: {
-        backgroundColor: COR_BRANCO,
+        backgroundColor: CORES.GERAL.BRANCO,
         marginLeft: 5,
         padding: 10,
         borderRadius: 15

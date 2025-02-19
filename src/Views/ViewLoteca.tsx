@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import { gerarKey } from "../utils/ultil";
-import { COR_LOTECA } from "../constants/Cores";
+import { CORES } from "../constants/Cores";
 import TextView from "../components/TextView";
 const FONT = 20
 
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         padding: 10,
 
-        backgroundColor: COR_LOTECA
+        backgroundColor: CORES.JOGOS.LOTECA
     },
     medidaTime: {
         width: "40%",

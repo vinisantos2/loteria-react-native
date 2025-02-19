@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native"
 import { ViewLegenda } from "./ViewLegendaJogo"
 import { mudaCor } from "../utils/ultil"
 import { ViewSorteados } from "./ViewSorteados"
-import { COR_FUNDO_CARTELA } from "../constants/Cores"
+import { CORES } from "../constants/Cores"
 
 export default function ViewJogo({ jogo, cor }) {
 
@@ -26,7 +26,7 @@ export default function ViewJogo({ jogo, cor }) {
 
 const styles = StyleSheet.create({
     content: {
-        backgroundColor: COR_FUNDO_CARTELA,
+        backgroundColor: CORES.GERAL.FUNDO_CARTELA,
         width: "95%",
         alignSelf: "center",
         borderRadius: 15,

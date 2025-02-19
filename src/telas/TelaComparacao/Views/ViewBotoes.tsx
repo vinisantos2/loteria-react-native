@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import { COMPARAR, LIMPAR, PRENCHER } from "../../../constants/Constants";
-import { COR_FUNDO_CARTELA } from "../../../constants/Cores";
+import { CORES } from "../../../constants/Cores";
 import ButtonView from "../../../components/ButtonView";
 
 export function ViewBotoes({ compararJogo,
@@ -20,14 +20,19 @@ export function ViewBotoes({ compararJogo,
 }
 
 const styles = StyleSheet.create({
-    viewBotoes: {
-        alignItems: 'center',
-        backgroundColor: COR_FUNDO_CARTELA,
+    viewBotoes:{
+        width: "90%",
+        padding: 12,
+        marginVertical: 10,
+        borderRadius: 20,
+        backgroundColor: CORES.GERAL.FUNDO_CARTELA,
+        alignItems: "center",
         alignSelf: "center",
-        width: "95%",
-        borderRadius: 15,
-        padding: 15
-
+        elevation: 4, // Sombreamento no Android
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
     },
 
     item: {
