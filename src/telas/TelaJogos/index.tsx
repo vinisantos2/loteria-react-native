@@ -42,7 +42,6 @@ export default function TelaJogos({ navigation, route }) {
     const [limiteDeJogos, setLimiteDeJogos] = useState(false)
 
     useEffect(() => {
-
         buscarDados()
         buscarJogos()
     }, [isFocused])
@@ -163,8 +162,8 @@ export default function TelaJogos({ navigation, route }) {
                     />
                     <View style={styles.content}>
                         <ButtonView onPress={estatistica} value={"Estatística"} />
-                        <ButtonView disabled={limite} onPress={navigateComparar} value={"Comparar"} />
-                        <ButtonView disabled={limite} onPress={novoJogo} value={"Novo Jogo"} />
+                        <ButtonView onPress={navigateComparar} value={"Comparar"} />
+                        <ButtonView disabled={limiteDeJogos} onPress={novoJogo} value={txtBtn2} />
                     </View>
 
                     <ViewProximoJogo
