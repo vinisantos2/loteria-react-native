@@ -42,7 +42,7 @@ export const QTD_DEZENAS_TIME = 80
 export const QTD_MIN_DEZENAS_TIME = 10
 export const DEZENAS_LIMITE_TIME = 10
 
-export const URL_BASE_ULTIMOS = "https://apiloterias.com.br/app/v2/resultado?loteria=ultimos&antecipado=true&token=GiNtwyxspInrON9"
+export const URL_BASE_ULTIMOS = "https://apiloterias.com.br/app/v2/resultado?loteria=ultimos&token=kJdfLjd38Jai2ek"
 export const URL_BASE = "https://loteriascaixa-api.herokuapp.com/api/"
 // export const URL_BASE_ULTIMOS = "http://192.168.0.16:3001/ultimos"
 // export const URL_BASE = "http://192.168.0.16:3001/"

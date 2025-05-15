@@ -95,11 +95,10 @@ export default function Resultados({ }) {
                     navigation.navigate("L")
                 }
             /> */}
-                    {arrayViewJogosSorteados ? arrayViewJogosSorteados.map((item) => {
+                    {arrayViewJogosSorteados ? arrayViewJogosSorteados.map((item, index) => {
                         const jogo = jogoDoBanco(item)
                         return (
-                            <ItemJogo key={gerarKey()} item={jogo} cor={mudaCor(item.loteria)} />
-
+                            <ItemJogo key={index} item={jogo} cor={mudaCor(item.loteria)} />
                         )
                     }) :
                         <ViewMsgErro />
